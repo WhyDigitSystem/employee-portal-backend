@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class TokenVO {
-
+	
 	@Id
 	private String id;
 	private Date createdDate;
@@ -27,4 +27,5 @@ public class TokenVO {
 	private long userId;
 	@Transient
 	private String token;
+
 }

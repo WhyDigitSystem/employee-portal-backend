@@ -5,105 +5,40 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.whydigit.efit.entity.CityVO;
-import com.whydigit.efit.entity.CountryListVO;
-import com.whydigit.efit.entity.CountryVO;
-import com.whydigit.efit.entity.CurrencyMasterVO;
-import com.whydigit.efit.entity.EmployeeVO;
-import com.whydigit.efit.entity.FinancialYearVO;
-import com.whydigit.efit.entity.LocalCurrencyVO;
-import com.whydigit.efit.entity.StateVO;
+import com.whydigit.efit.entity.EmployeeDetailsVO;
+import com.whydigit.efit.entity.LeaveTypeVO;
+
 
 @Service
 public interface BasicMasterService {
 
-	List<LocalCurrencyVO> getAllLocalCurrencies();
-
-	Optional<LocalCurrencyVO> getLocalCurrencyById(int id);
-
-	LocalCurrencyVO createLocalCurrency(LocalCurrencyVO localCurrencyVO);
-
-	Optional<LocalCurrencyVO> updateLocalCurrency(LocalCurrencyVO localCurrencyVO);
-
-	void deleteLocalCurrency(int id);
 	
-	List<CountryListVO> getAllCountryList();
-
-	Optional<CountryListVO> getCountryListById(int id);
-
-	CountryListVO createCountryList(CountryListVO countryListVO);
-
-	Optional<CountryListVO> updateCountryList(CountryListVO countryListVO);
-
-	void deleteCountryList(int id);
-
-	List<CountryVO> getAllgetAllcountries();
-
-	Optional<CountryVO> getCountryById(int id);
-
-	CountryVO createCountry(CountryVO countryVO);
-
-	Optional<CountryVO> updateCountry(CountryVO countryVO);
-
-	void deleteCountry(int id);
 
 
-	List<StateVO> getAllgetAllStates();
+	List<EmployeeDetailsVO> getAllgetAllEmployees();
 
-	Optional<StateVO> getStateById(int id);
+	Optional<EmployeeDetailsVO> getEmployeeById(int id);
 
-	StateVO createState(StateVO stateVO);
+	EmployeeDetailsVO createEmployee(EmployeeDetailsVO employeeVO);
 
-	Optional<StateVO> updateState(StateVO stateVO);
-
-	void deleteState(int id);
-
-
-	List<CityVO> getAllgetAllCities();
-
-	Optional<CityVO> getCityById(int id);
-
-	CityVO createCity(CityVO cityVO);
-
-	Optional<CityVO> updateCity(CityVO cityVO);
-
-	void deleteCity(int id);
-
-
-
-	List<EmployeeVO> getAllgetAllEmployees();
-
-	Optional<EmployeeVO> getEmployeeById(int id);
-
-	EmployeeVO createEmployee(EmployeeVO employeeVO);
-
-	Optional<EmployeeVO> updateEmployee(EmployeeVO employeeVO);
+	Optional<EmployeeDetailsVO> updateEmployee(EmployeeDetailsVO employeeVO);
 
 	void deleteEmployee(int id);
-
-
-	List<FinancialYearVO> getAllgetAllFinancialYears();
-
-	Optional<FinancialYearVO> getFinancialYearById(int id);
-
-	FinancialYearVO createFinancialYear(FinancialYearVO financialYearVO);
-
-	Optional<FinancialYearVO> updateFinancialYear(FinancialYearVO financialYearVO);
-
-	void deleteFinancialYear(int id);
 	
 	
-	List<CurrencyMasterVO> getAllCurrencyMaster();
+	
+	List<LeaveTypeVO> getAllgetAllLeaveType();
 
-	Optional<CurrencyMasterVO> getCurrencyMasterById(int id);
+	Optional<LeaveTypeVO> getLeaveTypeById(int id);
 
-	CurrencyMasterVO createCurrencyMasterVO(CurrencyMasterVO currencyMasterVO);
+	LeaveTypeVO createLeaveType(LeaveTypeVO leaveTypeVO);
 
-	Optional<CurrencyMasterVO> updateCurrencyMaster(CurrencyMasterVO currencyMasterVO);
+	Optional<LeaveTypeVO> updateLeaveType(LeaveTypeVO leaveTypeVO);
 
-	void deleteCurrencyMaster(int id);
+	void deleteLeaveType(int id);
 
 
+	
 
 
 
