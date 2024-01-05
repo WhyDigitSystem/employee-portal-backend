@@ -5,11 +5,14 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.whydigit.efit.dto.UserName;
+import com.whydigit.efit.entity.CheckinVO;
 import com.whydigit.efit.entity.EmployeeDetailsVO;
 import com.whydigit.efit.entity.HolidayVO;
+import com.whydigit.efit.entity.LeaveRequestVO;
 import com.whydigit.efit.entity.LeaveTypeVO;
-import com.whydigit.efit.entity.NewLeaveRequestVO;
-import com.whydigit.efit.entity.NewPermissionRequestVO;
+import com.whydigit.efit.entity.PermissionRequestVO;
+
 
 
 @Service
@@ -53,28 +56,35 @@ public interface BasicMasterService {
 
 	
 	//LEAVE REQUEST
-	List<NewLeaveRequestVO> getAllNewLeaveRequest();
+	List<LeaveRequestVO> getAllLeaveRequest();
 	
-	Optional<NewLeaveRequestVO> getLeaverequestById(int id);
+	Optional<LeaveRequestVO> getLeaveRequestById(int id);
 
-	NewLeaveRequestVO createNewLeaveRequest(NewLeaveRequestVO newLeaveRequestVO);
+	LeaveRequestVO createLeaveRequest(LeaveRequestVO laveRequestVO);
 
-	Optional<NewLeaveRequestVO> updateNewLeaveRequest(NewLeaveRequestVO newLeaveRequestVO);
+	Optional<LeaveRequestVO> updateLeaveRequest(LeaveRequestVO leaveRequestVO);
 
-	void deleteNewLeaveRequest(int id);
+	void deleteLeaveRequest(int id);
 	
 
 	//NEW PERMISSION REQUEST
 	
-	List<NewPermissionRequestVO> getAllNewPermissionRequest();
+	List<PermissionRequestVO> getAllPermissionRequest();
 
-	Optional<NewPermissionRequestVO> getPermissionRequestById(int id);
+	Optional<PermissionRequestVO> getPermissionRequestById(int id);
 	
-	NewPermissionRequestVO createNewPermissionRequest(NewPermissionRequestVO newPermissionRequestVO);
+	PermissionRequestVO createPermissionRequest(PermissionRequestVO permissionRequestVO);
 
-	Optional<NewPermissionRequestVO> updateNewPermissionRequest(NewPermissionRequestVO newPermissionRequestVO);
+	Optional<PermissionRequestVO> updatePermissionRequest(PermissionRequestVO permissionRequestVO);
 
-	void deleteNewPermissionRequest(int id);
+	void deletePermissionRequest(int id);
+
+	
+	
+	CheckinVO checkIn(UserName user1);
+
+	CheckinVO checkOut(int id);
+
 
 	
 	

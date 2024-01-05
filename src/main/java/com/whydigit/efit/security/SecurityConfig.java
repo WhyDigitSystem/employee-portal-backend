@@ -34,7 +34,7 @@ public class SecurityConfig {
 				.permitAll()
 				.antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/security",
 						"/swagger-ui.html", "/swagger-ui/*", "/api/user/signup", "/api/user/login", "/api/user/logout",
-						"/api/user/getRefreshToken", "/api/basicSetting/companyInfo","/api/basicMaster/employee")
+						"/api/user/getRefreshToken", "/api/basicSetting/companyInfo","/api/basicMaster/employee","/api/basicMaster/leaverequest","/api/basicMaster/checkin","/api/basicMaster/checkout/{id}","/api/basicMaster/holiday")
 				.permitAll().antMatchers("/api/**").hasAnyRole("USER", "GUEST_USER").anyRequest().authenticated();
 
 		http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

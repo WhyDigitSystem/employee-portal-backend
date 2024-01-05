@@ -17,28 +17,35 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "new_leave_request")
+@Table(name = "permissionrequest")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class NewLeaveRequestVO {
+public class PermissionRequestVO {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
 	@JsonFormat(pattern="yyyy-MM-dd")
-	private Date from;
-	@JsonFormat(pattern="yyyy-MM-dd")
-	private Date to;
-	private String totaldays;
-	private String leavetype;
+	private Date permissiondate;
+	private String fromhour;
+	private String tohour;
+	private int totalhours;
 	private String notes;
-	private String search;
+	private String username;
 	private String createdby;
 	private String updatedby;
+	private String approvedby;
+	private String status;
+	@JsonFormat(pattern="yyyy-MM-dd")
+	private Date approvedat;
 	private boolean cancel;
 	private boolean active;
 	private String remarks;
+	
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
+
 }
