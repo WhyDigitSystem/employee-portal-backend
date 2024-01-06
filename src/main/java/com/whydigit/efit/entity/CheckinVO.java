@@ -32,6 +32,7 @@ public class CheckinVO {
 	private Date checkin=new Date();
     private Date checkInTime;
     private Date checkOutTime;
+    private String status;
 	
 
 }

@@ -44,6 +44,7 @@ public class LeaveRequestVO {
 	private boolean cancel;
 	private boolean active;
 	private String remarks;
+	private String notifyto;
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 

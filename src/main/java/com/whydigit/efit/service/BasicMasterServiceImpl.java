@@ -218,6 +218,7 @@ public class BasicMasterServiceImpl implements BasicMasterService {
     	Date current= new Date();
     	CheckinVO checkinVO = new CheckinVO();
     	checkinVO.setCheckin(current);
+    	checkinVO.setStatus("In");
     	checkinVO.setUserid(user.getUserid());
     	checkinVO.setCheckInTime(current);
         return checkinRepo.save(checkinVO);
@@ -230,6 +231,7 @@ public class BasicMasterServiceImpl implements BasicMasterService {
     	CheckinVO checkinVO = checkinRepo.findById(id).get();
 
     	checkinVO.setCheckOutTime(current);
+    	checkinVO.setStatus("Out");
         return checkinRepo.save(checkinVO);
     }
 
