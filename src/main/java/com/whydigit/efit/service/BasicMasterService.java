@@ -85,9 +85,6 @@ public interface BasicMasterService {
 	CheckinVO checkIn(UserName user1);
 
 	CheckinVO checkOut(UserName user1);
-
-
-	Optional<logincreationDTO> getCredentialDetailsByEmployeecode();
 	
 	
 	

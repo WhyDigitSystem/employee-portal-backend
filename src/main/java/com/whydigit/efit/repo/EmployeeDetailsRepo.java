@@ -16,8 +16,7 @@ public interface EmployeeDetailsRepo extends JpaRepository<EmployeeDetailsVO, In
 
 	
 
-	@Query(nativeQuery = true,value="SELECT a.employee_code,a.email,a.role from employee_details a")
-	Optional<logincreationDTO> findByEmail();
+	
 
 
 	

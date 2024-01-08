@@ -691,9 +691,5 @@ public class BasicMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 	
-	@GetMapping("/employee1")
-	public Optional<logincreationDTO> getAll(){
-		return basicMasterService.getCredentialDetailsByEmployeecode();
-	}
 
 }

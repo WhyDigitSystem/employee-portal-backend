@@ -254,11 +254,5 @@ public class BasicMasterServiceImpl implements BasicMasterService {
         return checkinRepo.save(checkinVO);
     }
 
-	@Override
-	public Optional<logincreationDTO> getCredentialDetailsByEmployeecode() {
-		
-		 
-		return employeeRepo.findByEmail();
-	}
 
 }
