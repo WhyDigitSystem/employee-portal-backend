@@ -32,6 +32,7 @@ import com.whydigit.efit.entity.HolidayVO;
 import com.whydigit.efit.entity.LeaveRequestVO;
 import com.whydigit.efit.entity.LeaveTypeVO;
 import com.whydigit.efit.entity.PermissionRequestVO;
+import com.whydigit.efit.repo.PermissionRequestRepo;
 import com.whydigit.efit.service.BasicMasterService;
 
 @RestController
@@ -43,6 +44,9 @@ public class BasicMasterController extends BaseController {
 
 	@Autowired
 	private BasicMasterService basicMasterService;
+	
+	@Autowired
+	PermissionRequestRepo repo;
 
 	// employee
 
@@ -455,6 +459,32 @@ public class BasicMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	
+	@GetMapping("/leaverequests/{empcode}")
+	public ResponseEntity<ResponseDTO> getLeaveRequestByEmpcode(@PathVariable String empcode) {
+		String methodName = "getLeaveRequestByEmpcode()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<LeaveRequestVO> leaveRequestVO = null;
+		try {
+			leaveRequestVO = basicMasterService.getLeaveRequestByEmpcode(empcode);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Leave Request found by ID");
+			responseObjectsMap.put("leaveRequestVO", leaveRequestVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "Leaverequest not found for ID: " + empcode;
+			responseDTO = createServiceResponseError(responseObjectsMap, "Leave Request not found", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 	@PostMapping("/leaverequest")
 	public ResponseEntity<ResponseDTO> createLeaveRequest(@RequestBody LeaveRequestVO leaveRequestVO) {
 		String methodName = "createLeaveRequest()";
@@ -603,6 +633,32 @@ public class BasicMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	@GetMapping("/permissionRequests/{empcode}")
+	public ResponseEntity<ResponseDTO> getPermissionRequestByEmpcode(@PathVariable String empcode) {
+		String methodName = "getPermissionRequestByEmpcode()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<PermissionRequestVO> permissionRequestVO = null;
+		try {
+			permissionRequestVO = basicMasterService.getPermissionRequestByEmpcode(empcode);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Permission Request found by ID");
+			responseObjectsMap.put("PermissionRequestVO", permissionRequestVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "Permission Request not found for ID: " + empcode;
+			responseDTO = createServiceResponseError(responseObjectsMap, "Permission Request not found", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
 	@PostMapping("/permissionRequest")
 	public ResponseEntity<ResponseDTO> createPermissionRequest(@RequestBody PermissionRequestVO permissionRequestVO) {
 		String methodName = "createPermissionRequest()";
@@ -744,6 +800,7 @@ public class BasicMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	
 	
 
 }

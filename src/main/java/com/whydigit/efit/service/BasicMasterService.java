@@ -60,6 +60,8 @@ public interface BasicMasterService {
 	List<LeaveRequestVO> getAllLeaveRequest();
 	
 	Optional<LeaveRequestVO> getLeaveRequestById(int id);
+	
+	List<LeaveRequestVO> getLeaveRequestByEmpcode(String empcode);
 
 	LeaveRequestVO createLeaveRequest(LeaveRequestVO laveRequestVO);
 
@@ -76,6 +78,8 @@ public interface BasicMasterService {
 
 	Optional<PermissionRequestVO> getPermissionRequestById(int id);
 	
+	List<PermissionRequestVO> getPermissionRequestByEmpcode(String empcode);
+	
 	PermissionRequestVO createPermissionRequest(PermissionRequestVO permissionRequestVO);
 
 	Optional<PermissionRequestVO> updatePermissionRequest(PermissionRequestVO permissionRequestVO);
@@ -88,6 +92,8 @@ public interface BasicMasterService {
 	CheckinVO checkIn(UserName user1);
 
 	CheckinVO checkOut(UserName user1);
+
+	
 	
 	
 	

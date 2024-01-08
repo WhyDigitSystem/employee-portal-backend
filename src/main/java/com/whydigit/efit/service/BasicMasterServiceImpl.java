@@ -7,7 +7,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.whydigit.efit.dto.UserName;
 import com.whydigit.efit.dto.logincreationDTO;
@@ -167,6 +167,11 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 		// TODO Auto-generated method stub
 		return newLeaveRequestRepo.findById(id);
 	}
+	
+	@Override
+	public List<LeaveRequestVO> getLeaveRequestByEmpcode(@PathVariable String empcode){
+		return newLeaveRequestRepo.findByEmpcode(empcode);
+	}
 
 	@Override
 	public LeaveRequestVO createLeaveRequest(LeaveRequestVO newLeaveRequestVO) {
@@ -215,6 +220,11 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 	public Optional<PermissionRequestVO> getPermissionRequestById(int id) {
 		// TODO Auto-generated method stub
 		return newPermissionRequestRepo.findById(id);
+	}
+	
+	@Override
+	public List<PermissionRequestVO> getPermissionRequestByEmpcode(@PathVariable String empcode){
+		return newPermissionRequestRepo.findByEmpcode(empcode);
 	}
 
 	@Override
