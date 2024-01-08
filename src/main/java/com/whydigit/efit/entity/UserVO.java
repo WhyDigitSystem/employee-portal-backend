@@ -30,10 +30,9 @@ public class UserVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long userId;
-	private String firstName;
-	private String lastName;
+	private String empname;
 	private String email;
-	private String userName;
+	private String empcode;
 	private String password;
 	private boolean loginStatus;
 	private boolean isActive;

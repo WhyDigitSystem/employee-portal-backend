@@ -18,7 +18,7 @@ public class ChangePasswordFormDTO {
 	@NotBlank(message = "Email is Required")
 	@Size(max = 30)
 	@Email
-	private String userName;
+	private String email;
 
 	@NotBlank
 	@Size(min = 6, max = 100, message = "Old Password is required")

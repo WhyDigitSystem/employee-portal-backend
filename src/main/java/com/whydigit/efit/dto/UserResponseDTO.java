@@ -15,10 +15,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserResponseDTO {
 	private Long userId;
-	private String firstName;
-	private String lastName;
 	private String email;
-	private String userName;
+	private String empname;
+	private String empcode;
 	private boolean loginStatus;
 	private boolean isActive;
 	@Enumerated(EnumType.STRING)

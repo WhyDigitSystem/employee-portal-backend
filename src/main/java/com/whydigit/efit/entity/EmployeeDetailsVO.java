@@ -1,5 +1,6 @@
 package com.whydigit.efit.entity;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Embedded;
@@ -26,20 +27,22 @@ public class EmployeeDetailsVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	private String employee_code;
-	private String employee_name;
+	private String empcode;
+	private String empname;
 	private String gender;
 	@JsonFormat(pattern="yyyy-MM-dd")
-	private Date date_of_birth;
+	private LocalDate date_of_birth;
 	private String blood;
 	private String department;
 	private String designation;
 	private String role;
+	private String companycode;
+	private String branch;
 	private String email;
 	@JsonFormat(pattern="yyyy-MM-dd")
-	private Date joining_date;
+	private LocalDate joining_date;
 	@JsonFormat(pattern="yyyy-MM-dd")
-	private Date resigning_date;
+	private LocalDate resigning_date;
 	private String user_type;
 	private String mobile_no;
 	private String alternate_mobile_no;

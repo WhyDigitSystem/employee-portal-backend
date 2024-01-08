@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -24,6 +25,7 @@ import com.whydigit.efit.common.CommonConstant;
 import com.whydigit.efit.common.UserConstants;
 import com.whydigit.efit.dto.ResponseDTO;
 import com.whydigit.efit.dto.UserName;
+import com.whydigit.efit.dto.logincreationDTO;
 import com.whydigit.efit.entity.CheckinVO;
 import com.whydigit.efit.entity.EmployeeDetailsVO;
 import com.whydigit.efit.entity.HolidayVO;
@@ -667,15 +669,15 @@ public class BasicMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 	
-	@PostMapping("/checkout/{id}")
-	public ResponseEntity<ResponseDTO> createCheckout(@PathVariable int id) {
+	@PostMapping("/checkout")
+	public ResponseEntity<ResponseDTO> createCheckout(@RequestBody UserName user1) {
 		String methodName = "createCheckout()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			CheckinVO createdCheckout = basicMasterService.checkOut(id);
+			CheckinVO createdCheckout = basicMasterService.checkOut(user1);
 					responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "CheckOut created successfully");
 			responseObjectsMap.put("CheckinVO", createdCheckout);
 			responseDTO = createServiceResponse(responseObjectsMap);
@@ -687,6 +689,11 @@ public class BasicMasterController extends BaseController {
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/employee1")
+	public Optional<logincreationDTO> getAll(){
+		return basicMasterService.getCredentialDetailsByEmployeecode();
 	}
 
 }

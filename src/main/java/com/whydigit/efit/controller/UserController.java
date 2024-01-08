@@ -72,7 +72,7 @@ public class UserController extends BaseController {
 			userResponseDTO = userService.login(loginRequest);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME_WITH_USER_NAME, methodName, loginRequest.getUserName(),
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME_WITH_USER_NAME, methodName, loginRequest.getEmail(),
 					errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {

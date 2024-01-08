@@ -22,7 +22,7 @@ public class UserActionVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long actionId;
-	private String userName;
+	private String email;
 	private long userId;
 	private String actionType;
 	private Date actionDate;

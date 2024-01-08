@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 
 
 @Entity
-@Table(name="checkintime")
+@Table(name="checkin")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,11 +27,12 @@ public class CheckinVO {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private int id;
 
-	private String userid;
+	private String empcode;
+	private String companycode;
+	private String branch;
 	@JsonFormat(pattern="yyyy-MM-dd")
-	private Date checkin=new Date();
-    private Date checkInTime;
-    private Date checkOutTime;
+	private Date checkin_date=new Date();
+    private Date entry_time;
     private String status;
 	
 

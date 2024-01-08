@@ -27,6 +27,8 @@ public class LeaveTypeVO {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
+	private String companycode;
+	private String branch;
 	private String leave_type;
 	private int total_leave;
 	private String createdby;

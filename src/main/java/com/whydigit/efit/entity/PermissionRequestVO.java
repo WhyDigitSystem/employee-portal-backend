@@ -30,6 +30,8 @@ public class PermissionRequestVO {
 	
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date permissiondate;
+	private String companycode;
+	private String branch;
 	private String fromhour;
 	private String tohour;
 	private int totalhours;

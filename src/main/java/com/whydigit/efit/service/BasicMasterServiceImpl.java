@@ -4,11 +4,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
 import com.whydigit.efit.dto.UserName;
+import com.whydigit.efit.dto.logincreationDTO;
 import com.whydigit.efit.entity.CheckinVO;
 import com.whydigit.efit.entity.EmployeeDetailsVO;
 import com.whydigit.efit.entity.HolidayVO;
@@ -57,6 +59,9 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 
 	@Override
 	public EmployeeDetailsVO createEmployee(EmployeeDetailsVO employeeVO) {
+		employeeVO.setBranch("BLR");
+		employeeVO.setCompanycode("WDS");
+		employeeVO.setCancel(false);
 		return employeeRepo.save(employeeVO);
 	}
 
@@ -90,7 +95,9 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 
 	@Override
 	public LeaveTypeVO createLeaveType(LeaveTypeVO leaveTypeVO) {
-
+		leaveTypeVO.setBranch("BLR");
+		leaveTypeVO.setCompanycode("WDS");
+		leaveTypeVO.setCancel(false);
 		return leaveTypeRepo.save(leaveTypeVO);
 	}
 
@@ -126,6 +133,9 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 	@Override
 	public HolidayVO createholidayType(HolidayVO holidayVO) {
 
+		holidayVO.setBranch("BLR");
+		holidayVO.setCompanycode("WDS");
+		holidayVO.setCancel(false);
 		return holidayRepo.save(holidayVO);
 	}
 
@@ -160,6 +170,9 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 
 	@Override
 	public LeaveRequestVO createLeaveRequest(LeaveRequestVO newLeaveRequestVO) {
+		newLeaveRequestVO.setBranch("BLR");
+		newLeaveRequestVO.setCompanycode("WDS");
+		newLeaveRequestVO.setCancel(false);
 		// TODO Auto-generated method stub
 		return newLeaveRequestRepo.save(newLeaveRequestVO);
 	}
@@ -196,6 +209,9 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 	@Override
 	public PermissionRequestVO createPermissionRequest(PermissionRequestVO newPermissionRequestVO) {
 		// TODO Auto-generated method stub
+		newPermissionRequestVO.setBranch("BLR");
+		newPermissionRequestVO.setCompanycode("WDS");
+		newPermissionRequestVO.setCancel(false);
 		return newPermissionRequestRepo.save(newPermissionRequestVO);
 	}
 
@@ -217,22 +233,32 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 	public CheckinVO checkIn(UserName user) {
     	Date current= new Date();
     	CheckinVO checkinVO = new CheckinVO();
-    	checkinVO.setCheckin(current);
+    	checkinVO.setCompanycode("WDS");
+    	checkinVO.setBranch("BLR");
+    	checkinVO.setEmpcode(user.getUserid());
+    	checkinVO.setCheckin_date(current);
     	checkinVO.setStatus("In");
-    	checkinVO.setUserid(user.getUserid());
-    	checkinVO.setCheckInTime(current);
+    	checkinVO.setEntry_time(current);
         return checkinRepo.save(checkinVO);
     }
 
-	public CheckinVO checkOut(int id) {
-    	
+	public CheckinVO checkOut(UserName user) {
     	Date current= new Date();
-    	
-    	CheckinVO checkinVO = checkinRepo.findById(id).get();
-
-    	checkinVO.setCheckOutTime(current);
+    	CheckinVO checkinVO = new CheckinVO();
+    	checkinVO.setCompanycode("WDS");
+    	checkinVO.setBranch("BLR");
+    	checkinVO.setEmpcode(user.getUserid());
+    	checkinVO.setCheckin_date(current);
+    	checkinVO.setEntry_time(current);
     	checkinVO.setStatus("Out");
         return checkinRepo.save(checkinVO);
     }
+
+	@Override
+	public Optional<logincreationDTO> getCredentialDetailsByEmployeecode() {
+		
+		 
+		return employeeRepo.findByEmail();
+	}
 
 }

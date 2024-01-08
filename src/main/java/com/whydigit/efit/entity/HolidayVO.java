@@ -1,5 +1,6 @@
 package com.whydigit.efit.entity;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Embedded;
@@ -26,7 +27,9 @@ public class HolidayVO {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	@JsonFormat(pattern="yyyy-MM-dd")
-	private Date holiday_date;
+	private String companycode;
+	private String branch;
+	private LocalDate holiday_date;
 	private String day;
 	private String festival;
 	private String createdby;

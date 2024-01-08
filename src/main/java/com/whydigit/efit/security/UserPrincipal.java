@@ -32,11 +32,11 @@ public class UserPrincipal implements UserDetails {
                 .map(role -> new SimpleGrantedAuthority(role.getRoleName().name())).collect(Collectors.toList());**/
 
         List<GrantedAuthority> authorities = Collections.
-                singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+                singletonList(new SimpleGrantedAuthority("User"));
 
         return new UserPrincipal(
                 user.getUserId(),
-                user.getUserName(),
+                user.getEmail(),
                 user.getPassword(),
                 authorities
         );

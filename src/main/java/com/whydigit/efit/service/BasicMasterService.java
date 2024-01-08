@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.whydigit.efit.dto.UserName;
+import com.whydigit.efit.dto.logincreationDTO;
 import com.whydigit.efit.entity.CheckinVO;
 import com.whydigit.efit.entity.EmployeeDetailsVO;
 import com.whydigit.efit.entity.HolidayVO;
@@ -83,10 +84,10 @@ public interface BasicMasterService {
 	
 	CheckinVO checkIn(UserName user1);
 
-	CheckinVO checkOut(int id);
+	CheckinVO checkOut(UserName user1);
 
 
-	
+	Optional<logincreationDTO> getCredentialDetailsByEmployeecode();
 	
 	
 	

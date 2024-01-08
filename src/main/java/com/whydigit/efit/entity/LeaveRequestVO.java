@@ -31,6 +31,8 @@ public class LeaveRequestVO {
 	private Date fromdate;
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date todate;
+	private String companycode;
+	private String branch;
 	private String totaldays;
 	private String leavetype;
 	private String notes;
