@@ -109,7 +109,7 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 			return Optional.empty();
 		}
 	}
-
+	
 	@Override
 	public void deleteLeaveType(int id) {
 		leaveTypeRepo.deleteById(id);
@@ -185,6 +185,17 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 			return Optional.empty();
 		}
 	}
+	
+	@Override
+	public Optional<LeaveRequestVO> updateLeaveRequestApproval(LeaveRequestVO leaveRequestVO) {
+		Date currentdate=new Date();
+		if (newLeaveRequestRepo.existsById(leaveRequestVO.getId())) {	
+			leaveRequestVO.setApprovedat(currentdate);
+			return Optional.of(newLeaveRequestRepo.save(leaveRequestVO));
+		} else {
+			return Optional.empty();
+		}
+	}
 
 	@Override
 	public void deleteLeaveRequest(int id) {
@@ -219,6 +230,18 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 	public Optional<PermissionRequestVO> updatePermissionRequest(PermissionRequestVO newPermissionRequestVO) {
 		if (newPermissionRequestRepo.existsById(newPermissionRequestVO.getId())) {
 			return Optional.of(newPermissionRequestRepo.save(newPermissionRequestVO));
+		} else {
+			return Optional.empty();
+		}
+	}
+	
+	@Override
+	public Optional<PermissionRequestVO> updatePermissionRequestApproval(PermissionRequestVO permissionRequestVO) {
+		
+		Date currentdate=new Date();
+		if (newPermissionRequestRepo.existsById(permissionRequestVO.getId())) {	
+			permissionRequestVO.setApprovedat(currentdate);
+			return Optional.of(newPermissionRequestRepo.save(permissionRequestVO));
 		} else {
 			return Optional.empty();
 		}

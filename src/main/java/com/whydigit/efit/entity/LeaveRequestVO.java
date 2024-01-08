@@ -1,5 +1,6 @@
 package com.whydigit.efit.entity;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Embedded;
@@ -28,15 +29,16 @@ public class LeaveRequestVO {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	@JsonFormat(pattern="yyyy-MM-dd")
-	private Date fromdate;
+	private LocalDate fromdate;
 	@JsonFormat(pattern="yyyy-MM-dd")
-	private Date todate;
+	private LocalDate todate;
 	private String companycode;
 	private String branch;
 	private String totaldays;
 	private String leavetype;
 	private String notes;
-	private String username;
+	private String empcode;
+	private String empname;
 	private String createdby;
 	private String updatedby;
 	private String approvedby;

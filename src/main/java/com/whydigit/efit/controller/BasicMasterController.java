@@ -475,7 +475,7 @@ public class BasicMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-
+	
 	@PutMapping("/leaverequest")
 	public ResponseEntity<ResponseDTO> updateLeaveRequest(@RequestBody LeaveRequestVO leaveRequestVO) {
 		String methodName = "updateLeaveRequest()";
@@ -485,6 +485,33 @@ public class BasicMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		try {
 			LeaveRequestVO updateLeaveRequestVO = basicMasterService.updateLeaveRequest(leaveRequestVO)
+					.orElse(null);
+			if (updateLeaveRequestVO != null) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Leave Request updated successfully");
+				responseObjectsMap.put("LeaveRequestVO", updateLeaveRequestVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				errorMsg = "Leave Request Type not found for ID: " + leaveRequestVO.getId();
+				responseDTO = createServiceResponseError(responseObjectsMap, "Leave Request update failed", errorMsg);
+			}
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "Leave Request update failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@PutMapping("/leaverequestapp")
+	public ResponseEntity<ResponseDTO> updateLeaveRequestApproval(@RequestBody LeaveRequestVO leaveRequestVO) {
+		String methodName = "updateLeaveRequestApproval()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			LeaveRequestVO updateLeaveRequestVO = basicMasterService.updateLeaveRequestApproval(leaveRequestVO)
 					.orElse(null);
 			if (updateLeaveRequestVO != null) {
 				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Leave Request updated successfully");
@@ -607,6 +634,33 @@ public class BasicMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		try {
 			PermissionRequestVO updatedPermissionRequestVO = basicMasterService.updatePermissionRequest(permissionRequestVO).orElse(null);
+			if (updatedPermissionRequestVO != null) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Permission Request updated successfully");
+				responseObjectsMap.put("Update Permission Request", updatedPermissionRequestVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				errorMsg = "Permission Request not found for ID: " + permissionRequestVO.getId();
+				responseDTO = createServiceResponseError(responseObjectsMap, "Permission Request update failed",
+						errorMsg);
+			}
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "Permission Request update failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@PutMapping("/permissionRequestapp")
+	public ResponseEntity<ResponseDTO> updatePermissionRequestApproval(@RequestBody PermissionRequestVO permissionRequestVO) {
+		String methodName = "updateNewPermissionRequest()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			PermissionRequestVO updatedPermissionRequestVO = basicMasterService.updatePermissionRequestApproval(permissionRequestVO).orElse(null);
 			if (updatedPermissionRequestVO != null) {
 				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Permission Request updated successfully");
 				responseObjectsMap.put("Update Permission Request", updatedPermissionRequestVO);

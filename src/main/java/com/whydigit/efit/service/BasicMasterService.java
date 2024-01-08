@@ -67,6 +67,8 @@ public interface BasicMasterService {
 
 	void deleteLeaveRequest(int id);
 	
+	Optional<LeaveRequestVO> updateLeaveRequestApproval(LeaveRequestVO leaveRequestVO);
+	
 
 	//NEW PERMISSION REQUEST
 	
@@ -80,6 +82,7 @@ public interface BasicMasterService {
 
 	void deletePermissionRequest(int id);
 
+	Optional<PermissionRequestVO> updatePermissionRequestApproval(PermissionRequestVO permissionRequestVO);
 	
 	
 	CheckinVO checkIn(UserName user1);

@@ -1,5 +1,6 @@
 package com.whydigit.efit.entity;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Embedded;
@@ -29,14 +30,15 @@ public class PermissionRequestVO {
 	private int id;
 	
 	@JsonFormat(pattern="yyyy-MM-dd")
-	private Date permissiondate;
+	private LocalDate permissiondate;
 	private String companycode;
 	private String branch;
 	private String fromhour;
 	private String tohour;
 	private int totalhours;
 	private String notes;
-	private String username;
+	private String empcode;
+	private String empname;
 	private String createdby;
 	private String updatedby;
 	private String approvedby;
