@@ -14,9 +14,9 @@ import org.springframework.stereotype.Service;
 
 import com.whydigit.efit.common.CommonConstant;
 import com.whydigit.efit.common.UserConstants;
-import com.whydigit.efit.controller.RefreshTokenDTO;
 import com.whydigit.efit.dto.ChangePasswordFormDTO;
 import com.whydigit.efit.dto.LoginFormDTO;
+import com.whydigit.efit.dto.RefreshTokenDTO;
 import com.whydigit.efit.dto.ResetPasswordFormDTO;
 import com.whydigit.efit.dto.Role;
 import com.whydigit.efit.dto.SignUpFormDTO;
@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
 			LOGGER.error(e.getMessage());
 			throw new ApplicationContextException(UserConstants.ERRROR_MSG_UNABLE_TO_ENCODE_USER_PASSWORD);
 		}
-		userVO.setRole(Role.ROLE_User);
+		userVO.setRole(Role.USER);
 		userVO.setActive(true);
 		return userVO;
 	}

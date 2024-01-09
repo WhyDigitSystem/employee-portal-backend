@@ -2,7 +2,6 @@ package com.whydigit.efit.entity;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,7 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.whydigit.efit.dto.CreatedUpdatedDate;
@@ -37,12 +36,14 @@ public class UserVO {
 	private String email;
 	private String empcode;
 	private String password;
+	private String profileImage;
 	private boolean loginStatus;
 	private boolean isActive;
 	@Enumerated(EnumType.STRING)
 	private Role role;
-	
-
+	@ManyToOne
+	@JoinColumn(name = "orgId")
+	private OrganizationVO organizationVO;
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 

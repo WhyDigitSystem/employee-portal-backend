@@ -2,9 +2,9 @@ package com.whydigit.efit.service;
 
 import org.springframework.stereotype.Service;
 
-import com.whydigit.efit.controller.RefreshTokenDTO;
 import com.whydigit.efit.dto.ChangePasswordFormDTO;
 import com.whydigit.efit.dto.LoginFormDTO;
+import com.whydigit.efit.dto.RefreshTokenDTO;
 import com.whydigit.efit.dto.ResetPasswordFormDTO;
 import com.whydigit.efit.dto.SignUpFormDTO;
 import com.whydigit.efit.dto.UserResponseDTO;

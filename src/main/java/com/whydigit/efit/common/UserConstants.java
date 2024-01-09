@@ -1,7 +1,13 @@
 package com.whydigit.efit.common;
 
 public class UserConstants {
-
+	public static final String ORGANIZATION_REGISTERED_SUCCESS_MESSAGE = "Organization registered successfully.";
+	public static final String ORGANIZATION_REGISTERED_FAILED_MESSAGE = "Organization register failed.";
+	public static final String ERRROR_MSG_INVALID_ORGANIZATION_REGISTER_INFORMATION = "Invalid Organization register information.";
+	public static final String ERRROR_MSG_ORGANIZATION_INFORMATION_ALREADY_REGISTERED = "Organization information already registered.";
+	public static final String ERRROR_MSG_ORGANIZATION_USER_INFORMATION_ALREADY_REGISTERED = "Organization user information already registered.";	
+	public static final String USER_REGISTERED_SUCCESS_MESSAGE = "User registered successfully.";
+	public static final String USER_REGISTERED_FAILED_MESSAGE = "User register failed.";
 	public static final String SIGNUP_REGISTERED_SUCCESS_MESSAGE = "User registered successfully.";
 	public static final String SIGNUP_REGISTERED_FAILED_MESSAGE = "User register failed.";
 	public static final String ERRROR_MSG_INVALID_USER_REGISTER_INFORMATION = "Invalid user register information.";
