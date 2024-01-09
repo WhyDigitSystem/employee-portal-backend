@@ -1,7 +1,6 @@
 package com.whydigit.efit.service;
 
 import java.util.Date;
-import java.util.Optional;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -18,11 +17,8 @@ import com.whydigit.efit.dto.ChangePasswordFormDTO;
 import com.whydigit.efit.dto.LoginFormDTO;
 import com.whydigit.efit.dto.RefreshTokenDTO;
 import com.whydigit.efit.dto.ResetPasswordFormDTO;
-import com.whydigit.efit.dto.Role;
-import com.whydigit.efit.dto.SignUpFormDTO;
 import com.whydigit.efit.dto.UserResponseDTO;
 import com.whydigit.efit.entity.TokenVO;
-import com.whydigit.efit.entity.UserActionVO;
 import com.whydigit.efit.entity.UserVO;
 import com.whydigit.efit.exception.ApplicationException;
 import com.whydigit.efit.repo.TokenRepo;
@@ -32,8 +28,8 @@ import com.whydigit.efit.security.TokenProvider;
 import com.whydigit.efit.util.CryptoUtils;
 
 @Service
-public class UserServiceImpl implements UserService {
-	public static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+public class AuthServiceImpl implements AuthService {
+	public static final Logger LOGGER = LoggerFactory.getLogger(AuthServiceImpl.class);
 
 	@Autowired
 	UserRepo userRepo;
@@ -49,38 +45,10 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	TokenRepo tokenRepo;
+	
+	@Autowired
+	UserService userService; 
 
-	@Override
-	public void signup(SignUpFormDTO signUpRequest) {
-		String methodName = "signup()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		if (ObjectUtils.isEmpty(signUpRequest) || StringUtils.isBlank(signUpRequest.getEmail())
-				|| StringUtils.isBlank(signUpRequest.getEmail())) {
-			throw new ApplicationContextException(UserConstants.ERRROR_MSG_INVALID_USER_REGISTER_INFORMATION);
-		} else if (userRepo.existsByEmail(signUpRequest.getEmail())) {
-			throw new ApplicationContextException(UserConstants.ERRROR_MSG_USER_INFORMATION_ALREADY_REGISTERED);
-		}
-		UserVO userVO = getUserVOFromSignUpFormDTO(signUpRequest);
-		userRepo.save(userVO);
-		createUserAction(userVO.getEmail(), userVO.getUserId(), UserConstants.USER_ACTION_ADD_ACCOUNT);
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-	}
-
-	private UserVO getUserVOFromSignUpFormDTO(SignUpFormDTO signUpRequest) {
-		UserVO userVO = new UserVO();
-		userVO.setEmpcode(signUpRequest.getEmpcode());
-		userVO.setEmpname(signUpRequest.getEmpname());
-		userVO.setEmail(signUpRequest.getEmail());
-		try {
-			userVO.setPassword(encoder.encode(CryptoUtils.getDecrypt(signUpRequest.getPassword())));
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			throw new ApplicationContextException(UserConstants.ERRROR_MSG_UNABLE_TO_ENCODE_USER_PASSWORD);
-		}
-		userVO.setRole(Role.USER);
-		userVO.setActive(true);
-		return userVO;
-	}
 
 	@Override
 	public UserResponseDTO login(LoginFormDTO loginRequest) {
@@ -132,23 +100,10 @@ public class UserServiceImpl implements UserService {
 		try {
 			userVO.setLoginStatus(true);
 			userRepo.save(userVO);
-			createUserAction(userVO.getEmail(), userVO.getUserId(), UserConstants.USER_ACTION_TYPE_LOGIN);
+			userService.createUserAction(userVO.getEmail(), userVO.getUserId(), UserConstants.USER_ACTION_TYPE_LOGIN);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
 			throw new ApplicationContextException(UserConstants.ERRROR_MSG_UNABLE_TO_UPDATE_USER_INFORMATION);
-		}
-	}
-
-	@Override
-	public void createUserAction(String email, long userId, String actionType) {
-		try {
-			UserActionVO userActionVO = new UserActionVO();
-			userActionVO.setEmail(email);
-			userActionVO.setUserId(userId);
-			userActionVO.setActionType(actionType);
-			userActionRepo.save(userActionVO);
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
 		}
 	}
 
@@ -172,7 +127,7 @@ public class UserServiceImpl implements UserService {
 		try {
 			userVO.setLoginStatus(false);
 			userRepo.save(userVO);
-			createUserAction(userVO.getEmail(), userVO.getUserId(), UserConstants.USER_ACTION_TYPE_LOGOUT);
+			userService.createUserAction(userVO.getEmail(), userVO.getUserId(), UserConstants.USER_ACTION_TYPE_LOGOUT);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
 			throw new ApplicationContextException(UserConstants.ERRROR_MSG_UNABLE_TO_UPDATE_USER_INFORMATION);
@@ -198,7 +153,7 @@ public class UserServiceImpl implements UserService {
 					throw new ApplicationContextException(UserConstants.ERRROR_MSG_UNABLE_TO_ENCODE_USER_PASSWORD);
 				}
 				userRepo.save(userVO);
-				createUserAction(userVO.getEmail(), userVO.getUserId(),
+				userService.createUserAction(userVO.getEmail(), userVO.getUserId(),
 						UserConstants.USER_ACTION_TYPE_CHANGE_PASSWORD);
 			} else {
 				throw new ApplicationContextException(UserConstants.ERRROR_MSG_OLD_PASSWORD_MISMATCH);
@@ -225,42 +180,11 @@ public class UserServiceImpl implements UserService {
 				throw new ApplicationContextException(UserConstants.ERRROR_MSG_UNABLE_TO_ENCODE_USER_PASSWORD);
 			}
 			userRepo.save(userVO);
-			createUserAction(userVO.getEmail(), userVO.getUserId(), UserConstants.USER_ACTION_TYPE_RESET_PASSWORD);
+			userService.createUserAction(userVO.getEmail(), userVO.getUserId(), UserConstants.USER_ACTION_TYPE_RESET_PASSWORD);
 		} else {
 			throw new ApplicationContextException(UserConstants.ERRROR_MSG_USER_INFORMATION_NOT_FOUND);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-	}
-
-	@Override
-	public UserVO getUserById(Long userId) {
-		String methodName = "getUserById()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		if (ObjectUtils.isEmpty(userId)) {
-			throw new ApplicationContextException(UserConstants.ERRROR_MSG_INVALID_USER_ID);
-		}
-		UserVO userVO = userRepo.getUserById(userId);
-		if (ObjectUtils.isEmpty(userVO)) {
-			throw new ApplicationContextException(UserConstants.ERRROR_MSG_USER_INFORMATION_NOT_FOUND);
-		}
-		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-		return userVO;
-	}
-
-	@Override
-	public UserVO getUserByUserName(String email) {
-		String methodName = "getUserByEmail()";
-		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		if (StringUtils.isNotEmpty(email)) {
-			UserVO userVO = userRepo.findByEmail(email);
-			if (ObjectUtils.isEmpty(userVO)) {
-				throw new ApplicationContextException(UserConstants.ERRROR_MSG_USER_INFORMATION_NOT_FOUND);
-			}
-			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-			return userVO;
-		} else {
-			throw new ApplicationContextException(UserConstants.ERRROR_MSG_INVALID_USER_NAME);
-		}
 	}
 
 	@Override
@@ -275,7 +199,7 @@ public class UserServiceImpl implements UserService {
 			userVO.setActive(false);
 			userVO.setAccountRemovedDate(new Date());
 			userRepo.save(userVO);
-			createUserAction(userVO.getEmail(), userVO.getUserId(), UserConstants.USER_ACTION_REMOVE_ACCOUNT);
+			userService.createUserAction(userVO.getEmail(), userVO.getUserId(), UserConstants.USER_ACTION_REMOVE_ACCOUNT);
 		} else {
 			throw new ApplicationContextException(UserConstants.ERRROR_MSG_INVALID_USER_NAME);
 		}
