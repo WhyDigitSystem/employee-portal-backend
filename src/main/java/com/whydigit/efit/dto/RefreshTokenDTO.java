@@ -1,4 +1,4 @@
-package com.whydigit.efit.controller;
+package com.whydigit.efit.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
