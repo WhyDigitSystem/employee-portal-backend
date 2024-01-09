@@ -23,16 +23,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.whydigit.efit.common.CommonConstant;
 import com.whydigit.efit.common.UserConstants;
+import com.whydigit.efit.dto.LeaveApprovalDTO;
 import com.whydigit.efit.dto.ResponseDTO;
 import com.whydigit.efit.dto.UserName;
-import com.whydigit.efit.dto.logincreationDTO;
+import com.whydigit.efit.entity.CheckinStatusVO;
 import com.whydigit.efit.entity.CheckinVO;
+import com.whydigit.efit.entity.EmployeeCheckInTimeVO;
 import com.whydigit.efit.entity.EmployeeDetailsVO;
 import com.whydigit.efit.entity.HolidayVO;
 import com.whydigit.efit.entity.LeaveRequestVO;
 import com.whydigit.efit.entity.LeaveTypeVO;
 import com.whydigit.efit.entity.PermissionRequestVO;
-import com.whydigit.efit.repo.PermissionRequestRepo;
+import com.whydigit.efit.entity.UserVO;
+import com.whydigit.efit.repo.CheckinStatusRepo;
 import com.whydigit.efit.service.BasicMasterService;
 
 @RestController
@@ -45,8 +48,11 @@ public class BasicMasterController extends BaseController {
 	@Autowired
 	private BasicMasterService basicMasterService;
 	
+	
 	@Autowired
-	PermissionRequestRepo repo;
+	CheckinStatusRepo chkstatusrepo;
+	
+	
 
 	// employee
 
@@ -533,22 +539,22 @@ public class BasicMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 	
-	@PutMapping("/leaverequestapp")
-	public ResponseEntity<ResponseDTO> updateLeaveRequestApproval(@RequestBody LeaveRequestVO leaveRequestVO) {
+	@PutMapping("/leaverequestapp/{id}")
+	public ResponseEntity<ResponseDTO> updateLeaveRequestApproval(@RequestBody LeaveApprovalDTO leaveApprovalDTO,int id) {
 		String methodName = "updateLeaveRequestApproval()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			LeaveRequestVO updateLeaveRequestVO = basicMasterService.updateLeaveRequestApproval(leaveRequestVO)
+			LeaveRequestVO updateLeaveRequestVO = basicMasterService.updateLeaveRequestApproval(leaveApprovalDTO,id)
 					.orElse(null);
 			if (updateLeaveRequestVO != null) {
 				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Leave Request updated successfully");
 				responseObjectsMap.put("LeaveRequestVO", updateLeaveRequestVO);
 				responseDTO = createServiceResponse(responseObjectsMap);
 			} else {
-				errorMsg = "Leave Request Type not found for ID: " + leaveRequestVO.getId();
+				errorMsg = "Leave Request Type not found for ID: " + leaveApprovalDTO.getRequestid();
 				responseDTO = createServiceResponseError(responseObjectsMap, "Leave Request update failed", errorMsg);
 			}
 		} catch (Exception e) {
@@ -708,23 +714,22 @@ public class BasicMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-	@PutMapping("/permissionRequestapp")
-	public ResponseEntity<ResponseDTO> updatePermissionRequestApproval(@RequestBody PermissionRequestVO permissionRequestVO) {
-		String methodName = "updateNewPermissionRequest()";
+	@PutMapping("/permissionRequestapp/{id}")
+	public ResponseEntity<ResponseDTO> updatePermissionRequestApproval(@RequestBody LeaveApprovalDTO leaveApprovalDTO,int id) {
+		String methodName = "updatePermissionRequestApproval()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			PermissionRequestVO updatedPermissionRequestVO = basicMasterService.updatePermissionRequestApproval(permissionRequestVO).orElse(null);
-			if (updatedPermissionRequestVO != null) {
+			PermissionRequestVO updatePermissionRequestVO = basicMasterService.updatePermissionRequestApproval(leaveApprovalDTO,id).orElse(null);
+			if (updatePermissionRequestVO != null) {
 				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Permission Request updated successfully");
-				responseObjectsMap.put("Update Permission Request", updatedPermissionRequestVO);
+				responseObjectsMap.put("PermissionRequestVO", updatePermissionRequestVO);
 				responseDTO = createServiceResponse(responseObjectsMap);
 			} else {
-				errorMsg = "Permission Request not found for ID: " + permissionRequestVO.getId();
-				responseDTO = createServiceResponseError(responseObjectsMap, "Permission Request update failed",
-						errorMsg);
+				errorMsg = "Permission Request Type not found for ID: " + leaveApprovalDTO.getRequestid();
+				responseDTO = createServiceResponseError(responseObjectsMap, "Permission Request update failed", errorMsg);
 			}
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
@@ -734,6 +739,7 @@ public class BasicMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	
 
 	@DeleteMapping("/permissionRequest/{id}")
 	public ResponseEntity<ResponseDTO> deletePermissionRequest(@PathVariable int id) {
@@ -801,6 +807,56 @@ public class BasicMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 	
+	@GetMapping("/chkStatus/{empcode}")
+	public ResponseEntity<ResponseDTO> getStatusByEmpcode(@PathVariable String empcode) {
+		String methodName = "getStatusByEmpcode()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		CheckinStatusVO checkinStatusVO = null;
+		try {
+			checkinStatusVO = basicMasterService.getStatusByEmpcode(empcode).orElse(null);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Employee Status by ID");
+			responseObjectsMap.put("Employee Status", checkinStatusVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "Employee not found for ID: " + empcode;
+			responseDTO = createServiceResponseError(responseObjectsMap, "Employee Status found", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 	
+	@GetMapping("/attendance/{empcode}")
+	public ResponseEntity<ResponseDTO> getAttendanceByEmpcode(@PathVariable String empcode) {
+		String methodName = "getAttendanceByEmpcode()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<EmployeeCheckInTimeVO> employeeCheckInTimeVO = null;
+		try {
+			employeeCheckInTimeVO = basicMasterService.getAttendanceByEmpcode(empcode);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Attendance found by ID");
+			responseObjectsMap.put("Attendance", employeeCheckInTimeVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "Attendance not found for ID: " + empcode;
+			responseDTO = createServiceResponseError(responseObjectsMap, "Attendace not found", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 
 }

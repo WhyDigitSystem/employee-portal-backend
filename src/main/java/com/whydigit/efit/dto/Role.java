@@ -1,5 +1,5 @@
 package com.whydigit.efit.dto;
 
 public enum Role {
-	HR, Team_Lead, Management,User;
+	ROLE_HR, ROLE_Team_Lead, ROLE_Management,ROLE_User;
 }

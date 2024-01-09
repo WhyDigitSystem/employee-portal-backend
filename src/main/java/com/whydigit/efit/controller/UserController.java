@@ -24,6 +24,7 @@ import com.whydigit.efit.dto.LoginFormDTO;
 import com.whydigit.efit.dto.ResponseDTO;
 import com.whydigit.efit.dto.SignUpFormDTO;
 import com.whydigit.efit.dto.UserResponseDTO;
+import com.whydigit.efit.repo.CheckinStatusRepo;
 import com.whydigit.efit.service.UserService;
 
 @RestController
@@ -34,6 +35,9 @@ public class UserController extends BaseController {
 
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	CheckinStatusRepo chkstatusrepo;
 
 	@PostMapping("/signup")
 	public ResponseEntity<ResponseDTO> signup(@Valid @RequestBody SignUpFormDTO signUpRequest) {

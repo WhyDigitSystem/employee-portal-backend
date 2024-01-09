@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
 			LOGGER.error(e.getMessage());
 			throw new ApplicationContextException(UserConstants.ERRROR_MSG_UNABLE_TO_ENCODE_USER_PASSWORD);
 		}
-		userVO.setRole(Role.User);
+		userVO.setRole(Role.ROLE_User);
 		userVO.setActive(true);
 		return userVO;
 	}
