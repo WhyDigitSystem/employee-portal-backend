@@ -820,7 +820,7 @@ public class BasicMasterController extends BaseController {
 		}
 		if (StringUtils.isEmpty(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Employee Status by ID");
-			responseObjectsMap.put("Employee Status", checkinStatusVO);
+			responseObjectsMap.put("EmployeeStatus", checkinStatusVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			errorMsg = "Employee not found for ID: " + empcode;
