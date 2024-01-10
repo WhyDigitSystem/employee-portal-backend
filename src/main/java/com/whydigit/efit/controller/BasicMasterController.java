@@ -29,6 +29,7 @@ import com.whydigit.efit.dto.UserName;
 import com.whydigit.efit.entity.CheckinStatusVO;
 import com.whydigit.efit.entity.CheckinVO;
 import com.whydigit.efit.entity.EmployeeCheckInTimeVO;
+import com.whydigit.efit.entity.EmployeeCheckinDailyStatusVO;
 import com.whydigit.efit.entity.EmployeeDetailsVO;
 import com.whydigit.efit.entity.HolidayVO;
 import com.whydigit.efit.entity.LeaveRequestVO;
@@ -47,10 +48,6 @@ public class BasicMasterController extends BaseController {
 
 	@Autowired
 	private BasicMasterService basicMasterService;
-	
-	
-	@Autowired
-	CheckinStatusRepo chkstatusrepo;
 	
 	
 
@@ -854,6 +851,33 @@ public class BasicMasterController extends BaseController {
 		} else {
 			errorMsg = "Attendance not found for ID: " + empcode;
 			responseDTO = createServiceResponseError(responseObjectsMap, "Attendace not found", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	// Employeee Daily Checkin Status
+	@GetMapping("/employee/daily/status")
+	public ResponseEntity<ResponseDTO> getAllEmployeesDailyCheckinStatus() {
+		String methodName = "getAllEmployeesDailyCheckinStatus()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<EmployeeCheckinDailyStatusVO> employeeStatusVO = new ArrayList<>();
+		try {
+			employeeStatusVO = basicMasterService.getAllEmployeesCheckinStatusDaily();
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Employee Daily Checkin Status information get successfully");
+			responseObjectsMap.put("EmployeeStatusVO", employeeStatusVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Employee Daily Checkin Status information receive failed",
+					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);

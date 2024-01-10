@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.whydigit.efit.dto.LeaveApprovalDTO;
 import com.whydigit.efit.dto.UserName;
-import com.whydigit.efit.dto.logincreationDTO;
 import com.whydigit.efit.entity.CheckinStatusVO;
 import com.whydigit.efit.entity.CheckinVO;
 import com.whydigit.efit.entity.EmployeeCheckInTimeVO;
+import com.whydigit.efit.entity.EmployeeCheckinDailyStatusVO;
 import com.whydigit.efit.entity.EmployeeDetailsVO;
 import com.whydigit.efit.entity.HolidayVO;
 import com.whydigit.efit.entity.LeaveRequestVO;
@@ -22,6 +22,7 @@ import com.whydigit.efit.entity.LeaveTypeVO;
 import com.whydigit.efit.entity.PermissionRequestVO;
 import com.whydigit.efit.repo.CheckinRepo;
 import com.whydigit.efit.repo.CheckinStatusRepo;
+import com.whydigit.efit.repo.EmployeeCheckinDailyStatusRepo;
 import com.whydigit.efit.repo.EmployeeCheckinTimeRepo;
 import com.whydigit.efit.repo.EmployeeDetailsRepo;
 import com.whydigit.efit.repo.HolidayRepo;
@@ -55,6 +56,9 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 	
 	@Autowired
 	EmployeeCheckinTimeRepo checkinTimeRepo;
+	
+	@Autowired
+	EmployeeCheckinDailyStatusRepo dailyStatus;
 
 //	employee
 
@@ -330,6 +334,12 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 	@Override
 	public List<EmployeeCheckInTimeVO> getAttendanceByEmpcode(String empcode) {
 		return checkinTimeRepo.findByEmpcode(empcode);
+	}
+
+	@Override
+	public List<EmployeeCheckinDailyStatusVO> getAllEmployeesCheckinStatusDaily() {
+		
+		return dailyStatus.findAll();
 	}
 	
 	

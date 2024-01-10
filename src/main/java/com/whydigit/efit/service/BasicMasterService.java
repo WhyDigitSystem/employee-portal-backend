@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.whydigit.efit.dto.LeaveApprovalDTO;
 import com.whydigit.efit.dto.UserName;
-import com.whydigit.efit.dto.logincreationDTO;
 import com.whydigit.efit.entity.CheckinStatusVO;
 import com.whydigit.efit.entity.CheckinVO;
 import com.whydigit.efit.entity.EmployeeCheckInTimeVO;
+import com.whydigit.efit.entity.EmployeeCheckinDailyStatusVO;
 import com.whydigit.efit.entity.EmployeeDetailsVO;
 import com.whydigit.efit.entity.HolidayVO;
 import com.whydigit.efit.entity.LeaveRequestVO;
@@ -102,10 +102,9 @@ public interface BasicMasterService {
 	
 	List<EmployeeCheckInTimeVO> getAttendanceByEmpcode(String empcode);
 
+	//EMPLOYEE CHECKIN  DAILY STATUS
 	
-	
-	
-	
+	List<EmployeeCheckinDailyStatusVO> getAllEmployeesCheckinStatusDaily();
 
 
 	
