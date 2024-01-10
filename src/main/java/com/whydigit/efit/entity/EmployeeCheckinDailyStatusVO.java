@@ -19,6 +19,7 @@ public class EmployeeCheckinDailyStatusVO {
 	
 	@Id
 	private String empcode;
+	private String empname;
 	private LocalDate entrydate;
 	private String entrytime;
 	private String status;
