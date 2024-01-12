@@ -1,6 +1,8 @@
 package com.whydigit.efit.entity;
 
+
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 
 import javax.persistence.Embedded;
@@ -33,9 +35,9 @@ public class PermissionRequestVO {
 	private LocalDate permissiondate;
 	private String companycode;
 	private String branch;
-	private String fromhour;
-	private String tohour;
-	private int totalhours;
+	private Date fromhour;
+	private Date tohour;
+	private Date totalhours;
 	private String notes;
 	private String empcode;
 	private String empname;

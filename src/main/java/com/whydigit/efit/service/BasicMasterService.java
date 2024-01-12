@@ -5,9 +5,12 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.whydigit.efit.dto.LeaveApprovalDTO;
 import com.whydigit.efit.dto.UserName;
-import com.whydigit.efit.dto.logincreationDTO;
+import com.whydigit.efit.entity.CheckinStatusVO;
 import com.whydigit.efit.entity.CheckinVO;
+import com.whydigit.efit.entity.EmployeeCheckInTimeVO;
+import com.whydigit.efit.entity.EmployeeCheckinDailyStatusVO;
 import com.whydigit.efit.entity.EmployeeDetailsVO;
 import com.whydigit.efit.entity.HolidayVO;
 import com.whydigit.efit.entity.LeaveRequestVO;
@@ -69,7 +72,7 @@ public interface BasicMasterService {
 
 	void deleteLeaveRequest(int id);
 	
-	Optional<LeaveRequestVO> updateLeaveRequestApproval(LeaveRequestVO leaveRequestVO);
+	Optional<LeaveRequestVO> updateLeaveRequestApproval(LeaveApprovalDTO leaveApprovalDTO,int id);
 	
 
 	//NEW PERMISSION REQUEST
@@ -86,17 +89,22 @@ public interface BasicMasterService {
 
 	void deletePermissionRequest(int id);
 
-	Optional<PermissionRequestVO> updatePermissionRequestApproval(PermissionRequestVO permissionRequestVO);
+	Optional<PermissionRequestVO> updatePermissionRequestApproval(LeaveApprovalDTO leaveApprovalDTO,int id);
 	
 	
 	CheckinVO checkIn(UserName user1);
 
 	CheckinVO checkOut(UserName user1);
 
+	Optional<CheckinStatusVO> getStatusByEmpcode(String empcode);
 	
 	
 	
+	List<EmployeeCheckInTimeVO> getAttendanceByEmpcode(String empcode);
+
+	//EMPLOYEE CHECKIN  DAILY STATUS
 	
+	List<EmployeeCheckinDailyStatusVO> getAllEmployeesCheckinStatusDaily();
 
 
 	

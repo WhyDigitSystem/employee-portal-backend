@@ -35,10 +35,10 @@ public class SecurityConfig {
 				.antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/security",
 						"/swagger-ui.html", "/swagger-ui/*", "/api/user/signup", "/api/user/login", "/api/user/logout",
 						"/api/user/getRefreshToken", "/api/basicSetting/companyInfo","/api/basicMaster/employee",
-						"/api/basicMaster/permissionRequest","/api/basicMaster/permissionRequestapp","/api/basicMaster/leaverequest","/api/basicMaster/leaverequestapp","/api/basicMaster/checkin",
-						"/api/basicMaster/checkout","/api/basicMaster/holiday","/api/basicMaster/employee1","/api/basicMaster/permissionRequests/{empcode}","/api/basicMaster/leaverequests/{empcode}","/api/admin/createUser","/api/admin/createOrginization","/api/auth/login")
+						"/api/basicMaster/permissionRequest","/api/basicMaster/permissionRequestapp/{id}","/api/basicMaster/leaverequest","/api/basicMaster/leaverequestapp/{id}","/api/basicMaster/checkin",
+						"/api/basicMaster/checkout","/api/basicMaster/holiday","/api/basicMaster/employee1","/api/basicMaster/chkStatus/{empcode}","/api/basicMaster/permissionRequests/{empcode}","/api/basicMaster/leaverequests/{empcode}","/api/admin/createUser","/api/admin/createOrginization",
+						"/api/auth/login","/api/basicMaster/leavetype","/api/basicMaster/leavetype/{id}","/api/basicMaster/employee/daily/status","/api/basicMaster/attendance/{empcode}")
 				.permitAll().antMatchers("/api/**").hasAnyRole("USER", "GUEST_USER").anyRequest().authenticated();
-
 		http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 		return http.build();
 	}

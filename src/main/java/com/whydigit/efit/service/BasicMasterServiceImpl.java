@@ -9,15 +9,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.whydigit.efit.dto.LeaveApprovalDTO;
 import com.whydigit.efit.dto.UserName;
-import com.whydigit.efit.dto.logincreationDTO;
+import com.whydigit.efit.entity.CheckinStatusVO;
 import com.whydigit.efit.entity.CheckinVO;
+import com.whydigit.efit.entity.EmployeeCheckInTimeVO;
+import com.whydigit.efit.entity.EmployeeCheckinDailyStatusVO;
 import com.whydigit.efit.entity.EmployeeDetailsVO;
 import com.whydigit.efit.entity.HolidayVO;
 import com.whydigit.efit.entity.LeaveRequestVO;
 import com.whydigit.efit.entity.LeaveTypeVO;
 import com.whydigit.efit.entity.PermissionRequestVO;
 import com.whydigit.efit.repo.CheckinRepo;
+import com.whydigit.efit.repo.CheckinStatusRepo;
+import com.whydigit.efit.repo.EmployeeCheckinDailyStatusRepo;
+import com.whydigit.efit.repo.EmployeeCheckinTimeRepo;
 import com.whydigit.efit.repo.EmployeeDetailsRepo;
 import com.whydigit.efit.repo.HolidayRepo;
 import com.whydigit.efit.repo.LeaveRequestRepo;
@@ -44,6 +50,15 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 	
 	@Autowired
 	CheckinRepo checkinRepo;
+	
+	@Autowired
+	CheckinStatusRepo chkstatusrepo;
+	
+	@Autowired
+	EmployeeCheckinTimeRepo checkinTimeRepo;
+	
+	@Autowired
+	EmployeeCheckinDailyStatusRepo dailyStatus;
 
 //	employee
 
@@ -192,15 +207,26 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 	}
 	
 	@Override
-	public Optional<LeaveRequestVO> updateLeaveRequestApproval(LeaveRequestVO leaveRequestVO) {
+	public Optional<LeaveRequestVO> updateLeaveRequestApproval(LeaveApprovalDTO leaveApprovalDTO,int id) {
 		Date currentdate=new Date();
-		if (newLeaveRequestRepo.existsById(leaveRequestVO.getId())) {	
-			leaveRequestVO.setApprovedat(currentdate);
-			return Optional.of(newLeaveRequestRepo.save(leaveRequestVO));
-		} else {
-			return Optional.empty();
-		}
+		LeaveRequestVO leaveRequestvo=newLeaveRequestRepo.findById(id).get();
+		leaveRequestvo.setStatus(leaveApprovalDTO.getStatus());
+		leaveRequestvo.setApprovedby(leaveApprovalDTO.getApprovedby());
+		leaveRequestvo.setRemarks(leaveApprovalDTO.getRemarks());
+		leaveRequestvo.setApprovedat(currentdate);
+		return Optional.of(newLeaveRequestRepo.save(leaveRequestvo));
 	}
+	
+//	@Override
+//	public Optional<LeaveRequestVO> updateLeaveRequestApproval(LeaveRequestVO leaveRequestVO) {
+//		Date currentdate=new Date();
+//		if (newLeaveRequestRepo.existsById(leaveRequestVO.getId())) {	
+//			leaveRequestVO.setApprovedat(currentdate);
+//			return Optional.of(newLeaveRequestRepo.save(leaveRequestVO));
+//		} else {
+//			return Optional.empty();
+//		}
+//	}
 
 	@Override
 	public void deleteLeaveRequest(int id) {
@@ -246,15 +272,15 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 	}
 	
 	@Override
-	public Optional<PermissionRequestVO> updatePermissionRequestApproval(PermissionRequestVO permissionRequestVO) {
+	public Optional<PermissionRequestVO> updatePermissionRequestApproval(LeaveApprovalDTO leaveApprovalDTO,int id) {
 		
 		Date currentdate=new Date();
-		if (newPermissionRequestRepo.existsById(permissionRequestVO.getId())) {	
-			permissionRequestVO.setApprovedat(currentdate);
-			return Optional.of(newPermissionRequestRepo.save(permissionRequestVO));
-		} else {
-			return Optional.empty();
-		}
+		PermissionRequestVO permission=newPermissionRequestRepo.findById(id).get();
+		permission.setStatus(leaveApprovalDTO.getStatus());
+		permission.setApprovedby(leaveApprovalDTO.getApprovedby());
+		permission.setRemarks(leaveApprovalDTO.getRemarks());
+		permission.setApprovedat(currentdate);
+		return Optional.of(newPermissionRequestRepo.save(permission));
 	}
 
 	@Override
@@ -272,6 +298,12 @@ public class BasicMasterServiceImpl implements BasicMasterService {
     	checkinVO.setCheckin_date(current);
     	checkinVO.setStatus("In");
     	checkinVO.setEntry_time(current);
+    	
+    	CheckinStatusVO chk=new CheckinStatusVO();
+    	chk.setEmpcode(user.getUserid());
+    	chk.setStatus("In");
+    	chkstatusrepo.save(chk);
+    	
         return checkinRepo.save(checkinVO);
     }
 
@@ -284,8 +316,33 @@ public class BasicMasterServiceImpl implements BasicMasterService {
     	checkinVO.setCheckin_date(current);
     	checkinVO.setEntry_time(current);
     	checkinVO.setStatus("Out");
+    	
+    	CheckinStatusVO chk=new CheckinStatusVO();
+    	chk.setEmpcode(user.getUserid());
+    	chk.setStatus("Out");
+    	chkstatusrepo.save(chk);
+    	
         return checkinRepo.save(checkinVO);
     }
+
+	@Override
+	public Optional<CheckinStatusVO> getStatusByEmpcode(String empcode) {
+		
+		 return chkstatusrepo.findById(empcode);
+	}
+
+	@Override
+	public List<EmployeeCheckInTimeVO> getAttendanceByEmpcode(String empcode) {
+		return checkinTimeRepo.findByEmpcode(empcode);
+	}
+
+	@Override
+	public List<EmployeeCheckinDailyStatusVO> getAllEmployeesCheckinStatusDaily() {
+		
+		return dailyStatus.findAll();
+	}
+	
+	
 
 
 }
