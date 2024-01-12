@@ -39,6 +39,8 @@ public class UserVO {
 	private String profileImage;
 	private boolean loginStatus;
 	private boolean isActive;
+	private String createdby;
+	private String updatedby;
 	@Enumerated(EnumType.STRING)
 	private Role role;
 	@ManyToOne

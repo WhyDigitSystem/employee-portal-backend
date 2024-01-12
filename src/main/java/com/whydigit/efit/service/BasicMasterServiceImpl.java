@@ -17,8 +17,11 @@ import com.whydigit.efit.entity.EmployeeCheckInTimeVO;
 import com.whydigit.efit.entity.EmployeeCheckinDailyStatusVO;
 import com.whydigit.efit.entity.EmployeeDetailsVO;
 import com.whydigit.efit.entity.HolidayVO;
+import com.whydigit.efit.entity.LeaveBalanceVO;
+import com.whydigit.efit.entity.LeaveCreditVO;
 import com.whydigit.efit.entity.LeaveRequestVO;
 import com.whydigit.efit.entity.LeaveTypeVO;
+import com.whydigit.efit.entity.PermissionReportVO;
 import com.whydigit.efit.entity.PermissionRequestVO;
 import com.whydigit.efit.repo.CheckinRepo;
 import com.whydigit.efit.repo.CheckinStatusRepo;
@@ -26,8 +29,11 @@ import com.whydigit.efit.repo.EmployeeCheckinDailyStatusRepo;
 import com.whydigit.efit.repo.EmployeeCheckinTimeRepo;
 import com.whydigit.efit.repo.EmployeeDetailsRepo;
 import com.whydigit.efit.repo.HolidayRepo;
+import com.whydigit.efit.repo.LeaveBalanceRepository;
+import com.whydigit.efit.repo.LeaveCreditRepository;
 import com.whydigit.efit.repo.LeaveRequestRepo;
 import com.whydigit.efit.repo.LeaveTypeRepo;
+import com.whydigit.efit.repo.PermissionReportRepository;
 import com.whydigit.efit.repo.PermissionRequestRepo;
 
 @Service
@@ -59,6 +65,15 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 	
 	@Autowired
 	EmployeeCheckinDailyStatusRepo dailyStatus;
+	
+	@Autowired
+	PermissionReportRepository permissionrepo;
+	
+	@Autowired
+	LeaveCreditRepository leaveCreditRepo;
+	
+	@Autowired
+	LeaveBalanceRepository leaveBalanceRepo;
 
 //	employee
 
@@ -190,9 +205,20 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 
 	@Override
 	public LeaveRequestVO createLeaveRequest(LeaveRequestVO newLeaveRequestVO) {
+		
+		
 		newLeaveRequestVO.setBranch("BLR");
 		newLeaveRequestVO.setCompanycode("WDS");
 		newLeaveRequestVO.setCancel(false);
+//		
+//		LeaveCreditVO leavecredit=new LeaveCreditVO();
+//		leavecredit.setBranch("BLR");
+//		leavecredit.setCompanycode("WDS");
+//		leavecredit.setCancel(false);
+//		leavecredit.setLeavetype(newLeaveRequestVO.getLeavetype());
+//		leavecredit.setLeavecount("-"+newLeaveRequestVO.getTotaldays());
+//		leavecredit.setEmpcode(newLeaveRequestVO.getEmpcode());
+//		leaveCreditRepo.save(leavecredit);
 		// TODO Auto-generated method stub
 		return newLeaveRequestRepo.save(newLeaveRequestVO);
 	}
@@ -214,6 +240,21 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 		leaveRequestvo.setApprovedby(leaveApprovalDTO.getApprovedby());
 		leaveRequestvo.setRemarks(leaveApprovalDTO.getRemarks());
 		leaveRequestvo.setApprovedat(currentdate);
+		newLeaveRequestRepo.save(leaveRequestvo);
+		
+		LeaveRequestVO leaveRequestv1=newLeaveRequestRepo.findById(id).get();
+		String st=leaveRequestv1.getStatus();
+		if("Approved".equals(st))
+		{
+			LeaveCreditVO leavecredit=new LeaveCreditVO();
+			leavecredit.setBranch("BLR");
+			leavecredit.setCompanycode("WDS");
+			leavecredit.setCancel(false);
+			leavecredit.setLeavetype(leaveRequestvo.getLeavetype());
+			leavecredit.setLeavecount("-"+leaveRequestvo.getTotaldays());
+			leavecredit.setEmpcode(leaveRequestvo.getEmpcode());
+			leaveCreditRepo.save(leavecredit);
+		}
 		return Optional.of(newLeaveRequestRepo.save(leaveRequestvo));
 	}
 	
@@ -237,9 +278,9 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 	// permission Request
 
 	@Override
-	public List<PermissionRequestVO> getAllPermissionRequest() {
+	public List<PermissionReportVO> getAllPermissionRequest() {
 		// TODO Auto-generated method stub
-		return newPermissionRequestRepo.findAll();
+		return permissionrepo.findAll();
 	}
 
 	@Override
@@ -249,8 +290,8 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 	}
 	
 	@Override
-	public List<PermissionRequestVO> getPermissionRequestByEmpcode(@PathVariable String empcode){
-		return newPermissionRequestRepo.findByEmpcode(empcode);
+	public List<PermissionReportVO> getPermissionRequestByEmpcode(@PathVariable String empcode){
+		return permissionrepo.findByEmpcode(empcode);
 	}
 
 	@Override
@@ -342,6 +383,26 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 		return dailyStatus.findAll();
 	}
 	
+	//Create Leave credit to employees
+	@Override
+	public LeaveCreditVO createLeaveCredit(LeaveCreditVO leaveCreditVO) {
+		// TODO Auto-generated method stub
+		leaveCreditVO.setBranch("BLR");
+		leaveCreditVO.setCompanycode("WDS");
+		leaveCreditVO.setCancel(false);
+		return leaveCreditRepo.save(leaveCreditVO);
+	}
+
+	@Override
+	public List<LeaveBalanceVO> getAllLeaveBalance() {
+		
+		return leaveBalanceRepo.findAll();
+	}
+
+	@Override
+	public Optional<LeaveBalanceVO> getLeaveBalanceByEmpcode(String empcode) {
+		return leaveBalanceRepo.findByEmpcode(empcode);
+	}
 	
 
 

@@ -17,6 +17,7 @@ public class SignUpFormDTO {
 	
 	private String empcode;
 	private String empname;
+	private String role;
 
 	@NotBlank(message = "Email is required")
 	@Size(max = 30)

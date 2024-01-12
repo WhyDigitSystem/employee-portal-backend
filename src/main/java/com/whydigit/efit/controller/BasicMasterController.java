@@ -32,8 +32,11 @@ import com.whydigit.efit.entity.EmployeeCheckInTimeVO;
 import com.whydigit.efit.entity.EmployeeCheckinDailyStatusVO;
 import com.whydigit.efit.entity.EmployeeDetailsVO;
 import com.whydigit.efit.entity.HolidayVO;
+import com.whydigit.efit.entity.LeaveBalanceVO;
+import com.whydigit.efit.entity.LeaveCreditVO;
 import com.whydigit.efit.entity.LeaveRequestVO;
 import com.whydigit.efit.entity.LeaveTypeVO;
+import com.whydigit.efit.entity.PermissionReportVO;
 import com.whydigit.efit.entity.PermissionRequestVO;
 import com.whydigit.efit.entity.UserVO;
 import com.whydigit.efit.repo.CheckinStatusRepo;
@@ -592,7 +595,7 @@ public class BasicMasterController extends BaseController {
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		List<PermissionRequestVO> permissionRequestVO = new ArrayList<>();
+		List<PermissionReportVO> permissionRequestVO = new ArrayList<>();
 		try {
 			permissionRequestVO = basicMasterService.getAllPermissionRequest();
 		} catch (Exception e) {
@@ -643,7 +646,7 @@ public class BasicMasterController extends BaseController {
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		List<PermissionRequestVO> permissionRequestVO = null;
+		List<PermissionReportVO> permissionRequestVO = null;
 		try {
 			permissionRequestVO = basicMasterService.getPermissionRequestByEmpcode(empcode);
 		} catch (Exception e) {
@@ -878,6 +881,82 @@ public class BasicMasterController extends BaseController {
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap, "Employee Daily Checkin Status information receive failed",
 					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	//Create Leave Credit to employee
+	
+	@PostMapping("/leavecredit")
+	public ResponseEntity<ResponseDTO> createLeaveCredit(@RequestBody LeaveCreditVO leaveCreditVO) {
+		String methodName = "createLeaveCredit()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			LeaveCreditVO createLeaveCreditVO = basicMasterService.createLeaveCredit(leaveCreditVO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Leave Credit created successfully");
+			responseObjectsMap.put("leaveCreditVO", createLeaveCreditVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "Leave Credit creation failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	// Get All Employee Leave Balance
+	@GetMapping("/leave/balance")
+	public ResponseEntity<ResponseDTO> getAllEmployeeLeaveBalance() {
+		String methodName = "getAllEmployeeLeaveBalance()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<LeaveBalanceVO> leaveBalanceVO = new ArrayList<>();
+		try {
+			leaveBalanceVO = basicMasterService.getAllLeaveBalance();
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "All Employee Leave Balance information get successfully");
+			responseObjectsMap.put("leaveBalanceVO", leaveBalanceVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "All Employee Leave Balance information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/leave/balance/{empcode}")
+	public ResponseEntity<ResponseDTO> getLeaveBalanceByEmpcode(@PathVariable String empcode) {
+		String methodName = "getAttendanceByEmpcode()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		Optional<LeaveBalanceVO> leaveBalanceVO = null;
+		try {
+			leaveBalanceVO = basicMasterService.getLeaveBalanceByEmpcode(empcode);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Leave Balance found by ID");
+			responseObjectsMap.put("leaveBalance", leaveBalanceVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "Leave Balance not found for ID: " + empcode;
+			responseDTO = createServiceResponseError(responseObjectsMap, "Leave Balance not found", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);

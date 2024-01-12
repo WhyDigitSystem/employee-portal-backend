@@ -1,41 +1,41 @@
 package com.whydigit.efit.entity;
 
-
+import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.whydigit.efit.dto.CreatedUpdatedDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "permissionrequest")
+@Table(name="perminissionreport")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class PermissionRequestVO {
+public class PermissionReportVO {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private LocalDate permissiondate;
 	private String companycode;
 	private String branch;
-	private Date fromhour;
-	private Date tohour;
-	private Date totalhours;
+	@DateTimeFormat(pattern = "HH:mm")
+	private String  fromhour;
+	@DateTimeFormat(pattern = "HH:mm")
+	private String  tohour;
+	@DateTimeFormat(pattern = "HH:mm")
+	private String  totalhours;
 	private String notes;
 	private String empcode;
 	private String empname;
@@ -48,8 +48,7 @@ public class PermissionRequestVO {
 	private boolean cancel;
 	private boolean active;
 	private String remarks;
-	
-	@Embedded
-	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
+	private Date createdDate;
+	private Date updatedDate;
 
 }

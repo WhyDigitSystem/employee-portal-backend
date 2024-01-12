@@ -10,6 +10,6 @@ import com.whydigit.efit.entity.PermissionRequestVO;
 
 public interface PermissionRequestRepo extends JpaRepository<PermissionRequestVO, Integer> {
 
-	List<PermissionRequestVO> findByEmpcode(String empcode);
+	
 
 }

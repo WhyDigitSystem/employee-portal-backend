@@ -13,8 +13,11 @@ import com.whydigit.efit.entity.EmployeeCheckInTimeVO;
 import com.whydigit.efit.entity.EmployeeCheckinDailyStatusVO;
 import com.whydigit.efit.entity.EmployeeDetailsVO;
 import com.whydigit.efit.entity.HolidayVO;
+import com.whydigit.efit.entity.LeaveBalanceVO;
+import com.whydigit.efit.entity.LeaveCreditVO;
 import com.whydigit.efit.entity.LeaveRequestVO;
 import com.whydigit.efit.entity.LeaveTypeVO;
+import com.whydigit.efit.entity.PermissionReportVO;
 import com.whydigit.efit.entity.PermissionRequestVO;
 
 
@@ -77,11 +80,11 @@ public interface BasicMasterService {
 
 	//NEW PERMISSION REQUEST
 	
-	List<PermissionRequestVO> getAllPermissionRequest();
+	List<PermissionReportVO> getAllPermissionRequest();
 
 	Optional<PermissionRequestVO> getPermissionRequestById(int id);
 	
-	List<PermissionRequestVO> getPermissionRequestByEmpcode(String empcode);
+	List<PermissionReportVO> getPermissionRequestByEmpcode(String empcode);
 	
 	PermissionRequestVO createPermissionRequest(PermissionRequestVO permissionRequestVO);
 
@@ -106,6 +109,16 @@ public interface BasicMasterService {
 	
 	List<EmployeeCheckinDailyStatusVO> getAllEmployeesCheckinStatusDaily();
 
+	//Create Leave Credit to EMPLOYEES
+	LeaveCreditVO createLeaveCredit(LeaveCreditVO leaveCreditVO);
+
+	// Get All Employee Leave Balance
+	
+	List<LeaveBalanceVO> getAllLeaveBalance();
+	
+	//get Leave Balance by Empcode
+	Optional<LeaveBalanceVO> getLeaveBalanceByEmpcode(String empcode);
+	
 
 	
 	

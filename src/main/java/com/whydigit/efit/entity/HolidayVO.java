@@ -26,9 +26,9 @@ public class HolidayVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@JsonFormat(pattern="yyyy-MM-dd")
 	private String companycode;
 	private String branch;
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate holiday_date;
 	private String day;
 	private String festival;
