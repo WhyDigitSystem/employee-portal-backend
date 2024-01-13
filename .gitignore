@@ -18,6 +18,11 @@ dist/
 
 # Package files
 *.jar
+.metadata
+*.settings
+.factorypath
+.classpath
+
 
 # Maven
 target/

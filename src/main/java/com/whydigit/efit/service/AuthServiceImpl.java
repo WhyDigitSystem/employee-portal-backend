@@ -138,12 +138,12 @@ public class AuthServiceImpl implements AuthService {
 	public void changePassword(ChangePasswordFormDTO changePasswordRequest) {
 		String methodName = "changePassword()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		if (ObjectUtils.isEmpty(changePasswordRequest) || StringUtils.isBlank(changePasswordRequest.getEmail())
+		if (ObjectUtils.isEmpty(changePasswordRequest) || StringUtils.isBlank(changePasswordRequest.getUserName())
 				|| StringUtils.isBlank(changePasswordRequest.getOldPassword())
 				|| StringUtils.isBlank(changePasswordRequest.getNewPassword())) {
 			throw new ApplicationContextException(UserConstants.ERRROR_MSG_INVALID_CHANGE_PASSWORD_INFORMATION);
 		}
-		UserVO userVO = userRepo.findByEmail(changePasswordRequest.getEmail());
+		UserVO userVO = userRepo.findByEmail(changePasswordRequest.getUserName());
 		if (ObjectUtils.isNotEmpty(userVO)) {
 			if (compareEncodedPasswordWithEncryptedPassword(changePasswordRequest.getOldPassword(),
 					userVO.getPassword())) {
@@ -168,11 +168,11 @@ public class AuthServiceImpl implements AuthService {
 	public void resetPassword(ResetPasswordFormDTO resetPasswordRequest) {
 		String methodName = "resetPassword()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-		if (ObjectUtils.isEmpty(resetPasswordRequest) || StringUtils.isBlank(resetPasswordRequest.getEmail())
+		if (ObjectUtils.isEmpty(resetPasswordRequest) || StringUtils.isBlank(resetPasswordRequest.getUserName())
 				|| StringUtils.isBlank(resetPasswordRequest.getNewPassword())) {
 			throw new ApplicationContextException(UserConstants.ERRROR_MSG_INVALID_RESET_PASSWORD_INFORMATION);
 		}
-		UserVO userVO = userRepo.findByEmail(resetPasswordRequest.getEmail());
+		UserVO userVO = userRepo.findByEmail(resetPasswordRequest.getUserName());
 		if (ObjectUtils.isNotEmpty(userVO)) {
 			try {
 				userVO.setPassword(encoder.encode(CryptoUtils.getDecrypt(resetPasswordRequest.getNewPassword())));
