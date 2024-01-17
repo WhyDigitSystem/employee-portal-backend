@@ -21,10 +21,12 @@ import com.whydigit.efit.dto.ResetPasswordFormDTO;
 import com.whydigit.efit.dto.Role;
 import com.whydigit.efit.dto.SignUpFormDTO;
 import com.whydigit.efit.dto.UserResponseDTO;
+import com.whydigit.efit.entity.CheckinStatusVO;
 import com.whydigit.efit.entity.TokenVO;
 import com.whydigit.efit.entity.UserActionVO;
 import com.whydigit.efit.entity.UserVO;
 import com.whydigit.efit.exception.ApplicationException;
+import com.whydigit.efit.repo.CheckinStatusRepo;
 import com.whydigit.efit.repo.TokenRepo;
 import com.whydigit.efit.repo.UserActionRepo;
 import com.whydigit.efit.repo.UserRepo;
@@ -49,6 +51,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	TokenRepo tokenRepo;
+	
+	@Autowired
+	CheckinStatusRepo chkstatusRepo;
 
 	@Override
 	public void signup(SignUpFormDTO signUpRequest) {
@@ -62,6 +67,10 @@ public class UserServiceImpl implements UserService {
 		}
 		UserVO userVO = getUserVOFromSignUpFormDTO(signUpRequest);
 		userRepo.save(userVO);
+		CheckinStatusVO statusvo=new CheckinStatusVO();
+		statusvo.setEmpcode(userVO.getEmpcode());
+		statusvo.setStatus("Out");
+		chkstatusRepo.save(statusvo);
 		createUserAction(userVO.getEmail(), userVO.getUserId(), UserConstants.USER_ACTION_ADD_ACCOUNT);
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 	}

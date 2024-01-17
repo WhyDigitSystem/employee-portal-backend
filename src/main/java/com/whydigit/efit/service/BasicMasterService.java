@@ -108,6 +108,9 @@ public interface BasicMasterService {
 	//EMPLOYEE CHECKIN  DAILY STATUS
 	
 	List<EmployeeCheckinDailyStatusVO> getAllEmployeesCheckinStatusDaily();
+	
+	EmployeeCheckinDailyStatusVO getEmployeesCheckinStatusDailyByEmpcode(String empcode);
+	
 
 	//Create Leave Credit to EMPLOYEES
 	LeaveCreditVO createLeaveCredit(LeaveCreditVO leaveCreditVO);

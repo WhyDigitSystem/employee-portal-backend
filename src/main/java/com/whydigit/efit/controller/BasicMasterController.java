@@ -886,6 +886,32 @@ public class BasicMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 	
+	@GetMapping("/employee/daily/time/{empcode}")
+	public ResponseEntity<ResponseDTO> getEmployeesDailytimeByEmpcode(@PathVariable String empcode) {
+		String methodName = "getEmployeesDailytimeByEmpcode()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		EmployeeCheckinDailyStatusVO employeeStatusVO = null;
+		try {
+			employeeStatusVO = basicMasterService.getEmployeesCheckinStatusDailyByEmpcode(empcode);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Employee Daily Checkin Status information get successfully");
+			responseObjectsMap.put("EmployeeStatusVO", employeeStatusVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Employee Daily Checkin Status information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
 	//Create Leave Credit to employee
 	
 	@PostMapping("/leavecredit")

@@ -403,6 +403,11 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 	public Optional<LeaveBalanceVO> getLeaveBalanceByEmpcode(String empcode) {
 		return leaveBalanceRepo.findByEmpcode(empcode);
 	}
+
+	@Override
+	public EmployeeCheckinDailyStatusVO getEmployeesCheckinStatusDailyByEmpcode(String empcode) {
+		return dailyStatus.findByEmpcode(empcode);
+	}
 	
 
 
