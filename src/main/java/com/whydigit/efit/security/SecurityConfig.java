@@ -32,7 +32,7 @@ public class SecurityConfig {
 				.antMatchers("/", "/error", "/favicon.ico", "/**/*.png", "/**/*.gif", "/**/*.svg", "/**/*.jpg",
 						"/**/*.html", "/**/*.css", "/**/*.js")
 				.permitAll()
-				.antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/security",
+				.antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/security","/api/user/changepassword",
 						"/swagger-ui.html", "/swagger-ui/*", "/api/user/signup", "/api/user/login", "/api/user/logout",
 						"/api/user/getRefreshToken", "/api/basicSetting/companyInfo","/api/basicMaster/employee",
 						"/api/basicMaster/permissionRequest","/api/basicMaster/permissionRequestapp/{id}","/api/basicMaster/leaverequest","/api/basicMaster/leaverequestapp/{id}","/api/basicMaster/checkin",
