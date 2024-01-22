@@ -120,7 +120,7 @@ public interface BasicMasterService {
 	List<LeaveBalanceVO> getAllLeaveBalance();
 	
 	//get Leave Balance by Empcode
-	Optional<LeaveBalanceVO> getLeaveBalanceByEmpcode(String empcode);
+	List<LeaveBalanceVO> getLeaveBalanceByEmpcode(String empcode);
 	
 
 	

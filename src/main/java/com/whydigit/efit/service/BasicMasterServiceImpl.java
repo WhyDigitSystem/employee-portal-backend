@@ -400,7 +400,7 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 	}
 
 	@Override
-	public Optional<LeaveBalanceVO> getLeaveBalanceByEmpcode(String empcode) {
+	public List<LeaveBalanceVO> getLeaveBalanceByEmpcode(String empcode) {
 		return leaveBalanceRepo.findByEmpcode(empcode);
 	}
 

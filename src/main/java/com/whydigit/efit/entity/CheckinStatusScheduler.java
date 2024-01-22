@@ -18,7 +18,7 @@ public class CheckinStatusScheduler {
     private EntityManager entityManager;
 
     // Scheduled task to run every day at 11 PM
-    @Scheduled(cron = "0 0 15 * * ?")
+    @Scheduled(cron = "0 0 11 * * ?")
     @Transactional
     public void updateCheckinStatus() {
         // Find employees with status 'In' at 11 PM

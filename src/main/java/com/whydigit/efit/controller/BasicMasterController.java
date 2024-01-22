@@ -969,7 +969,7 @@ public class BasicMasterController extends BaseController {
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		Optional<LeaveBalanceVO> leaveBalanceVO = null;
+		List<LeaveBalanceVO> leaveBalanceVO = null;
 		try {
 			leaveBalanceVO = basicMasterService.getLeaveBalanceByEmpcode(empcode);
 		} catch (Exception e) {
