@@ -68,7 +68,7 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 	}
 
 	@Override
-	public Optional<EmployeeDetailsVO> getEmployeeById(int id) {
+	public Optional<EmployeeDetailsVO> getEmployeeById(long id) {
 		return employeeRepo.findById(id);
 	}
 
@@ -90,7 +90,7 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 	}
 
 	@Override
-	public void deleteEmployee(int id) {
+	public void deleteEmployee(long id) {
 		employeeRepo.deleteById(id);
 	}
 

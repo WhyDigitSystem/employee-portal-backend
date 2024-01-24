@@ -49,6 +49,7 @@ public class LeaveRequestVO {
 	private boolean active;
 	private String remarks;
 	private String notifyto;
+	private float noOfDays;
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 

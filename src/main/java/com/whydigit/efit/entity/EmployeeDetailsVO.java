@@ -26,7 +26,8 @@ public class EmployeeDetailsVO {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private long id;
+	private long orgId;
 	private String empcode;
 	private String empname;
 	private String gender;

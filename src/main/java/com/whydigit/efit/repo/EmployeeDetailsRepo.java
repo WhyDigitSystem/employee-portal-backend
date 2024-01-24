@@ -12,7 +12,9 @@ import com.whydigit.efit.dto.logincreationDTO;
 import com.whydigit.efit.entity.EmployeeDetailsVO;
 
 @Repository
-public interface EmployeeDetailsRepo extends JpaRepository<EmployeeDetailsVO, Integer> {
+public interface EmployeeDetailsRepo extends JpaRepository<EmployeeDetailsVO, Long> {
+
+	List<EmployeeDetailsVO> findAllByOrgId(long orgId);
 
 	
 

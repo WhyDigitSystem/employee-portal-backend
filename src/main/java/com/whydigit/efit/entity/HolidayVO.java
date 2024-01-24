@@ -16,6 +16,7 @@ import com.whydigit.efit.dto.CreatedUpdatedDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 @Entity
 @Table(name = "holidays")
 @Data
@@ -26,9 +27,10 @@ public class HolidayVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@JsonFormat(pattern="yyyy-MM-dd")
+	private long orgId;
 	private String companycode;
 	private String branch;
+	private String department;
 	private LocalDate holiday_date;
 	private String day;
 	private String festival;

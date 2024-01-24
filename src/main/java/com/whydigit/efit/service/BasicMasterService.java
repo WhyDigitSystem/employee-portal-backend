@@ -25,13 +25,13 @@ public interface BasicMasterService {
 	
 	List<EmployeeDetailsVO> getAllgetAllEmployees();
 
-	Optional<EmployeeDetailsVO> getEmployeeById(int id);
+	Optional<EmployeeDetailsVO> getEmployeeById(long id);
 
 	EmployeeDetailsVO createEmployee(EmployeeDetailsVO employeeVO);
 
 	Optional<EmployeeDetailsVO> updateEmployee(EmployeeDetailsVO employeeVO);
 
-	void deleteEmployee(int id);
+	void deleteEmployee(long id);
 	
 	
 	
