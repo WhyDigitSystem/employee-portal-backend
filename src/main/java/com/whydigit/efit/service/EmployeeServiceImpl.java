@@ -45,8 +45,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public List<EmployeeAttendanceActivityDTO> getEmployeeAttendanceActivity(LocalDate startDate, LocalDate endDate,
 			long orgId, String empId) throws ApplicationException {
 		List<EmployeeDetailsVO> employeeDetailsVO = new ArrayList<>();
-		long sunDay = startDate.datesUntil(endDate.plusDays(1)).filter(date -> date.getDayOfWeek() == DayOfWeek.SUNDAY)
-				.count();
+		long sunDay = getNoOfSunday(startDate,endDate);
 		long totalDays = ChronoUnit.DAYS.between(startDate, endDate.plusDays(1));
 		if (orgId == 0) {
 			throw new ApplicationException("Invalid request. Please try again.");
@@ -83,4 +82,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employeeAttendanceActivityDTO;
 	}
 
+	
+	
+	public static long getNoOfSunday(LocalDate startDate,LocalDate endDate ) {
+	     long sundayCount = 0;
+
+	        while (!startDate.isAfter(endDate)) {
+	            if (startDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
+	                sundayCount++;
+	            }
+	            startDate = startDate.plusDays(1);
+	        }
+	        return sundayCount;
+	}
 }
