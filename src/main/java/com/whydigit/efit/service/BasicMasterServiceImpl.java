@@ -1,228 +1,87 @@
 package com.whydigit.efit.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
-import com.whydigit.efit.entity.CityVO;
-import com.whydigit.efit.entity.CountryListVO;
-import com.whydigit.efit.entity.CountryVO;
-import com.whydigit.efit.entity.CurrencyMasterVO;
-import com.whydigit.efit.entity.EmployeeVO;
-import com.whydigit.efit.entity.FinancialYearVO;
-import com.whydigit.efit.entity.LocalCurrencyVO;
-import com.whydigit.efit.entity.StateVO;
-import com.whydigit.efit.repo.CityRepo;
-import com.whydigit.efit.repo.CountryListRepo;
-import com.whydigit.efit.repo.CountryRepo;
-import com.whydigit.efit.repo.CurrencyMasterRepo;
-import com.whydigit.efit.repo.EmployeeRepo;
-import com.whydigit.efit.repo.FinancialRepo;
-import com.whydigit.efit.repo.LocalCurrencyRepo;
-import com.whydigit.efit.repo.StateRepo;
+import com.whydigit.efit.dto.LeaveApprovalDTO;
+import com.whydigit.efit.dto.UserName;
+import com.whydigit.efit.entity.CheckinStatusVO;
+import com.whydigit.efit.entity.CheckinVO;
+import com.whydigit.efit.entity.EmployeeCheckInTimeVO;
+import com.whydigit.efit.entity.EmployeeCheckinDailyStatusVO;
+import com.whydigit.efit.entity.EmployeeDetailsVO;
+import com.whydigit.efit.entity.HolidayVO;
+import com.whydigit.efit.entity.LeaveRequestVO;
+import com.whydigit.efit.entity.LeaveTypeVO;
+import com.whydigit.efit.entity.PermissionRequestVO;
+import com.whydigit.efit.repo.CheckinRepo;
+import com.whydigit.efit.repo.CheckinStatusRepo;
+import com.whydigit.efit.repo.EmployeeCheckinDailyStatusRepo;
+import com.whydigit.efit.repo.EmployeeCheckinTimeRepo;
+import com.whydigit.efit.repo.EmployeeDetailsRepo;
+import com.whydigit.efit.repo.HolidayRepo;
+import com.whydigit.efit.repo.LeaveRequestRepo;
+import com.whydigit.efit.repo.LeaveTypeRepo;
+import com.whydigit.efit.repo.PermissionRequestRepo;
 
 @Service
 public class BasicMasterServiceImpl implements BasicMasterService {
 
 	@Autowired
-	private LocalCurrencyRepo localCurrencyRepo;
+	private EmployeeDetailsRepo employeeRepo;
+
+	@Autowired
+	private LeaveTypeRepo leaveTypeRepo;
+
+	@Autowired
+	private HolidayRepo holidayRepo;
+
+	@Autowired
+	private LeaveRequestRepo newLeaveRequestRepo;
+
+	@Autowired
+	private PermissionRequestRepo newPermissionRequestRepo;
 	
 	@Autowired
-	private CountryListRepo countryListRepo;
-
-	@Autowired
-	private CountryRepo countryRepo;
-
-	@Autowired
-	private StateRepo stateRepo;
-
-	@Autowired
-	private CityRepo cityRepo;
-
-	@Autowired
-	private EmployeeRepo employeeRepo;
-
-	@Autowired
-	private FinancialRepo financialRepo;
+	CheckinRepo checkinRepo;
 	
 	@Autowired
-	private CurrencyMasterRepo currencyMasterRepo;
-
-	@Override
-	public List<LocalCurrencyVO> getAllLocalCurrencies() {
-		return localCurrencyRepo.findAll();
-	}
-
-	@Override
-	public Optional<LocalCurrencyVO> getLocalCurrencyById(int id) {
-		return localCurrencyRepo.findById(id);
-	}
-
-	@Override
-	public LocalCurrencyVO createLocalCurrency(LocalCurrencyVO localCurrencyVO) {
-		return localCurrencyRepo.save(localCurrencyVO);
-	}
-
-	@Override
-	public Optional<LocalCurrencyVO> updateLocalCurrency(LocalCurrencyVO localCurrencyVO) {
-		if (localCurrencyRepo.existsById(localCurrencyVO.getId())) {
-			return Optional.of(localCurrencyRepo.save(localCurrencyVO));
-		} else {
-			return Optional.empty();
-		}
-	}
-
-	@Override
-	public void deleteLocalCurrency(int id) {
-		localCurrencyRepo.deleteById(id);
-	}
+	CheckinStatusRepo chkstatusrepo;
 	
+	@Autowired
+	EmployeeCheckinTimeRepo checkinTimeRepo;
 	
-	@Override
-	public List<CountryListVO> getAllCountryList() {
-		return countryListRepo.findAll();
-	}
-
-	@Override
-	public Optional<CountryListVO> getCountryListById(int id) {
-		return countryListRepo.findById(id);
-	}
-
-	@Override
-	public CountryListVO createCountryList(CountryListVO countryListVO) {
-		return countryListRepo.save(countryListVO);
-	}
-
-	@Override
-	public Optional<CountryListVO> updateCountryList(CountryListVO countryListVO) {
-		if (countryListRepo.existsById(countryListVO.getId())) {
-			return Optional.of(countryListRepo.save(countryListVO));
-		} else {
-			return Optional.empty();
-		}
-	}
-
-	@Override
-	public void deleteCountryList(int id) {
-		localCurrencyRepo.deleteById(id);
-	}
-
-	@Override
-	public List<CountryVO> getAllgetAllcountries() {
-		return countryRepo.findAll();
-	}
-
-	@Override
-	public Optional<CountryVO> getCountryById(int id) {
-		return countryRepo.findById(id);
-	}
-
-	@Override
-	public CountryVO createCountry(CountryVO countryVO) {
-		return countryRepo.save(countryVO);
-	}
-
-	@Override
-	public Optional<CountryVO> updateCountry(CountryVO countryVO) {
-		if (countryRepo.existsById(countryVO.getId())) {
-			return Optional.of(countryRepo.save(countryVO));
-		} else {
-			return Optional.empty();
-		}
-	}
-
-	@Override
-	public void deleteCountry(int id) {
-		countryRepo.deleteById(id);
-	}
-
-
-//	state
-
-	@Override
-	public List<StateVO> getAllgetAllStates() {
-		return stateRepo.findAll();
-	}
-
-	@Override
-	public Optional<StateVO> getStateById(int id) {
-		return stateRepo.findById(id);
-	}
-
-	@Override
-	public StateVO createState(StateVO stateVO) {
-		return stateRepo.save(stateVO);
-	}
-
-	@Override
-	public Optional<StateVO> updateState(StateVO stateVO) {
-		if (stateRepo.existsById(stateVO.getId())) {
-			return Optional.of(stateRepo.save(stateVO));
-		} else {
-			return Optional.empty();
-		}
-	}
-
-	@Override
-	public void deleteState(int id) {
-		stateRepo.deleteById(id);
-	}
-
-
-
-//	city
-
-	@Override
-	public List<CityVO> getAllgetAllCities() {
-		return cityRepo.findAll();
-	}
-
-	@Override
-	public Optional<CityVO> getCityById(int id) {
-		return cityRepo.findById(id);
-	}
-
-	@Override
-	public CityVO createCity(CityVO cityVO) {
-		return cityRepo.save(cityVO);
-	}
-
-	@Override
-	public Optional<CityVO> updateCity(CityVO cityVO) {
-		if (cityRepo.existsById(cityVO.getId())) {
-			return Optional.of(cityRepo.save(cityVO));
-		} else {
-			return Optional.empty();
-		}
-	}
-
-	@Override
-	public void deleteCity(int id) {
-		cityRepo.deleteById(id);
-	}
-
+	@Autowired
+	EmployeeCheckinDailyStatusRepo dailyStatus;
 
 //	employee
 
 	@Override
-	public List<EmployeeVO> getAllgetAllEmployees() {
+	public List<EmployeeDetailsVO> getAllgetAllEmployees() {
 		return employeeRepo.findAll();
 	}
 
 	@Override
-	public Optional<EmployeeVO> getEmployeeById(int id) {
+	public Optional<EmployeeDetailsVO> getEmployeeById(long id) {
 		return employeeRepo.findById(id);
 	}
 
 	@Override
-	public EmployeeVO createEmployee(EmployeeVO employeeVO) {
+	public EmployeeDetailsVO createEmployee(EmployeeDetailsVO employeeVO) {
+		employeeVO.setBranch("BLR");
+		employeeVO.setCompanycode("WDS");
+		employeeVO.setCancel(false);
 		return employeeRepo.save(employeeVO);
 	}
 
 	@Override
-	public Optional<EmployeeVO> updateEmployee(EmployeeVO employeeVO) {
+	public Optional<EmployeeDetailsVO> updateEmployee(EmployeeDetailsVO employeeVO) {
 		if (employeeRepo.existsById(employeeVO.getId())) {
 			return Optional.of(employeeRepo.save(employeeVO));
 		} else {
@@ -231,71 +90,259 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 	}
 
 	@Override
-	public void deleteEmployee(int id) {
+	public void deleteEmployee(long id) {
 		employeeRepo.deleteById(id);
 	}
 
-//	financial Year
+	// Leave Type
 
 	@Override
-	public List<FinancialYearVO> getAllgetAllFinancialYears() {
-		return financialRepo.findAll();
+	public List<LeaveTypeVO> getAllgetAllLeaveType() {
+
+		return leaveTypeRepo.findAll();
 	}
 
 	@Override
-	public Optional<FinancialYearVO> getFinancialYearById(int id) {
-		return financialRepo.findById(id);
+	public Optional<LeaveTypeVO> getLeavetypeById(int id) {
+		// TODO Auto-generated method stub
+		return leaveTypeRepo.findById(id);
 	}
 
 	@Override
-	public FinancialYearVO createFinancialYear(FinancialYearVO financialYearVO) {
-		return financialRepo.save(financialYearVO);
+	public LeaveTypeVO createLeaveType(LeaveTypeVO leaveTypeVO) {
+		leaveTypeVO.setBranch("BLR");
+		leaveTypeVO.setCompanycode("WDS");
+		leaveTypeVO.setCancel(false);
+		return leaveTypeRepo.save(leaveTypeVO);
 	}
 
 	@Override
-	public Optional<FinancialYearVO> updateFinancialYear(FinancialYearVO financialYearVO) {
-		if (financialRepo.existsById(financialYearVO.getId())) {
-			return Optional.of(financialRepo.save(financialYearVO));
+	public Optional<LeaveTypeVO> updateLeaveType(LeaveTypeVO leaveTypeVO) {
+		if (leaveTypeRepo.existsById(leaveTypeVO.getId())) {
+			return Optional.of(leaveTypeRepo.save(leaveTypeVO));
+		} else {
+			return Optional.empty();
+		}
+	}
+	
+	@Override
+	public void deleteLeaveType(int id) {
+		leaveTypeRepo.deleteById(id);
+
+	}
+
+	// HOLIDAY Type
+
+	@Override
+	public List<HolidayVO> getAllHolidayType() {
+
+		return holidayRepo.findAll();
+	}
+
+	@Override
+	public Optional<HolidayVO> getholidayById(int id) {
+		// TODO Auto-generated method stub
+		return holidayRepo.findById(id);
+	}
+
+	@Override
+	public HolidayVO createholidayType(HolidayVO holidayVO) {
+
+		holidayVO.setBranch("BLR");
+		holidayVO.setCompanycode("WDS");
+		holidayVO.setCancel(false);
+		return holidayRepo.save(holidayVO);
+	}
+
+	@Override
+	public Optional<HolidayVO> updateHolidayType(HolidayVO holidayVO) {
+		if (holidayRepo.existsById(holidayVO.getId())) {
+			return Optional.of(holidayRepo.save(holidayVO));
 		} else {
 			return Optional.empty();
 		}
 	}
 
 	@Override
-	public void deleteFinancialYear(int id) {
-		financialRepo.deleteById(id);
+	public void deleteHolidayType(int id) {
+		holidayRepo.deleteById(id);
+
+	}
+
+	// NewLeave
+
+	@Override
+	public List<LeaveRequestVO> getAllLeaveRequest() {
+		// TODO Auto-generated method stub
+		return newLeaveRequestRepo.findAll();
+	}
+
+	@Override
+	public Optional<LeaveRequestVO> getLeaveRequestById(int id) {
+		// TODO Auto-generated method stub
+		return newLeaveRequestRepo.findById(id);
 	}
 	
-	
-//	currencyMaster
-
 	@Override
-	public List<CurrencyMasterVO> getAllCurrencyMaster() {
-		return currencyMasterRepo.findAll();
+	public List<LeaveRequestVO> getLeaveRequestByEmpcode(@PathVariable String empcode){
+		return newLeaveRequestRepo.findByEmpcode(empcode);
 	}
 
 	@Override
-	public Optional<CurrencyMasterVO> getCurrencyMasterById(int id) {
-		return currencyMasterRepo.findById(id);
+	public LeaveRequestVO createLeaveRequest(LeaveRequestVO newLeaveRequestVO) {
+		newLeaveRequestVO.setBranch("BLR");
+		newLeaveRequestVO.setCompanycode("WDS");
+		newLeaveRequestVO.setCancel(false);
+		// TODO Auto-generated method stub
+		return newLeaveRequestRepo.save(newLeaveRequestVO);
 	}
 
 	@Override
-	public CurrencyMasterVO createCurrencyMasterVO(CurrencyMasterVO currencyMasterVO) {
-		return currencyMasterRepo.save(currencyMasterVO);
-	}
-
-	@Override
-	public Optional<CurrencyMasterVO> updateCurrencyMaster(CurrencyMasterVO currencyMasterVO) {
-		if (currencyMasterRepo.existsById(currencyMasterVO.getId())) {
-			return Optional.of(currencyMasterRepo.save(currencyMasterVO));
+	public Optional<LeaveRequestVO> updateLeaveRequest(LeaveRequestVO newLeaveRequestVO) {
+		if (newLeaveRequestRepo.existsById(newLeaveRequestVO.getId())) {
+			return Optional.of(newLeaveRequestRepo.save(newLeaveRequestVO));
 		} else {
 			return Optional.empty();
 		}
 	}
+	
+	@Override
+	public Optional<LeaveRequestVO> updateLeaveRequestApproval(LeaveApprovalDTO leaveApprovalDTO,int id) {
+		Date currentdate=new Date();
+		LeaveRequestVO leaveRequestvo=newLeaveRequestRepo.findById(id).get();
+		leaveRequestvo.setStatus(leaveApprovalDTO.getStatus());
+		leaveRequestvo.setApprovedby(leaveApprovalDTO.getApprovedby());
+		leaveRequestvo.setRemarks(leaveApprovalDTO.getRemarks());
+		leaveRequestvo.setApprovedat(currentdate);
+		return Optional.of(newLeaveRequestRepo.save(leaveRequestvo));
+	}
+	
+//	@Override
+//	public Optional<LeaveRequestVO> updateLeaveRequestApproval(LeaveRequestVO leaveRequestVO) {
+//		Date currentdate=new Date();
+//		if (newLeaveRequestRepo.existsById(leaveRequestVO.getId())) {	
+//			leaveRequestVO.setApprovedat(currentdate);
+//			return Optional.of(newLeaveRequestRepo.save(leaveRequestVO));
+//		} else {
+//			return Optional.empty();
+//		}
+//	}
 
 	@Override
-	public void deleteCurrencyMaster(int id) {
-		currencyMasterRepo.deleteById(id);
+	public void deleteLeaveRequest(int id) {
+		// TODO Auto-generated method stub
+		newLeaveRequestRepo.deleteById(id);
 	}
+
+	// permission Request
+
+	@Override
+	public List<PermissionRequestVO> getAllPermissionRequest() {
+		// TODO Auto-generated method stub
+		return newPermissionRequestRepo.findAll();
+	}
+
+	@Override
+	public Optional<PermissionRequestVO> getPermissionRequestById(int id) {
+		// TODO Auto-generated method stub
+		return newPermissionRequestRepo.findById(id);
+	}
+	
+	@Override
+	public List<PermissionRequestVO> getPermissionRequestByEmpcode(@PathVariable String empcode){
+		return newPermissionRequestRepo.findByEmpcode(empcode);
+	}
+
+	@Override
+	public PermissionRequestVO createPermissionRequest(PermissionRequestVO newPermissionRequestVO) {
+		// TODO Auto-generated method stub
+		newPermissionRequestVO.setBranch("BLR");
+		newPermissionRequestVO.setCompanycode("WDS");
+		newPermissionRequestVO.setCancel(false);
+		return newPermissionRequestRepo.save(newPermissionRequestVO);
+	}
+
+	@Override
+	public Optional<PermissionRequestVO> updatePermissionRequest(PermissionRequestVO newPermissionRequestVO) {
+		if (newPermissionRequestRepo.existsById(newPermissionRequestVO.getId())) {
+			return Optional.of(newPermissionRequestRepo.save(newPermissionRequestVO));
+		} else {
+			return Optional.empty();
+		}
+	}
+	
+	@Override
+	public Optional<PermissionRequestVO> updatePermissionRequestApproval(LeaveApprovalDTO leaveApprovalDTO,int id) {
+		
+		Date currentdate=new Date();
+		PermissionRequestVO permission=newPermissionRequestRepo.findById(id).get();
+		permission.setStatus(leaveApprovalDTO.getStatus());
+		permission.setApprovedby(leaveApprovalDTO.getApprovedby());
+		permission.setRemarks(leaveApprovalDTO.getRemarks());
+		permission.setApprovedat(currentdate);
+		return Optional.of(newPermissionRequestRepo.save(permission));
+	}
+
+	@Override
+	public void deletePermissionRequest(int id) {
+
+		newPermissionRequestRepo.deleteById(id);
+	}
+	
+	public CheckinVO checkIn(UserName user) {
+    	Date current= new Date();
+    	CheckinVO checkinVO = new CheckinVO();
+    	checkinVO.setCompanycode("WDS");
+    	checkinVO.setBranch("BLR");
+    	checkinVO.setEmpcode(user.getUserid());
+    	checkinVO.setCheckin_date(current);
+    	checkinVO.setStatus("In");
+    	checkinVO.setEntry_time(current);
+    	
+    	CheckinStatusVO chk=new CheckinStatusVO();
+    	chk.setEmpcode(user.getUserid());
+    	chk.setStatus("In");
+    	chkstatusrepo.save(chk);
+    	
+        return checkinRepo.save(checkinVO);
+    }
+
+	public CheckinVO checkOut(UserName user) {
+    	Date current= new Date();
+    	CheckinVO checkinVO = new CheckinVO();
+    	checkinVO.setCompanycode("WDS");
+    	checkinVO.setBranch("BLR");
+    	checkinVO.setEmpcode(user.getUserid());
+    	checkinVO.setCheckin_date(current);
+    	checkinVO.setEntry_time(current);
+    	checkinVO.setStatus("Out");
+    	
+    	CheckinStatusVO chk=new CheckinStatusVO();
+    	chk.setEmpcode(user.getUserid());
+    	chk.setStatus("Out");
+    	chkstatusrepo.save(chk);
+    	
+        return checkinRepo.save(checkinVO);
+    }
+
+	@Override
+	public Optional<CheckinStatusVO> getStatusByEmpcode(String empcode) {
+		
+		 return chkstatusrepo.findById(empcode);
+	}
+
+	@Override
+	public List<EmployeeCheckInTimeVO> getAttendanceByEmpcode(String empcode) {
+		return checkinTimeRepo.findByEmpcode(empcode);
+	}
+
+	@Override
+	public List<EmployeeCheckinDailyStatusVO> getAllEmployeesCheckinStatusDaily() {
+		
+		return dailyStatus.findAll();
+	}
+	
+	
+
 
 }

@@ -14,12 +14,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SignUpFormDTO {
-	@NotBlank(message = "First Name is required")
-	private String firstName;
-
-	private String lastName;
-
-	private String userName;
+	
+	private String empcode;
+	private String empname;
 
 	@NotBlank(message = "Email is required")
 	@Size(max = 30)

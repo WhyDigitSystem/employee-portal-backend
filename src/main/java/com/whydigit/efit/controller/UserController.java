@@ -19,11 +19,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.whydigit.efit.common.CommonConstant;
-import com.whydigit.efit.common.UserConstants;
+import com.whydigit.efit.common.EmployeePortalConstants;
 import com.whydigit.efit.dto.LoginFormDTO;
+import com.whydigit.efit.dto.RefreshTokenDTO;
 import com.whydigit.efit.dto.ResponseDTO;
 import com.whydigit.efit.dto.SignUpFormDTO;
 import com.whydigit.efit.dto.UserResponseDTO;
+import com.whydigit.efit.repo.CheckinStatusRepo;
 import com.whydigit.efit.service.UserService;
 
 @RestController
@@ -34,6 +36,9 @@ public class UserController extends BaseController {
 
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	CheckinStatusRepo chkstatusrepo;
 
 	@PostMapping("/signup")
 	public ResponseEntity<ResponseDTO> signup(@Valid @RequestBody SignUpFormDTO signUpRequest) {
@@ -46,14 +51,14 @@ public class UserController extends BaseController {
 			userService.signup(signUpRequest);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME_WITH_USER_NAME, methodName, signUpRequest.getEmail(),
+			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME_WITH_USER_NAME, methodName, signUpRequest.getEmail(),
 					errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, UserConstants.SIGNUP_REGISTERED_SUCCESS_MESSAGE);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, EmployeePortalConstants.SIGNUP_REGISTERED_SUCCESS_MESSAGE);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, UserConstants.SIGNUP_REGISTERED_FAILED_MESSAGE,
+			responseDTO = createServiceResponseError(responseObjectsMap, EmployeePortalConstants.SIGNUP_REGISTERED_FAILED_MESSAGE,
 					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
@@ -72,15 +77,15 @@ public class UserController extends BaseController {
 			userResponseDTO = userService.login(loginRequest);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME_WITH_USER_NAME, methodName, loginRequest.getUserName(),
+			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME_WITH_USER_NAME, methodName, loginRequest.getEmail(),
 					errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, UserConstants.USER_LOGIN_SUCCESS_MESSAGE);
-			responseObjectsMap.put(UserConstants.KEY_USER, userResponseDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, EmployeePortalConstants.USER_LOGIN_SUCCESS_MESSAGE);
+			responseObjectsMap.put(EmployeePortalConstants.KEY_USER, userResponseDTO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, UserConstants.USER_LOGIN_FAILED_MESSAGE,
+			responseDTO = createServiceResponseError(responseObjectsMap, EmployeePortalConstants.USER_LOGIN_FAILED_MESSAGE,
 					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
@@ -98,13 +103,13 @@ public class UserController extends BaseController {
 			userService.logout(userName);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME_WITH_USER_NAME, methodName, userName, errorMsg);
+			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME_WITH_USER_NAME, methodName, userName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, UserConstants.USER_LOGOUT_SUCCESS_MESSAGE);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, EmployeePortalConstants.USER_LOGOUT_SUCCESS_MESSAGE);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, UserConstants.USER_LOGOUT_FAILED_MESSAGE,
+			responseDTO = createServiceResponseError(responseObjectsMap, EmployeePortalConstants.USER_LOGOUT_FAILED_MESSAGE,
 					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
@@ -123,14 +128,14 @@ public class UserController extends BaseController {
 			refreshTokenDTO = userService.getRefreshToken(userName, tokenId);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME_WITH_USER_NAME, methodName, userName, errorMsg);
+			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME_WITH_USER_NAME, methodName, userName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, UserConstants.REFRESH_TOKEN_SUCCESS_MESSAGE);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, EmployeePortalConstants.REFRESH_TOKEN_SUCCESS_MESSAGE);
 			responseObjectsMap.put(CommonConstant.REFRESH_TOKEN, refreshTokenDTO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, UserConstants.REFRESH_TOKEN_FAILED_MESSAGE,
+			responseDTO = createServiceResponseError(responseObjectsMap, EmployeePortalConstants.REFRESH_TOKEN_FAILED_MESSAGE,
 					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);

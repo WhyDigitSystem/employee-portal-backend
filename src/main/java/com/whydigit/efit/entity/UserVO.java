@@ -9,6 +9,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.whydigit.efit.dto.CreatedUpdatedDate;
@@ -30,16 +32,18 @@ public class UserVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long userId;
-	private String firstName;
-	private String lastName;
+	private String empname;
 	private String email;
-	private String userName;
+	private String empcode;
 	private String password;
+	private String profileImage;
 	private boolean loginStatus;
 	private boolean isActive;
 	@Enumerated(EnumType.STRING)
 	private Role role;
-
+	@ManyToOne
+	@JoinColumn(name = "orgId")
+	private OrganizationVO organizationVO;
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 

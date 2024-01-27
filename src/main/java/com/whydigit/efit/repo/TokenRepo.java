@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.whydigit.efit.entity.TokenVO;
 
 @Repository
-public interface TokenRepo extends JpaRepository<TokenVO, String>{
+public interface TokenRepo extends JpaRepository<TokenVO, String> {
 
-	
 }

@@ -5,105 +5,114 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.whydigit.efit.entity.CityVO;
-import com.whydigit.efit.entity.CountryListVO;
-import com.whydigit.efit.entity.CountryVO;
-import com.whydigit.efit.entity.CurrencyMasterVO;
-import com.whydigit.efit.entity.EmployeeVO;
-import com.whydigit.efit.entity.FinancialYearVO;
-import com.whydigit.efit.entity.LocalCurrencyVO;
-import com.whydigit.efit.entity.StateVO;
+import com.whydigit.efit.dto.LeaveApprovalDTO;
+import com.whydigit.efit.dto.UserName;
+import com.whydigit.efit.entity.CheckinStatusVO;
+import com.whydigit.efit.entity.CheckinVO;
+import com.whydigit.efit.entity.EmployeeCheckInTimeVO;
+import com.whydigit.efit.entity.EmployeeCheckinDailyStatusVO;
+import com.whydigit.efit.entity.EmployeeDetailsVO;
+import com.whydigit.efit.entity.HolidayVO;
+import com.whydigit.efit.entity.LeaveRequestVO;
+import com.whydigit.efit.entity.LeaveTypeVO;
+import com.whydigit.efit.entity.PermissionRequestVO;
+
+
 
 @Service
 public interface BasicMasterService {
-
-	List<LocalCurrencyVO> getAllLocalCurrencies();
-
-	Optional<LocalCurrencyVO> getLocalCurrencyById(int id);
-
-	LocalCurrencyVO createLocalCurrency(LocalCurrencyVO localCurrencyVO);
-
-	Optional<LocalCurrencyVO> updateLocalCurrency(LocalCurrencyVO localCurrencyVO);
-
-	void deleteLocalCurrency(int id);
-	
-	List<CountryListVO> getAllCountryList();
-
-	Optional<CountryListVO> getCountryListById(int id);
-
-	CountryListVO createCountryList(CountryListVO countryListVO);
-
-	Optional<CountryListVO> updateCountryList(CountryListVO countryListVO);
-
-	void deleteCountryList(int id);
-
-	List<CountryVO> getAllgetAllcountries();
-
-	Optional<CountryVO> getCountryById(int id);
-
-	CountryVO createCountry(CountryVO countryVO);
-
-	Optional<CountryVO> updateCountry(CountryVO countryVO);
-
-	void deleteCountry(int id);
-
-
-	List<StateVO> getAllgetAllStates();
-
-	Optional<StateVO> getStateById(int id);
-
-	StateVO createState(StateVO stateVO);
-
-	Optional<StateVO> updateState(StateVO stateVO);
-
-	void deleteState(int id);
-
-
-	List<CityVO> getAllgetAllCities();
-
-	Optional<CityVO> getCityById(int id);
-
-	CityVO createCity(CityVO cityVO);
-
-	Optional<CityVO> updateCity(CityVO cityVO);
-
-	void deleteCity(int id);
-
-
-
-	List<EmployeeVO> getAllgetAllEmployees();
-
-	Optional<EmployeeVO> getEmployeeById(int id);
-
-	EmployeeVO createEmployee(EmployeeVO employeeVO);
-
-	Optional<EmployeeVO> updateEmployee(EmployeeVO employeeVO);
-
-	void deleteEmployee(int id);
-
-
-	List<FinancialYearVO> getAllgetAllFinancialYears();
-
-	Optional<FinancialYearVO> getFinancialYearById(int id);
-
-	FinancialYearVO createFinancialYear(FinancialYearVO financialYearVO);
-
-	Optional<FinancialYearVO> updateFinancialYear(FinancialYearVO financialYearVO);
-
-	void deleteFinancialYear(int id);
 	
 	
-	List<CurrencyMasterVO> getAllCurrencyMaster();
+	List<EmployeeDetailsVO> getAllgetAllEmployees();
 
-	Optional<CurrencyMasterVO> getCurrencyMasterById(int id);
+	Optional<EmployeeDetailsVO> getEmployeeById(long id);
 
-	CurrencyMasterVO createCurrencyMasterVO(CurrencyMasterVO currencyMasterVO);
+	EmployeeDetailsVO createEmployee(EmployeeDetailsVO employeeVO);
 
-	Optional<CurrencyMasterVO> updateCurrencyMaster(CurrencyMasterVO currencyMasterVO);
+	Optional<EmployeeDetailsVO> updateEmployee(EmployeeDetailsVO employeeVO);
 
-	void deleteCurrencyMaster(int id);
+	void deleteEmployee(long id);
+	
+	
+	
+	List<LeaveTypeVO> getAllgetAllLeaveType();
+	
+	Optional<LeaveTypeVO> getLeavetypeById(int id);
+
+	LeaveTypeVO createLeaveType(LeaveTypeVO leaveTypeVO);
+
+	Optional<LeaveTypeVO> updateLeaveType(LeaveTypeVO leaveTypeVO);
+
+	void deleteLeaveType(int id);
+	
+
+	//Holiday Service
+	
+	List<HolidayVO> getAllHolidayType();
+	
+	Optional<HolidayVO> getholidayById(int id);
+
+	HolidayVO createholidayType(HolidayVO holidayVO);
+
+	Optional<HolidayVO> updateHolidayType(HolidayVO holidayVO);
+
+	void deleteHolidayType(int id);
+
+	
+	//LEAVE REQUEST
+	List<LeaveRequestVO> getAllLeaveRequest();
+	
+	Optional<LeaveRequestVO> getLeaveRequestById(int id);
+	
+	List<LeaveRequestVO> getLeaveRequestByEmpcode(String empcode);
+
+	LeaveRequestVO createLeaveRequest(LeaveRequestVO laveRequestVO);
+
+	Optional<LeaveRequestVO> updateLeaveRequest(LeaveRequestVO leaveRequestVO);
+
+	void deleteLeaveRequest(int id);
+	
+	Optional<LeaveRequestVO> updateLeaveRequestApproval(LeaveApprovalDTO leaveApprovalDTO,int id);
+	
+
+	//NEW PERMISSION REQUEST
+	
+	List<PermissionRequestVO> getAllPermissionRequest();
+
+	Optional<PermissionRequestVO> getPermissionRequestById(int id);
+	
+	List<PermissionRequestVO> getPermissionRequestByEmpcode(String empcode);
+	
+	PermissionRequestVO createPermissionRequest(PermissionRequestVO permissionRequestVO);
+
+	Optional<PermissionRequestVO> updatePermissionRequest(PermissionRequestVO permissionRequestVO);
+
+	void deletePermissionRequest(int id);
+
+	Optional<PermissionRequestVO> updatePermissionRequestApproval(LeaveApprovalDTO leaveApprovalDTO,int id);
+	
+	
+	CheckinVO checkIn(UserName user1);
+
+	CheckinVO checkOut(UserName user1);
+
+	Optional<CheckinStatusVO> getStatusByEmpcode(String empcode);
+	
+	
+	
+	List<EmployeeCheckInTimeVO> getAttendanceByEmpcode(String empcode);
+
+	//EMPLOYEE CHECKIN  DAILY STATUS
+	
+	List<EmployeeCheckinDailyStatusVO> getAllEmployeesCheckinStatusDaily();
 
 
+	
+	
+	
+	
+
+	
 
 
 

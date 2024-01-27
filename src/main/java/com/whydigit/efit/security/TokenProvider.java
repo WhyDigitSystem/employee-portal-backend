@@ -140,7 +140,7 @@ public class TokenProvider {
 		claims.put("id", userVO.getUserId());
 		tokenVO.setExpDate(new Date(now.getTime() + refreshTokenExpInMSec));
 		tokenRepo.save(tokenVO);
-		String token = Jwts.builder().setClaims(claims).setSubject(userVO.getUserName()).setIssuedAt(now)
+		String token = Jwts.builder().setClaims(claims).setSubject(userVO.getEmail()).setIssuedAt(now)
 				.setExpiration(expiryDate).signWith(hmacSHA512Key, SignatureAlgorithm.HS512).compact();
 		tokenVO.setToken(token);
 		return tokenVO;
