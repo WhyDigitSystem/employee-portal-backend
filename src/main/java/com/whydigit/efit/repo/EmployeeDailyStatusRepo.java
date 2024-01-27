@@ -21,11 +21,7 @@ public interface EmployeeDailyStatusRepo extends JpaRepository<EmployeeDailyStat
 
 	void getTodaySatausByOrgId(Long orgId);
 
-	@Query(value = "SELECT new com.whydigit.efit.dto.EmployeeDailyStatusDTO(ed.id,ed.empname,e.orgId,e.loginDate,e.logoutDate,e.isCheckIn) FROM EmployeeDetailsVO ed left join EmployeeDailyStatusVO e on ed.id=e.empId WHERE ed.orgId=?1 AND CAST(e.loginDate AS LocalDate) = ?2")
-	List<EmployeeDailyStatusDTO> getStatusByOrgIdAndDate(Long orgId, LocalDate date);
-
-	@Query(value = "SELECT new com.whydigit.efit.dto.EmployeeDailyStatusDTO(ed.id,ed.empname,e.orgId,e.loginDate,e.logoutDate,e.isCheckIn) FROM EmployeeDetailsVO ed left join EmployeeDailyStatusVO e on ed.id=e.empId WHERE ed.id=?1 AND CAST(e.loginDate AS LocalDate) = ?2")
-	List<EmployeeDailyStatusDTO> getStatusByEmpIdAndDate(Long empId, LocalDate date);
-	
+	@Query(value = "SELECT new com.whydigit.efit.dto.EmployeeDailyStatusDTO(ed.id,ed.empname,ed.orgId,e.loginDate,e.logoutDate, COALESCE(e.isCheckIn, false)) FROM EmployeeDetailsVO ed left join EmployeeDailyStatusVO e on ed.id=e.empId WHERE ed.orgId=?1 OR CAST(e.loginDate AS LocalDate) = ?2")
+	List<EmployeeDailyStatusDTO> getStatusByOrgIdAndDate(Long orgId, LocalDate date);	
 
 }

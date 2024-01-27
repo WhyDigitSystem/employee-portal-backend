@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -142,7 +143,23 @@ public class EmployeeServiceImpl implements EmployeeService {
 		if (ObjectUtils.isNotEmpty(orgId)) {
 			employeeDailyStatusDTO = employeeDailyStatusRepo.getStatusByOrgIdAndDate(orgId, date);
 		} else if (ObjectUtils.isNotEmpty(empId)) {
-			employeeDailyStatusDTO = employeeDailyStatusRepo.getStatusByEmpIdAndDate(empId, date);
+			EmployeeDetailsVO employeeDetailsVO = employeeDetailsRepo.findById(empId)
+					.orElseThrow(() -> new ApplicationException("Invalid Employee."));
+			EmployeeDailyStatusVO employeeDailyStatusVO = employeeDailyStatusRepo.getLatestSataus(empId);
+			EmployeeDailyStatusDTO employeeDailyStatus = new EmployeeDailyStatusDTO();
+			employeeDailyStatus.setEmpId(employeeDetailsVO.getId());
+			employeeDailyStatus.setEmpName(employeeDetailsVO.getEmpname());
+			employeeDailyStatus.setOrgId(employeeDetailsVO.getOrgId());
+			if ((ObjectUtils.isNotEmpty(employeeDailyStatusVO)
+					&& employeeDailyStatusVO.getLoginDate().toLocalDate().isEqual(LocalDate.now()))
+					|| (ObjectUtils.isNotEmpty(employeeDailyStatusVO) && employeeDailyStatusVO.isCheckIn())) {
+				employeeDailyStatus.setCheckIn(employeeDailyStatusVO.isCheckIn());
+				employeeDailyStatus.setLoginDate(employeeDailyStatusVO.getLoginDate());
+				employeeDailyStatus.setLogoutDate(employeeDailyStatusVO.getLogoutDate());
+			} else {
+				employeeDailyStatus.setCheckIn(false);
+			}
+			employeeDailyStatusDTO = Collections.singletonList(employeeDailyStatus);
 		} else {
 			throw new ApplicationException("Invalid input. Please try again");
 		}
