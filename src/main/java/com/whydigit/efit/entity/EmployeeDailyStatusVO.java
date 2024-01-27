@@ -14,7 +14,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table
+@Table(name = "employee_daily_status")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data

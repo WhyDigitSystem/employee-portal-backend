@@ -111,12 +111,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 				employeeDailyStatusVO.setLogoutDate(null);
 			}
 			return employeeDailyStatusRepo.save(employeeDailyStatusVO);
-		} else if (ObjectUtils.isNotEmpty(employeeDailyStatusVO) && employeeDailyStatusVO.isCheckIn()) {
+		} else if (ObjectUtils.isNotEmpty(employeeDailyStatusVO)) {
 			employeeDailyStatusVO.setActionAt(LocalDateTime.now());
 			employeeDailyStatusVO.setCheckIn(false);
 			employeeDailyStatusVO.setLogoutDate(LocalDateTime.now());
-			employeeDailyStatusRepo.save(employeeDailyStatusVO);
-			return setDailyStatusWithCheckIn(employeeInOutActionDTO);
+			employeeDailyStatusVO = employeeDailyStatusRepo.save(employeeDailyStatusVO);
+			if (employeeInOutActionDTO.isCheckIn()) {
+				employeeDailyStatusVO = setDailyStatusWithCheckIn(employeeInOutActionDTO);
+			}
+			return employeeDailyStatusVO;
 		} else {
 			return setDailyStatusWithCheckIn(employeeInOutActionDTO);
 		}
@@ -135,7 +138,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public List<EmployeeDailyStatusDTO> getEmployeeStatus(Long orgId, Long empId, LocalDate date)
 			throws ApplicationException {
-
 		List<EmployeeDailyStatusDTO> employeeDailyStatusDTO = new ArrayList<>();
 		if (ObjectUtils.isNotEmpty(orgId)) {
 			employeeDailyStatusDTO = employeeDailyStatusRepo.getStatusByOrgIdAndDate(orgId, date);

@@ -86,7 +86,7 @@ public class EmployeeController extends BaseController {
 			errorMsg = e.getMessage();
 			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 			responseDTO = createServiceResponseError(responseObjectsMap,
-					new StringBuilder("Employee ").append(action).append("faled.").toString(), errorMsg);
+					new StringBuilder("Employee ").append(action).append(" failed.").toString(), errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
