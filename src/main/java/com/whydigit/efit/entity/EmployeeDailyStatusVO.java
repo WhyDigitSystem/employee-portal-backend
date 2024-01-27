@@ -24,11 +24,12 @@ public class EmployeeDailyStatusVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	private String empCode;
+	private long empId;
+	private long orgId;	
 	private LocalDateTime loginDate;
 	private LocalDateTime logoutDate;
-	private float totHour;
-	private String status;
+	private LocalDateTime actionAt;
+	private boolean isCheckIn;
 	
 
 }

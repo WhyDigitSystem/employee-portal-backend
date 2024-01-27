@@ -1,6 +1,6 @@
 package com.whydigit.efit.common;
 
-public class UserConstants {
+public class EmployeePortalConstants {
 	public static final String ORGANIZATION_REGISTERED_SUCCESS_MESSAGE = "Organization registered successfully.";
 	public static final String ORGANIZATION_REGISTERED_FAILED_MESSAGE = "Organization register failed.";
 	public static final String ERRROR_MSG_INVALID_ORGANIZATION_REGISTER_INFORMATION = "Invalid Organization register information.";
@@ -55,5 +55,7 @@ public class UserConstants {
 	public static final String REFRESH_TOKEN_SUCCESS_MESSAGE = "The refresh token has been successfully generated.";
 	public static final String REFRESH_TOKEN_FAILED_MESSAGE = "Failed to generate the refresh token.Please login again.";
 	public static final String REFRESH_TOKEN_EXPIRED_MESSAGE = "Your token id expired.Please login again.";
-
+	public static final String CHECK_IN = "check-in";
+    public static final String CHECK_OUT = "check-out";
+	public static final String EMPLOYEE_DAILY_STATUS_VO = "employeeDailyStatusVO";
 }

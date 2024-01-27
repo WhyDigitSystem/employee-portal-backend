@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.whydigit.efit.common.CommonConstant;
-import com.whydigit.efit.common.UserConstants;
+import com.whydigit.efit.common.EmployeePortalConstants;
 import com.whydigit.efit.dto.CreateOrganizationFormDTO;
 import com.whydigit.efit.dto.CreateUserFormDTO;
 import com.whydigit.efit.dto.ResponseDTO;
@@ -40,14 +40,14 @@ public class AdminController extends BaseController {
 			adminService.createUser(createUserFormDTO);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME_WITH_USER_NAME, methodName, createUserFormDTO.getEmail(),
+			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME_WITH_USER_NAME, methodName, createUserFormDTO.getEmail(),
 					errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, UserConstants.USER_REGISTERED_SUCCESS_MESSAGE);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, EmployeePortalConstants.USER_REGISTERED_SUCCESS_MESSAGE);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, UserConstants.USER_REGISTERED_FAILED_MESSAGE,
+			responseDTO = createServiceResponseError(responseObjectsMap, EmployeePortalConstants.USER_REGISTERED_FAILED_MESSAGE,
 					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
@@ -66,16 +66,16 @@ public class AdminController extends BaseController {
 			adminService.createOrganization(createOrganizationFormDTO);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME_WITH_USER_NAME, methodName,
+			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME_WITH_USER_NAME, methodName,
 					createOrganizationFormDTO.getEmail(), errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
-					UserConstants.ORGANIZATION_REGISTERED_SUCCESS_MESSAGE);
+					EmployeePortalConstants.ORGANIZATION_REGISTERED_SUCCESS_MESSAGE);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap,
-					UserConstants.ORGANIZATION_REGISTERED_FAILED_MESSAGE, errorMsg);
+					EmployeePortalConstants.ORGANIZATION_REGISTERED_FAILED_MESSAGE, errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.whydigit.efit.common.CommonConstant;
-import com.whydigit.efit.common.UserConstants;
+import com.whydigit.efit.common.EmployeePortalConstants;
 import com.whydigit.efit.dto.ChangePasswordFormDTO;
 import com.whydigit.efit.dto.LoginFormDTO;
 import com.whydigit.efit.dto.RefreshTokenDTO;
@@ -47,15 +47,15 @@ public class AuthController extends BaseController{
 			userResponseDTO = authService.login(loginRequest);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME_WITH_USER_NAME, methodName, loginRequest.getEmail(),
+			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME_WITH_USER_NAME, methodName, loginRequest.getEmail(),
 					errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, UserConstants.USER_LOGIN_SUCCESS_MESSAGE);
-			responseObjectsMap.put(UserConstants.KEY_USER, userResponseDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, EmployeePortalConstants.USER_LOGIN_SUCCESS_MESSAGE);
+			responseObjectsMap.put(EmployeePortalConstants.KEY_USER, userResponseDTO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, UserConstants.USER_LOGIN_FAILED_MESSAGE,
+			responseDTO = createServiceResponseError(responseObjectsMap, EmployeePortalConstants.USER_LOGIN_FAILED_MESSAGE,
 					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
@@ -73,13 +73,13 @@ public class AuthController extends BaseController{
 			authService.logout(userName);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME_WITH_USER_NAME, methodName, userName, errorMsg);
+			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME_WITH_USER_NAME, methodName, userName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, UserConstants.USER_LOGOUT_SUCCESS_MESSAGE);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, EmployeePortalConstants.USER_LOGOUT_SUCCESS_MESSAGE);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, UserConstants.USER_LOGOUT_FAILED_MESSAGE,
+			responseDTO = createServiceResponseError(responseObjectsMap, EmployeePortalConstants.USER_LOGOUT_FAILED_MESSAGE,
 					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
@@ -98,14 +98,14 @@ public class AuthController extends BaseController{
 			refreshTokenDTO = authService.getRefreshToken(userName, tokenId);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME_WITH_USER_NAME, methodName, userName, errorMsg);
+			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME_WITH_USER_NAME, methodName, userName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, UserConstants.REFRESH_TOKEN_SUCCESS_MESSAGE);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, EmployeePortalConstants.REFRESH_TOKEN_SUCCESS_MESSAGE);
 			responseObjectsMap.put(CommonConstant.REFRESH_TOKEN, refreshTokenDTO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, UserConstants.REFRESH_TOKEN_FAILED_MESSAGE,
+			responseDTO = createServiceResponseError(responseObjectsMap, EmployeePortalConstants.REFRESH_TOKEN_FAILED_MESSAGE,
 					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
@@ -123,14 +123,14 @@ public class AuthController extends BaseController{
 			authService.changePassword(changePasswordRequest);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME_WITH_USER_NAME, methodName,
+			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME_WITH_USER_NAME, methodName,
 					changePasswordRequest.getUserName(), errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, UserConstants.CHANGE_PASSWORD_SUCCESS_MESSAGE);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, EmployeePortalConstants.CHANGE_PASSWORD_SUCCESS_MESSAGE);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, UserConstants.CHANGE_PASSWORD_FAILED_MESSAGE,
+			responseDTO = createServiceResponseError(responseObjectsMap, EmployeePortalConstants.CHANGE_PASSWORD_FAILED_MESSAGE,
 					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
@@ -148,14 +148,14 @@ public class AuthController extends BaseController{
 			authService.resetPassword(resetPasswordRequest);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME_WITH_USER_NAME, methodName,
+			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME_WITH_USER_NAME, methodName,
 					resetPasswordRequest.getUserName(), errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, UserConstants.RESET_PASSWORD_SUCCESS_MESSAGE);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, EmployeePortalConstants.RESET_PASSWORD_SUCCESS_MESSAGE);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, UserConstants.RESET_PASSWORD_FAILED_MESSAGE,
+			responseDTO = createServiceResponseError(responseObjectsMap, EmployeePortalConstants.RESET_PASSWORD_FAILED_MESSAGE,
 					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
@@ -173,13 +173,13 @@ public class AuthController extends BaseController{
 			authService.removeUser(userName);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
-			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME_WITH_USER_NAME, methodName, userName, errorMsg);
+			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME_WITH_USER_NAME, methodName, userName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, UserConstants.USER_REMOVED_SUCCESS_MESSAGE);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, EmployeePortalConstants.USER_REMOVED_SUCCESS_MESSAGE);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, UserConstants.USER_REMOVE_FAILED_MESSAGE,
+			responseDTO = createServiceResponseError(responseObjectsMap, EmployeePortalConstants.USER_REMOVE_FAILED_MESSAGE,
 					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);

@@ -12,7 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.whydigit.efit.common.CommonConstant;
-import com.whydigit.efit.common.UserConstants;
+import com.whydigit.efit.common.EmployeePortalConstants;
 import com.whydigit.efit.dto.ChangePasswordFormDTO;
 import com.whydigit.efit.dto.LoginFormDTO;
 import com.whydigit.efit.dto.RefreshTokenDTO;
@@ -56,18 +56,18 @@ public class AuthServiceImpl implements AuthService {
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		if (ObjectUtils.isEmpty(loginRequest) || StringUtils.isBlank(loginRequest.getEmail())
 				|| StringUtils.isBlank(loginRequest.getPassword())) {
-			throw new ApplicationContextException(UserConstants.ERRROR_MSG_INVALID_USER_LOGIN_INFORMATION);
+			throw new ApplicationContextException(EmployeePortalConstants.ERRROR_MSG_INVALID_USER_LOGIN_INFORMATION);
 		}
 		UserVO userVO = userRepo.findByEmail(loginRequest.getEmail());
 		if (ObjectUtils.isNotEmpty(userVO)) {
 			if (compareEncodedPasswordWithEncryptedPassword(loginRequest.getPassword(), userVO.getPassword())) {
 				updateUserLoginInformation(userVO);
 			} else {
-				throw new ApplicationContextException(UserConstants.ERRROR_MSG_PASSWORD_MISMATCH);
+				throw new ApplicationContextException(EmployeePortalConstants.ERRROR_MSG_PASSWORD_MISMATCH);
 			}
 		} else {
 			throw new ApplicationContextException(
-					UserConstants.ERRROR_MSG_USER_INFORMATION_NOT_FOUND_AND_ASKING_SIGNUP);
+					EmployeePortalConstants.ERRROR_MSG_USER_INFORMATION_NOT_FOUND_AND_ASKING_SIGNUP);
 		}
 		UserResponseDTO userResponseDTO = mapUserVOToDTO(userVO);
 		TokenVO tokenVO = tokenProvider.createToken(userVO.getUserId(), loginRequest.getEmail());
@@ -88,7 +88,7 @@ public class AuthServiceImpl implements AuthService {
 			userStatus = encoder.matches(CryptoUtils.getDecrypt(encryptedPassword), encodedPassword);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
-			throw new ApplicationContextException(UserConstants.ERRROR_MSG_UNABLE_TO_ENCODE_USER_PASSWORD);
+			throw new ApplicationContextException(EmployeePortalConstants.ERRROR_MSG_UNABLE_TO_ENCODE_USER_PASSWORD);
 		}
 		return userStatus;
 	}
@@ -100,10 +100,10 @@ public class AuthServiceImpl implements AuthService {
 		try {
 			userVO.setLoginStatus(true);
 			userRepo.save(userVO);
-			userService.createUserAction(userVO.getEmail(), userVO.getUserId(), UserConstants.USER_ACTION_TYPE_LOGIN);
+			userService.createUserAction(userVO.getEmail(), userVO.getUserId(), EmployeePortalConstants.USER_ACTION_TYPE_LOGIN);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
-			throw new ApplicationContextException(UserConstants.ERRROR_MSG_UNABLE_TO_UPDATE_USER_INFORMATION);
+			throw new ApplicationContextException(EmployeePortalConstants.ERRROR_MSG_UNABLE_TO_UPDATE_USER_INFORMATION);
 		}
 	}
 
@@ -112,13 +112,13 @@ public class AuthServiceImpl implements AuthService {
 		String methodName = "logout()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		if (StringUtils.isBlank(email)) {
-			throw new ApplicationContextException(UserConstants.ERRROR_MSG_INVALID_USER_LOGOUT_INFORMATION);
+			throw new ApplicationContextException(EmployeePortalConstants.ERRROR_MSG_INVALID_USER_LOGOUT_INFORMATION);
 		}
 		UserVO userVO = userRepo.findByEmail(email);
 		if (ObjectUtils.isNotEmpty(userVO)) {
 			updateUserLogOutInformation(userVO);
 		} else {
-			throw new ApplicationContextException(UserConstants.ERRROR_MSG_USER_INFORMATION_NOT_FOUND);
+			throw new ApplicationContextException(EmployeePortalConstants.ERRROR_MSG_USER_INFORMATION_NOT_FOUND);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 	}
@@ -127,10 +127,10 @@ public class AuthServiceImpl implements AuthService {
 		try {
 			userVO.setLoginStatus(false);
 			userRepo.save(userVO);
-			userService.createUserAction(userVO.getEmail(), userVO.getUserId(), UserConstants.USER_ACTION_TYPE_LOGOUT);
+			userService.createUserAction(userVO.getEmail(), userVO.getUserId(), EmployeePortalConstants.USER_ACTION_TYPE_LOGOUT);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
-			throw new ApplicationContextException(UserConstants.ERRROR_MSG_UNABLE_TO_UPDATE_USER_INFORMATION);
+			throw new ApplicationContextException(EmployeePortalConstants.ERRROR_MSG_UNABLE_TO_UPDATE_USER_INFORMATION);
 		}
 	}
 
@@ -141,7 +141,7 @@ public class AuthServiceImpl implements AuthService {
 		if (ObjectUtils.isEmpty(changePasswordRequest) || StringUtils.isBlank(changePasswordRequest.getUserName())
 				|| StringUtils.isBlank(changePasswordRequest.getOldPassword())
 				|| StringUtils.isBlank(changePasswordRequest.getNewPassword())) {
-			throw new ApplicationContextException(UserConstants.ERRROR_MSG_INVALID_CHANGE_PASSWORD_INFORMATION);
+			throw new ApplicationContextException(EmployeePortalConstants.ERRROR_MSG_INVALID_CHANGE_PASSWORD_INFORMATION);
 		}
 		UserVO userVO = userRepo.findByEmail(changePasswordRequest.getUserName());
 		if (ObjectUtils.isNotEmpty(userVO)) {
@@ -150,16 +150,16 @@ public class AuthServiceImpl implements AuthService {
 				try {
 					userVO.setPassword(encoder.encode(CryptoUtils.getDecrypt(changePasswordRequest.getNewPassword())));
 				} catch (Exception e) {
-					throw new ApplicationContextException(UserConstants.ERRROR_MSG_UNABLE_TO_ENCODE_USER_PASSWORD);
+					throw new ApplicationContextException(EmployeePortalConstants.ERRROR_MSG_UNABLE_TO_ENCODE_USER_PASSWORD);
 				}
 				userRepo.save(userVO);
 				userService.createUserAction(userVO.getEmail(), userVO.getUserId(),
-						UserConstants.USER_ACTION_TYPE_CHANGE_PASSWORD);
+						EmployeePortalConstants.USER_ACTION_TYPE_CHANGE_PASSWORD);
 			} else {
-				throw new ApplicationContextException(UserConstants.ERRROR_MSG_OLD_PASSWORD_MISMATCH);
+				throw new ApplicationContextException(EmployeePortalConstants.ERRROR_MSG_OLD_PASSWORD_MISMATCH);
 			}
 		} else {
-			throw new ApplicationContextException(UserConstants.ERRROR_MSG_USER_INFORMATION_NOT_FOUND);
+			throw new ApplicationContextException(EmployeePortalConstants.ERRROR_MSG_USER_INFORMATION_NOT_FOUND);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 	}
@@ -170,19 +170,19 @@ public class AuthServiceImpl implements AuthService {
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		if (ObjectUtils.isEmpty(resetPasswordRequest) || StringUtils.isBlank(resetPasswordRequest.getUserName())
 				|| StringUtils.isBlank(resetPasswordRequest.getNewPassword())) {
-			throw new ApplicationContextException(UserConstants.ERRROR_MSG_INVALID_RESET_PASSWORD_INFORMATION);
+			throw new ApplicationContextException(EmployeePortalConstants.ERRROR_MSG_INVALID_RESET_PASSWORD_INFORMATION);
 		}
 		UserVO userVO = userRepo.findByEmail(resetPasswordRequest.getUserName());
 		if (ObjectUtils.isNotEmpty(userVO)) {
 			try {
 				userVO.setPassword(encoder.encode(CryptoUtils.getDecrypt(resetPasswordRequest.getNewPassword())));
 			} catch (Exception e) {
-				throw new ApplicationContextException(UserConstants.ERRROR_MSG_UNABLE_TO_ENCODE_USER_PASSWORD);
+				throw new ApplicationContextException(EmployeePortalConstants.ERRROR_MSG_UNABLE_TO_ENCODE_USER_PASSWORD);
 			}
 			userRepo.save(userVO);
-			userService.createUserAction(userVO.getEmail(), userVO.getUserId(), UserConstants.USER_ACTION_TYPE_RESET_PASSWORD);
+			userService.createUserAction(userVO.getEmail(), userVO.getUserId(), EmployeePortalConstants.USER_ACTION_TYPE_RESET_PASSWORD);
 		} else {
-			throw new ApplicationContextException(UserConstants.ERRROR_MSG_USER_INFORMATION_NOT_FOUND);
+			throw new ApplicationContextException(EmployeePortalConstants.ERRROR_MSG_USER_INFORMATION_NOT_FOUND);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 	}
@@ -194,14 +194,14 @@ public class AuthServiceImpl implements AuthService {
 		if (StringUtils.isNotEmpty(email)) {
 			UserVO userVO = userRepo.findByEmail(email);
 			if (ObjectUtils.isEmpty(userVO)) {
-				throw new ApplicationContextException(UserConstants.ERRROR_MSG_USER_INFORMATION_NOT_FOUND);
+				throw new ApplicationContextException(EmployeePortalConstants.ERRROR_MSG_USER_INFORMATION_NOT_FOUND);
 			}
 			userVO.setActive(false);
 			userVO.setAccountRemovedDate(new Date());
 			userRepo.save(userVO);
-			userService.createUserAction(userVO.getEmail(), userVO.getUserId(), UserConstants.USER_ACTION_REMOVE_ACCOUNT);
+			userService.createUserAction(userVO.getEmail(), userVO.getUserId(), EmployeePortalConstants.USER_ACTION_REMOVE_ACCOUNT);
 		} else {
-			throw new ApplicationContextException(UserConstants.ERRROR_MSG_INVALID_USER_NAME);
+			throw new ApplicationContextException(EmployeePortalConstants.ERRROR_MSG_INVALID_USER_NAME);
 		}
 	}
 
@@ -224,7 +224,7 @@ public class AuthServiceImpl implements AuthService {
 		UserVO userVO = userRepo.findByEmail(email);
 		RefreshTokenDTO refreshTokenDTO = null;
 		if (ObjectUtils.isEmpty(userVO)) {
-			throw new ApplicationException(UserConstants.ERRROR_MSG_USER_INFORMATION_NOT_FOUND);
+			throw new ApplicationException(EmployeePortalConstants.ERRROR_MSG_USER_INFORMATION_NOT_FOUND);
 		}
 		TokenVO tokenVO = tokenRepo.findById(tokenId).orElseThrow(() -> new ApplicationException("Invalid Token Id."));
 		if (tokenVO.getExpDate().compareTo(new Date()) > 0) {
@@ -232,7 +232,7 @@ public class AuthServiceImpl implements AuthService {
 			refreshTokenDTO = RefreshTokenDTO.builder().token(tokenVO.getToken()).tokenId(tokenVO.getId()).build();
 		} else {
 			tokenRepo.delete(tokenVO);
-			throw new ApplicationException(UserConstants.REFRESH_TOKEN_EXPIRED_MESSAGE);
+			throw new ApplicationException(EmployeePortalConstants.REFRESH_TOKEN_EXPIRED_MESSAGE);
 		}
 		return refreshTokenDTO;
 	}

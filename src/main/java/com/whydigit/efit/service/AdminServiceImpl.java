@@ -12,7 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.whydigit.efit.common.CommonConstant;
-import com.whydigit.efit.common.UserConstants;
+import com.whydigit.efit.common.EmployeePortalConstants;
 import com.whydigit.efit.dto.CreateOrganizationFormDTO;
 import com.whydigit.efit.dto.CreateUserFormDTO;
 import com.whydigit.efit.dto.OrganizationDTO;
@@ -45,15 +45,15 @@ public class AdminServiceImpl implements AdminService {
 		String methodName = "createUser()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		if (ObjectUtils.isEmpty(createUserFormDTO) || StringUtils.isBlank(createUserFormDTO.getEmail())) {
-			throw new ApplicationContextException(UserConstants.ERRROR_MSG_INVALID_USER_REGISTER_INFORMATION);
+			throw new ApplicationContextException(EmployeePortalConstants.ERRROR_MSG_INVALID_USER_REGISTER_INFORMATION);
 		} else if (userRepo.existsByEmail(createUserFormDTO.getEmail())) {
-			throw new ApplicationContextException(UserConstants.ERRROR_MSG_USER_INFORMATION_ALREADY_REGISTERED);
+			throw new ApplicationContextException(EmployeePortalConstants.ERRROR_MSG_USER_INFORMATION_ALREADY_REGISTERED);
 		}
 		UserVO userVO = getUserVOFromCreateUserFormDTO(createUserFormDTO);
 		userVO.setOrganizationVO(organizationRepo.findById(createUserFormDTO.getOrgId())
 				.orElseThrow(() -> new ApplicationException("No orginaization found.")));
 		userRepo.save(userVO);
-		userService.createUserAction(userVO.getEmail(), userVO.getUserId(), UserConstants.USER_ACTION_ADD_ACCOUNT);
+		userService.createUserAction(userVO.getEmail(), userVO.getUserId(), EmployeePortalConstants.USER_ACTION_ADD_ACCOUNT);
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 	}
 
@@ -66,7 +66,7 @@ public class AdminServiceImpl implements AdminService {
 			userVO.setPassword(encoder.encode(CryptoUtils.getDecrypt(createUserFormDTO.getPassword())));
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
-			throw new ApplicationContextException(UserConstants.ERRROR_MSG_UNABLE_TO_ENCODE_USER_PASSWORD);
+			throw new ApplicationContextException(EmployeePortalConstants.ERRROR_MSG_UNABLE_TO_ENCODE_USER_PASSWORD);
 		}
 		userVO.setRole(Role.valueOf(createUserFormDTO.getRole().name()));
 		userVO.setActive(true);
@@ -80,18 +80,18 @@ public class AdminServiceImpl implements AdminService {
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		if (ObjectUtils.isEmpty(createOrganizationFormDTO) || StringUtils.isBlank(createOrganizationFormDTO.getEmail())
 				|| StringUtils.isBlank(createOrganizationFormDTO.getOrganizationDTO().getName())) {
-			throw new ApplicationContextException(UserConstants.ERRROR_MSG_INVALID_ORGANIZATION_REGISTER_INFORMATION);
+			throw new ApplicationContextException(EmployeePortalConstants.ERRROR_MSG_INVALID_ORGANIZATION_REGISTER_INFORMATION);
 		} else if (userRepo.existsByEmail(createOrganizationFormDTO.getEmail())) {
 			throw new ApplicationContextException(
-					UserConstants.ERRROR_MSG_ORGANIZATION_USER_INFORMATION_ALREADY_REGISTERED);
+					EmployeePortalConstants.ERRROR_MSG_ORGANIZATION_USER_INFORMATION_ALREADY_REGISTERED);
 		} else if (organizationRepo.existsByName(createOrganizationFormDTO.getOrganizationDTO().getName())) {
-			throw new ApplicationContextException(UserConstants.ERRROR_MSG_ORGANIZATION_INFORMATION_ALREADY_REGISTERED);
+			throw new ApplicationContextException(EmployeePortalConstants.ERRROR_MSG_ORGANIZATION_INFORMATION_ALREADY_REGISTERED);
 		}
 		UserVO userVO = getUserVOFromCreateOrganizationFormDTO(createOrganizationFormDTO);
 		userVO.setOrganizationVO(
 				organizationRepo.save(getOrganizationVOFromCreateOrganizationFormDTO(createOrganizationFormDTO)));
 		userRepo.save(userVO);
-		userService.createUserAction(userVO.getEmail(), userVO.getUserId(), UserConstants.USER_ACTION_ADD_ACCOUNT);
+		userService.createUserAction(userVO.getEmail(), userVO.getUserId(), EmployeePortalConstants.USER_ACTION_ADD_ACCOUNT);
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 	}
 
@@ -120,7 +120,7 @@ public class AdminServiceImpl implements AdminService {
 			userVO.setPassword(encoder.encode(CryptoUtils.getDecrypt(createOrganizationFormDTO.getPassword())));
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
-			throw new ApplicationContextException(UserConstants.ERRROR_MSG_UNABLE_TO_ENCODE_USER_PASSWORD);
+			throw new ApplicationContextException(EmployeePortalConstants.ERRROR_MSG_UNABLE_TO_ENCODE_USER_PASSWORD);
 		}
 		userVO.setRole(Role.valueOf(createOrganizationFormDTO.getRole().name()));
 		userVO.setActive(true);

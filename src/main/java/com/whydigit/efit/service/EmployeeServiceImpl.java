@@ -2,6 +2,7 @@ package com.whydigit.efit.service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,8 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.whydigit.efit.dto.EmployeeAttendanceActivityDTO;
+import com.whydigit.efit.dto.EmployeeDailyStatusDTO;
+import com.whydigit.efit.dto.EmployeeInOutActionDTO;
+import com.whydigit.efit.entity.EmployeeDailyStatusVO;
 import com.whydigit.efit.entity.EmployeeDetailsVO;
-import com.whydigit.efit.entity.HolidayVO;
 import com.whydigit.efit.exception.ApplicationException;
 import com.whydigit.efit.repo.EmployeeDailyStatusRepo;
 import com.whydigit.efit.repo.EmployeeDetailsRepo;
@@ -45,7 +48,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public List<EmployeeAttendanceActivityDTO> getEmployeeAttendanceActivity(LocalDate startDate, LocalDate endDate,
 			long orgId, String empId) throws ApplicationException {
 		List<EmployeeDetailsVO> employeeDetailsVO = new ArrayList<>();
-		long sunDay = getNoOfSunday(startDate,endDate);
+		long sunDay = getNoOfSunday(startDate, endDate);
 		long totalDays = ChronoUnit.DAYS.between(startDate, endDate.plusDays(1));
 		if (orgId == 0) {
 			throw new ApplicationException("Invalid request. Please try again.");
@@ -71,7 +74,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 				empAct.setNoOfWeekendDays(sunDay);
 				empAct.setTotalDays(totalDays);
 				empAct.setNumberOfLeaveDays(leaveRequestRepo.findNoOfLeave(startDate, empd.getEmpcode()));
-				empAct.setPresentDays(employeeDailyStatusRepo.getPresentDays(startDate, endDate, empd.getEmpcode()));
+				empAct.setPresentDays(employeeDailyStatusRepo.getPresentDays(startDate, endDate, empd.getId()));
 				empAct.setWorkingDays(totalDays - totalHolidays - sunDay);
 				return empAct;
 			} catch (Exception e) {
@@ -82,17 +85,65 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employeeAttendanceActivityDTO;
 	}
 
-	
-	
-	public static long getNoOfSunday(LocalDate startDate,LocalDate endDate ) {
-	     long sundayCount = 0;
+	public static long getNoOfSunday(LocalDate startDate, LocalDate endDate) {
+		long sundayCount = 0;
 
-	        while (!startDate.isAfter(endDate)) {
-	            if (startDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
-	                sundayCount++;
-	            }
-	            startDate = startDate.plusDays(1);
-	        }
-	        return sundayCount;
+		while (!startDate.isAfter(endDate)) {
+			if (startDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
+				sundayCount++;
+			}
+			startDate = startDate.plusDays(1);
+		}
+		return sundayCount;
+	}
+
+	@Override
+	public EmployeeDailyStatusVO employeeInOutAction(EmployeeInOutActionDTO employeeInOutActionDTO) {
+		EmployeeDailyStatusVO employeeDailyStatusVO = employeeDailyStatusRepo
+				.getLatestSataus(employeeInOutActionDTO.getEmpId());
+		if (ObjectUtils.isNotEmpty(employeeDailyStatusVO)
+				&& employeeDailyStatusVO.getLoginDate().toLocalDate().isEqual(LocalDate.now())) {
+			employeeDailyStatusVO.setActionAt(LocalDateTime.now());
+			employeeDailyStatusVO.setCheckIn(employeeInOutActionDTO.isCheckIn());
+			if (!employeeInOutActionDTO.isCheckIn()) {
+				employeeDailyStatusVO.setLogoutDate(LocalDateTime.now());
+			} else {
+				employeeDailyStatusVO.setLogoutDate(null);
+			}
+			return employeeDailyStatusRepo.save(employeeDailyStatusVO);
+		} else if (ObjectUtils.isNotEmpty(employeeDailyStatusVO) && employeeDailyStatusVO.isCheckIn()) {
+			employeeDailyStatusVO.setActionAt(LocalDateTime.now());
+			employeeDailyStatusVO.setCheckIn(false);
+			employeeDailyStatusVO.setLogoutDate(LocalDateTime.now());
+			employeeDailyStatusRepo.save(employeeDailyStatusVO);
+			return setDailyStatusWithCheckIn(employeeInOutActionDTO);
+		} else {
+			return setDailyStatusWithCheckIn(employeeInOutActionDTO);
+		}
+	}
+
+	private EmployeeDailyStatusVO setDailyStatusWithCheckIn(EmployeeInOutActionDTO employeeInOutActionDTO) {
+		EmployeeDailyStatusVO employeeDailyStatusVO = new EmployeeDailyStatusVO();
+		employeeDailyStatusVO.setActionAt(LocalDateTime.now());
+		employeeDailyStatusVO.setCheckIn(true);
+		employeeDailyStatusVO.setEmpId(employeeInOutActionDTO.getEmpId());
+		employeeDailyStatusVO.setLoginDate(LocalDateTime.now());
+		employeeDailyStatusVO.setOrgId(employeeInOutActionDTO.getOrgId());
+		return employeeDailyStatusRepo.save(employeeDailyStatusVO);
+	}
+
+	@Override
+	public List<EmployeeDailyStatusDTO> getEmployeeStatus(Long orgId, Long empId, LocalDate date)
+			throws ApplicationException {
+
+		List<EmployeeDailyStatusDTO> employeeDailyStatusDTO = new ArrayList<>();
+		if (ObjectUtils.isNotEmpty(orgId)) {
+			employeeDailyStatusDTO = employeeDailyStatusRepo.getStatusByOrgIdAndDate(orgId, date);
+		} else if (ObjectUtils.isNotEmpty(empId)) {
+			employeeDailyStatusDTO = employeeDailyStatusRepo.getStatusByEmpIdAndDate(empId, date);
+		} else {
+			throw new ApplicationException("Invalid input. Please try again");
+		}
+		return employeeDailyStatusDTO;
 	}
 }
