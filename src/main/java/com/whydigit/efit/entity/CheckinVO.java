@@ -24,7 +24,7 @@ public class CheckinVO {
 	
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String empcode;
 	private String companycode;
