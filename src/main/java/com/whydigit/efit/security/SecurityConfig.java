@@ -37,7 +37,7 @@ public class SecurityConfig {
 						"/api/user/getRefreshToken", "/api/basicSetting/companyInfo","/api/basicMaster/employee",
 						"/api/basicMaster/permissionRequest","/api/basicMaster/permissionRequestapp/{id}","/api/basicMaster/leaverequest","/api/basicMaster/leaverequestapp/{id}","/api/basicMaster/checkin",
 						"/api/basicMaster/checkout","/api/basicMaster/holiday","/api/basicMaster/employee1","/api/basicMaster/chkStatus/{empcode}","/api/basicMaster/permissionRequests/{empcode}","/api/basicMaster/leaverequests/{empcode}","/api/admin/createUser","/api/admin/createOrginization",
-						"/api/auth/login","/api/basicMaster/leavetype","/api/basicMaster/leavetype/{id}","/api/basicMaster/employee/daily/status","/api/basicMaster/attendance/{empcode}","/api/employee/getEmployeeAttendanceActivity")
+						"/api/auth/login","/api/basicMaster/leavetype","/api/basicMaster/leavetype/{id}","/api/basicMaster/employee/daily/status","/api/basicMaster/attendance/{empcode}","/api/employee/getEmployeeAttendanceActivity","/api/employee/employeeInOutAction","/api/employee/getEmployeeStatus")
 				.permitAll().antMatchers("/api/**").hasAnyRole("USER", "GUEST_USER").anyRequest().authenticated();
 		http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 		return http.build();
