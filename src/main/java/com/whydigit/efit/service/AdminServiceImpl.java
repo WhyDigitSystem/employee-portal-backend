@@ -60,6 +60,7 @@ public class AdminServiceImpl implements AdminService {
 	private UserVO getUserVOFromCreateUserFormDTO(CreateUserFormDTO createUserFormDTO) {
 		UserVO userVO = new UserVO();
 		userVO.setEmpcode(createUserFormDTO.getEmpCode());
+		userVO.setEmpId(createUserFormDTO.getEmpId());
 		userVO.setEmpname(createUserFormDTO.getEmpName());
 		userVO.setEmail(createUserFormDTO.getEmail());
 		try {

@@ -35,6 +35,7 @@ public class UserVO {
 	private String empname;
 	private String email;
 	private String empcode;
+	private long empId;
 	private String password;
 	private String profileImage;
 	private boolean loginStatus;

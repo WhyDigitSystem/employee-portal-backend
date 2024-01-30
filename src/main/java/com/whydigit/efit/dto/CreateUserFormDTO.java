@@ -4,6 +4,7 @@ package com.whydigit.efit.dto;
 //import javax.persistence.Enumerated;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
@@ -16,6 +17,9 @@ import lombok.NoArgsConstructor;
 public class CreateUserFormDTO {
 	@NotBlank(message = "Employee code is required")
 	private String empCode;
+	
+	@NotNull(message = "Employee id is required")
+	private long empId;
 	
 	@NotBlank(message = "Employee name is required")
 	private String empName;

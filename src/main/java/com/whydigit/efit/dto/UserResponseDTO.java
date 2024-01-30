@@ -18,6 +18,7 @@ public class UserResponseDTO {
 	private String email;
 	private String empname;
 	private String empcode;
+	private long empId;
 	private boolean loginStatus;
 	private boolean isActive;
 	@Enumerated(EnumType.STRING)
