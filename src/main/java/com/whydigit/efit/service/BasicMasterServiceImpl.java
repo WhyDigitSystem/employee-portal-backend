@@ -17,6 +17,8 @@ import com.whydigit.efit.entity.EmployeeCheckInTimeVO;
 import com.whydigit.efit.entity.EmployeeCheckinDailyStatusVO;
 import com.whydigit.efit.entity.EmployeeDetailsVO;
 import com.whydigit.efit.entity.HolidayVO;
+import com.whydigit.efit.entity.LeaveBalanceVO;
+import com.whydigit.efit.entity.LeaveCreditVO;
 import com.whydigit.efit.entity.LeaveRequestVO;
 import com.whydigit.efit.entity.LeaveTypeVO;
 import com.whydigit.efit.entity.PermissionRequestVO;
@@ -26,6 +28,8 @@ import com.whydigit.efit.repo.EmployeeCheckinDailyStatusRepo;
 import com.whydigit.efit.repo.EmployeeCheckinTimeRepo;
 import com.whydigit.efit.repo.EmployeeDetailsRepo;
 import com.whydigit.efit.repo.HolidayRepo;
+import com.whydigit.efit.repo.LeaveBalanceRepository;
+import com.whydigit.efit.repo.LeaveCreditRepository;
 import com.whydigit.efit.repo.LeaveRequestRepo;
 import com.whydigit.efit.repo.LeaveTypeRepo;
 import com.whydigit.efit.repo.PermissionRequestRepo;
@@ -60,6 +64,12 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 	@Autowired
 	EmployeeCheckinDailyStatusRepo dailyStatus;
 
+	@Autowired
+	LeaveCreditRepository leaveCreditRepo;
+	
+	@Autowired
+	LeaveBalanceRepository leaveBalanceRepo;
+	
 //	employee
 
 	@Override
@@ -341,8 +351,26 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 		
 		return dailyStatus.findAll();
 	}
-	
-	
 
+	//Create Leave credit to employees
+	@Override
+	public LeaveCreditVO createLeaveCredit(LeaveCreditVO leaveCreditVO) {
+		// TODO Auto-generated method stub
+		leaveCreditVO.setBranch("BLR");
+		leaveCreditVO.setCompanycode("WDS");
+		leaveCreditVO.setCancel(false);
+		return leaveCreditRepo.save(leaveCreditVO);
+	}
+
+	@Override
+	public List<LeaveBalanceVO> getAllLeaveBalance() {
+		
+		return leaveBalanceRepo.findAll();
+	}
+	
+	@Override
+	public List<LeaveBalanceVO> getLeaveBalanceByEmpcode(String empcode) {
+		return leaveBalanceRepo.findByEmpcode(empcode);
+	}
 
 }
