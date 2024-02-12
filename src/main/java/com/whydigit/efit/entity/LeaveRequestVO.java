@@ -50,6 +50,7 @@ public class LeaveRequestVO {
 	private String remarks;
 	private String notifyto;
 	private float noOfDays;
+	private String empmail;
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 
