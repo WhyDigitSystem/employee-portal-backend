@@ -14,13 +14,16 @@ import org.springframework.stereotype.Service;
 
 import com.whydigit.efit.common.CommonConstant;
 import com.whydigit.efit.common.EmployeePortalConstants;
+import com.whydigit.efit.controller.BranchDTO;
 import com.whydigit.efit.dto.CreateOrganizationFormDTO;
 import com.whydigit.efit.dto.CreateUserFormDTO;
 import com.whydigit.efit.dto.OrganizationDTO;
 import com.whydigit.efit.dto.Role;
+import com.whydigit.efit.entity.BranchVO;
 import com.whydigit.efit.entity.OrganizationVO;
 import com.whydigit.efit.entity.UserVO;
 import com.whydigit.efit.exception.ApplicationException;
+import com.whydigit.efit.repo.BranchRepo;
 import com.whydigit.efit.repo.OrganizationRepo;
 import com.whydigit.efit.repo.UserRepo;
 import com.whydigit.efit.util.CryptoUtils;
@@ -40,6 +43,9 @@ public class AdminServiceImpl implements AdminService {
 
 	@Autowired
 	OrganizationRepo organizationRepo;
+	
+	@Autowired
+	BranchRepo branchRepo;
 
 	@Override
 	public void createUser(CreateUserFormDTO createUserFormDTO) throws ApplicationException {
@@ -142,6 +148,28 @@ public class AdminServiceImpl implements AdminService {
 	public OrganizationVO getOrginizationById(Long orgId) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public BranchVO craetebranch(BranchDTO branchDTO) throws ApplicationException {
+		BranchVO branchVO = new BranchVO();
+		if (ObjectUtils.isNotEmpty(branchDTO.getId())) {
+			branchVO = branchRepo.findById(branchDTO.getId())
+					.orElseThrow(() -> new ApplicationException("Branch Not found"));
+			branchVO.setActive(branchDTO.isActive());
+		} else {
+			branchVO.setActive(true);
+		}
+		OrganizationVO organizationVO = organizationRepo.findById(branchDTO.getOrgId())
+				.orElseThrow(() -> new ApplicationException("Organization Not found"));
+		branchVO.setOrganizationVO(organizationVO);
+		branchVO.setBranchCode(branchDTO.getBranchCode());
+		branchVO.setBranchManager(branchDTO.getBranchManager());
+		branchVO.setPhoneNumber(branchDTO.getPhoneNumber());
+		branchVO.setAddress(branchDTO.getAddress());
+		branchVO.setPAN(branchDTO.getPAN());
+		branchVO.setGST(branchDTO.getGST());
+		return branchRepo.save(branchVO);
 	}
 
 }

@@ -23,6 +23,7 @@ import com.whydigit.efit.dto.CreateOrganizationFormDTO;
 import com.whydigit.efit.dto.CreateUserFormDTO;
 import com.whydigit.efit.dto.OrganizationDTO;
 import com.whydigit.efit.dto.ResponseDTO;
+import com.whydigit.efit.entity.BranchVO;
 import com.whydigit.efit.entity.OrganizationVO;
 import com.whydigit.efit.service.AdminService;
 
@@ -85,7 +86,6 @@ public class AdminController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 	
-
 	@PostMapping("/updateOrginization")
 	public ResponseEntity<ResponseDTO> updateOrginization(@RequestBody OrganizationDTO organizationDTO) {
 		String methodName = "updateOrginization()";
@@ -142,4 +142,59 @@ public class AdminController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
+	@PostMapping("/craeteBranch")
+	public ResponseEntity<ResponseDTO> craeteBranch(@Valid @RequestBody BranchDTO branchDTO) {
+		String methodName = "craeteBranch()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		BranchVO branchVO = new BranchVO();
+		try {
+			branchVO = adminService.craetebranch(branchDTO);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME_WITH_BRANCH_NAME, methodName,
+					branchDTO.getBranchCode(), errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					EmployeePortalConstants.BRANCH_CREATE_SUCCESS_MESSAGE);
+			responseObjectsMap.put("branchVO", branchVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					EmployeePortalConstants.BRANCH_CREATE_FAILED_MESSAGE, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@PostMapping("/updateBranch")
+	public ResponseEntity<ResponseDTO> updateBranch(@Valid @RequestBody BranchDTO branchDTO) {
+		String methodName = "updateBranch()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		BranchVO branchVO = new BranchVO();
+		try {
+			branchVO = adminService.craetebranch(branchDTO);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME_WITH_BRANCH_NAME, methodName,
+					branchDTO.getBranchCode(), errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					EmployeePortalConstants.BRANCH_UPDATE_SUCCESS_MESSAGE);
+			responseObjectsMap.put("branchVO", branchVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					EmployeePortalConstants.BRANCH_UPDATE_FAILED_MESSAGE, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 }

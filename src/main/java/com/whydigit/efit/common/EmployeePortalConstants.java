@@ -64,5 +64,9 @@ public class EmployeePortalConstants {
 	public static final String ERROR_MSG_METHOD_NAME_WITH_ORG_ID= "MethodName : {} OrgID : {} Error : {}";
 	public static final String ORGANIZATION_FETCH_SUCCESS_MESSAGE = "Organization information get successfully.";
 	public static final String ORGANIZATION_FETCH_FAILED_MESSAGE = "Organization failed to update.";
-	
+	public static final String ERROR_MSG_METHOD_NAME_WITH_BRANCH_NAME = "MethodName : {} BranchName : {} Error : {}";
+	public static final String BRANCH_UPDATE_SUCCESS_MESSAGE = "Branch has been update successfully.";
+	public static final String BRANCH_UPDATE_FAILED_MESSAGE = "Branch failed to update.";
+	public static final String BRANCH_CREATE_SUCCESS_MESSAGE = "Branch has been created successfully.";
+	public static final String BRANCH_CREATE_FAILED_MESSAGE = "Branch failed to create.";
 }
