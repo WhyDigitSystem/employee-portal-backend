@@ -17,5 +17,5 @@ public interface AdminService {
 
 	public OrganizationVO updateOrginization(OrganizationDTO organizationDTO) throws ApplicationException;
 
-	public OrganizationVO getOrginizationById(Long orgId);
+	public OrganizationVO getOrginizationById(Long orgId) throws ApplicationException;
 }

@@ -1,7 +1,6 @@
 package com.whydigit.efit.service;
 
 import javax.transaction.Transactional;
-import javax.validation.Valid;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -48,13 +47,15 @@ public class AdminServiceImpl implements AdminService {
 		if (ObjectUtils.isEmpty(createUserFormDTO) || StringUtils.isBlank(createUserFormDTO.getEmail())) {
 			throw new ApplicationContextException(EmployeePortalConstants.ERRROR_MSG_INVALID_USER_REGISTER_INFORMATION);
 		} else if (userRepo.existsByEmail(createUserFormDTO.getEmail())) {
-			throw new ApplicationContextException(EmployeePortalConstants.ERRROR_MSG_USER_INFORMATION_ALREADY_REGISTERED);
+			throw new ApplicationContextException(
+					EmployeePortalConstants.ERRROR_MSG_USER_INFORMATION_ALREADY_REGISTERED);
 		}
 		UserVO userVO = getUserVOFromCreateUserFormDTO(createUserFormDTO);
 		userVO.setOrganizationVO(organizationRepo.findById(createUserFormDTO.getOrgId())
 				.orElseThrow(() -> new ApplicationException("No orginaization found.")));
 		userRepo.save(userVO);
-		userService.createUserAction(userVO.getEmail(), userVO.getUserId(), EmployeePortalConstants.USER_ACTION_ADD_ACCOUNT);
+		userService.createUserAction(userVO.getEmail(), userVO.getUserId(),
+				EmployeePortalConstants.USER_ACTION_ADD_ACCOUNT);
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 	}
 
@@ -82,18 +83,21 @@ public class AdminServiceImpl implements AdminService {
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		if (ObjectUtils.isEmpty(createOrganizationFormDTO) || StringUtils.isBlank(createOrganizationFormDTO.getEmail())
 				|| StringUtils.isBlank(createOrganizationFormDTO.getOrgName())) {
-			throw new ApplicationContextException(EmployeePortalConstants.ERRROR_MSG_INVALID_ORGANIZATION_REGISTER_INFORMATION);
+			throw new ApplicationContextException(
+					EmployeePortalConstants.ERRROR_MSG_INVALID_ORGANIZATION_REGISTER_INFORMATION);
 		} else if (userRepo.existsByEmail(createOrganizationFormDTO.getEmail())) {
 			throw new ApplicationContextException(
 					EmployeePortalConstants.ERRROR_MSG_ORGANIZATION_USER_INFORMATION_ALREADY_REGISTERED);
 		} else if (organizationRepo.existsByName(createOrganizationFormDTO.getOrgName())) {
-			throw new ApplicationContextException(EmployeePortalConstants.ERRROR_MSG_ORGANIZATION_INFORMATION_ALREADY_REGISTERED);
+			throw new ApplicationContextException(
+					EmployeePortalConstants.ERRROR_MSG_ORGANIZATION_INFORMATION_ALREADY_REGISTERED);
 		}
 		UserVO userVO = getUserVOFromCreateOrganizationFormDTO(createOrganizationFormDTO);
 		userVO.setOrganizationVO(
 				organizationRepo.save(getOrganizationVOFromCreateOrganizationFormDTO(createOrganizationFormDTO)));
 		userRepo.save(userVO);
-		userService.createUserAction(userVO.getEmail(), userVO.getUserId(), EmployeePortalConstants.USER_ACTION_ADD_ACCOUNT);
+		userService.createUserAction(userVO.getEmail(), userVO.getUserId(),
+				EmployeePortalConstants.USER_ACTION_ADD_ACCOUNT);
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 	}
 
@@ -139,9 +143,11 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public OrganizationVO getOrginizationById(Long orgId) {
-		// TODO Auto-generated method stub
-		return null;
+	public OrganizationVO getOrginizationById(Long orgId) throws ApplicationException {
+		if (ObjectUtils.isNotEmpty(orgId)) {
+			throw new ApplicationException("Invalid Organization Input");
+		}
+		return organizationRepo.findById(orgId).orElseThrow(() -> new ApplicationException("Organization not found."));
 	}
 
 }
