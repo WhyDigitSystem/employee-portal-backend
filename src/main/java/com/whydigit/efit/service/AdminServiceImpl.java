@@ -150,7 +150,7 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public OrganizationVO getOrginizationById(Long orgId) throws ApplicationException {
-		if (ObjectUtils.isNotEmpty(orgId)) {
+		if (ObjectUtils.isEmpty(orgId)) {
 			throw new ApplicationException("Invalid Organization Input");
 		}
 		return organizationRepo.findById(orgId).orElseThrow(() -> new ApplicationException("Organization not found."));
