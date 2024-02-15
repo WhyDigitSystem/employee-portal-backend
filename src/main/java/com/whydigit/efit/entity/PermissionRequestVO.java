@@ -37,7 +37,7 @@ public class PermissionRequestVO {
 	private String branch;
 	private Date fromhour;
 	private Date tohour;
-	private Date totalhours;
+	private String totalhours;
 	private String notes;
 	private String empcode;
 	private String empname;
