@@ -14,24 +14,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateOrganizationFormDTO {
-	@NotBlank(message = "Employee code is required")
-	private String empCode;
-	
-	@NotBlank(message = "Employee name is required")
-	private String empName;
+
+	@NotBlank(message = "Organization Name is required")
+	private String orgName;
 
 	@NotBlank(message = "Email is required")
 	@Size(max = 30)
 	@Email
 	private String email;
-	
-	private OwnerAccessRole role;
-	
-	private long orgId;
-
+		
 	@NotBlank
 	@Size(min = 6, max = 100, message = "Password is required")
 	private String password;
-
-	private OrganizationDTO organizationDTO; 
+	
+	private long noOfLicence;
 }

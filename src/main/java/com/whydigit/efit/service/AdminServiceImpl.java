@@ -77,15 +77,15 @@ public class AdminServiceImpl implements AdminService {
 	@Transactional
 	@Override
 	public void createOrganization(CreateOrganizationFormDTO createOrganizationFormDTO) {
-		String methodName = "createUser()";
+		String methodName = "createOrganization()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		if (ObjectUtils.isEmpty(createOrganizationFormDTO) || StringUtils.isBlank(createOrganizationFormDTO.getEmail())
-				|| StringUtils.isBlank(createOrganizationFormDTO.getOrganizationDTO().getName())) {
+				|| StringUtils.isBlank(createOrganizationFormDTO.getOrgName())) {
 			throw new ApplicationContextException(EmployeePortalConstants.ERRROR_MSG_INVALID_ORGANIZATION_REGISTER_INFORMATION);
 		} else if (userRepo.existsByEmail(createOrganizationFormDTO.getEmail())) {
 			throw new ApplicationContextException(
 					EmployeePortalConstants.ERRROR_MSG_ORGANIZATION_USER_INFORMATION_ALREADY_REGISTERED);
-		} else if (organizationRepo.existsByName(createOrganizationFormDTO.getOrganizationDTO().getName())) {
+		} else if (organizationRepo.existsByName(createOrganizationFormDTO.getOrgName())) {
 			throw new ApplicationContextException(EmployeePortalConstants.ERRROR_MSG_ORGANIZATION_INFORMATION_ALREADY_REGISTERED);
 		}
 		UserVO userVO = getUserVOFromCreateOrganizationFormDTO(createOrganizationFormDTO);
@@ -99,23 +99,15 @@ public class AdminServiceImpl implements AdminService {
 	private OrganizationVO getOrganizationVOFromCreateOrganizationFormDTO(
 			CreateOrganizationFormDTO createOrganizationFormDTO) {
 		OrganizationVO organizationVO = new OrganizationVO();
-		OrganizationDTO organizationDTO = createOrganizationFormDTO.getOrganizationDTO();
-		organizationVO.setName(organizationDTO.getName());
-		organizationVO.setCity(organizationDTO.getCity());
-		organizationVO.setCountry(organizationDTO.getCountry());
-		organizationVO.setOrgLogo(organizationDTO.getOrgLogo());
+		organizationVO.setName(createOrganizationFormDTO.getOrgName());
 		organizationVO.setActive(true);
-		organizationVO.setPhoneNumber(organizationDTO.getPhoneNumber());
-		organizationVO.setPostalCode(organizationDTO.getPostalCode());
-		organizationVO.setState(organizationDTO.getState());
-		organizationVO.setStreet(organizationDTO.getStreet());
+		organizationVO.setNoOfLicence(createOrganizationFormDTO.getNoOfLicence());
 		return organizationVO;
 	}
 
 	private UserVO getUserVOFromCreateOrganizationFormDTO(CreateOrganizationFormDTO createOrganizationFormDTO) {
 		UserVO userVO = new UserVO();
-		userVO.setEmpcode(createOrganizationFormDTO.getEmpCode());
-		userVO.setEmpname(createOrganizationFormDTO.getEmpName());
+		userVO.setEmpname(createOrganizationFormDTO.getOrgName());
 		userVO.setEmail(createOrganizationFormDTO.getEmail());
 		try {
 			userVO.setPassword(encoder.encode(CryptoUtils.getDecrypt(createOrganizationFormDTO.getPassword())));
@@ -123,7 +115,7 @@ public class AdminServiceImpl implements AdminService {
 			LOGGER.error(e.getMessage());
 			throw new ApplicationContextException(EmployeePortalConstants.ERRROR_MSG_UNABLE_TO_ENCODE_USER_PASSWORD);
 		}
-		userVO.setRole(Role.valueOf(createOrganizationFormDTO.getRole().name()));
+		userVO.setRole(Role.valueOf(Role.ADMIN.name()));
 		userVO.setActive(true);
 		return userVO;
 	}

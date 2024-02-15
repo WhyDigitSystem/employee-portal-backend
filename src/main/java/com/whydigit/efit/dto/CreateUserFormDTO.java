@@ -1,7 +1,5 @@
 package com.whydigit.efit.dto;
 
-//import javax.persistence.EnumType;
-//import javax.persistence.Enumerated;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -37,5 +35,4 @@ public class CreateUserFormDTO {
 	@Size(min = 6, max = 100, message = "Password is required")
 	private String password;
 
-	private OrganizationDTO organizationDTO;
 }
