@@ -58,4 +58,11 @@ public class EmployeePortalConstants {
 	public static final String CHECK_IN = "check-in";
     public static final String CHECK_OUT = "check-out";
 	public static final String EMPLOYEE_DAILY_STATUS_VO = "employeeDailyStatusVO";
+	public static final String ERROR_MSG_METHOD_NAME_WITH_ORG_NAME = "MethodName : {} OrgName : {} Error : {}";
+	public static final String ORGANIZATION_UPDATE_SUCCESS_MESSAGE = "Organization has been update successfully.";
+	public static final String ORGANIZATION_UPDATE_FAILED_MESSAGE = "Organization failed to update.";
+	public static final String ERROR_MSG_METHOD_NAME_WITH_ORG_ID= "MethodName : {} OrgID : {} Error : {}";
+	public static final String ORGANIZATION_FETCH_SUCCESS_MESSAGE = "Organization information get successfully.";
+	public static final String ORGANIZATION_FETCH_FAILED_MESSAGE = "Organization failed to update.";
+	
 }

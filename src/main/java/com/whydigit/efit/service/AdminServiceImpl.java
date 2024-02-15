@@ -1,6 +1,7 @@
 package com.whydigit.efit.service;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -118,6 +119,29 @@ public class AdminServiceImpl implements AdminService {
 		userVO.setRole(Role.valueOf(Role.ADMIN.name()));
 		userVO.setActive(true);
 		return userVO;
+	}
+
+	@Override
+	public OrganizationVO updateOrginization(OrganizationDTO organizationDTO) throws ApplicationException {
+		OrganizationVO organizationVO = organizationRepo.findById(organizationDTO.getId())
+				.orElseThrow(() -> new ApplicationException("Organization not found."));
+		organizationVO.setName(organizationDTO.getName());
+		organizationVO.setOrgCode(organizationDTO.getOrgCode());
+		organizationVO.setFounder(organizationDTO.getFounder());
+		organizationVO.setCEO(organizationDTO.getCEO());
+		organizationVO.setPhoneNumber(organizationDTO.getPhoneNumber());
+		organizationVO.setAddress(organizationDTO.getAddress());
+		organizationVO.setPAN(organizationDTO.getPAN());
+		organizationVO.setGST(organizationDTO.getGST());
+		organizationVO.setOrgLogo(organizationDTO.getOrgLogo());
+		organizationVO.setActive(organizationDTO.isActive());
+		return organizationRepo.save(organizationVO);
+	}
+
+	@Override
+	public OrganizationVO getOrginizationById(Long orgId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

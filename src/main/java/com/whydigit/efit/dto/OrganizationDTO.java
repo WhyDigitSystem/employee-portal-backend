@@ -1,11 +1,5 @@
 package com.whydigit.efit.dto;
 
-import javax.persistence.Embedded;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,14 +9,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class OrganizationDTO {
 
-	@NotBlank(message = "Organization name is required")
+	private Long id;
 	private String name;
+	private String orgCode;
+	private String founder;
+	private String CEO;
 	private String phoneNumber;
-	private String street;
-	private String city;
-	private String state;
-	private String postalCode;
-	private String country;
+	private String address;
+	private String PAN;
+	private String GST;
 	private String orgLogo;
- 	
+	private boolean isActive;
 }
