@@ -69,4 +69,6 @@ public class EmployeePortalConstants {
 	public static final String BRANCH_UPDATE_FAILED_MESSAGE = "Branch failed to update.";
 	public static final String BRANCH_CREATE_SUCCESS_MESSAGE = "Branch has been created successfully.";
 	public static final String BRANCH_CREATE_FAILED_MESSAGE = "Branch failed to create.";
+	public static final String GET_BRANCH_SUCCESS_MESSAGE = "get branch details  success.";
+	public static final String GET_BRANCH_FAILED_MESSAGE= "get branch details failed.";
 }

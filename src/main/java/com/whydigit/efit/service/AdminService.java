@@ -22,5 +22,8 @@ public interface AdminService {
 	public OrganizationVO getOrginizationById(Long orgId) throws ApplicationException;
 
 	public BranchVO craetebranch(BranchDTO branchDTO) throws ApplicationException;
+
+	public BranchVO getBranchById(Long branchId) throws ApplicationException;
 	
 }
+ 

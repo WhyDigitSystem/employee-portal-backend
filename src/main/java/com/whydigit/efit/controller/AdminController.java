@@ -141,6 +141,33 @@ public class AdminController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	@GetMapping("/getbranch/{branchId}")
+	public ResponseEntity<ResponseDTO> getBranchById(@PathVariable Long branchId) {
+		String methodName = "getBranchById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		BranchVO branchVO = new BranchVO();
+		try {
+			branchVO = adminService.getBranchById(branchId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME_WITH_ORG_ID, methodName,
+					branchId, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					EmployeePortalConstants.GET_BRANCH_SUCCESS_MESSAGE);
+			responseObjectsMap.put("branchVO", branchVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					EmployeePortalConstants.GET_BRANCH_FAILED_MESSAGE, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 
 	@PostMapping("/craeteBranch")
 	public ResponseEntity<ResponseDTO> craeteBranch(@Valid @RequestBody BranchDTO branchDTO) {

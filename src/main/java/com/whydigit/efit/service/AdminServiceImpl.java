@@ -178,4 +178,12 @@ public class AdminServiceImpl implements AdminService {
 		return branchRepo.save(branchVO);
 	}
 
+	@Override
+	public BranchVO getBranchById(Long branchId) throws ApplicationException {
+		if (ObjectUtils.isEmpty(branchId)) {
+			throw new ApplicationException("Invalid Branch Input");
+		}
+		return branchRepo.findById(branchId).orElseThrow(() -> new ApplicationException("Branch not found."));
+	}
+
 }
