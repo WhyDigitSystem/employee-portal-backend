@@ -71,4 +71,8 @@ public class EmployeePortalConstants {
 	public static final String BRANCH_CREATE_FAILED_MESSAGE = "Branch failed to create.";
 	public static final String GET_BRANCH_SUCCESS_MESSAGE = "get branch details  success.";
 	public static final String GET_BRANCH_FAILED_MESSAGE= "get branch details failed.";
+	public static final String GET_ORGANIZATION_SUCCESS_MESSAGE = "get all organization details  success.";
+	public static final String GET_ORGANIZATION_FAILED_MESSAGE= "get all organization details failed.";
+	public static final String GET_BRANCH_BY_ORGID_SUCCESS_MESSAGE = "get branch by orgid details  success.";
+	public static final String GET_BRANCH_BY_ORGID_FAILED_MESSAGE= "get branch by orgid details failed.";
 }

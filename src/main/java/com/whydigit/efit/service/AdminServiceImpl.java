@@ -1,4 +1,6 @@
 package com.whydigit.efit.service;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -29,6 +31,7 @@ import com.whydigit.efit.util.CryptoUtils;
 
 @Service
 public class AdminServiceImpl implements AdminService {
+	
 	public static final Logger LOGGER = LoggerFactory.getLogger(AdminServiceImpl.class);
 
 	@Autowired
@@ -45,6 +48,7 @@ public class AdminServiceImpl implements AdminService {
 	
 	@Autowired
 	BranchRepo branchRepo;
+	
 
 	@Override
 	public void createUser(CreateUserFormDTO createUserFormDTO) throws ApplicationException {
@@ -175,6 +179,7 @@ public class AdminServiceImpl implements AdminService {
 		branchVO.setAddress(branchDTO.getAddress());
 		branchVO.setPAN(branchDTO.getPAN());
 		branchVO.setGST(branchDTO.getGST());
+		branchVO.setBranchName(branchDTO.getBranchName());
 		return branchRepo.save(branchVO);
 	}
 
@@ -184,6 +189,24 @@ public class AdminServiceImpl implements AdminService {
 			throw new ApplicationException("Invalid Branch Input");
 		}
 		return branchRepo.findById(branchId).orElseThrow(() -> new ApplicationException("Branch not found."));
+	}
+
+	@Override
+	public List<OrganizationVO> getAllOrganization() {
+		return organizationRepo.findAll();
+	}
+
+	@Override
+	public List<BranchVO> getBranchByOrgId(Long orgId) {
+		List<BranchVO> branchVO = new ArrayList<>();
+		if (ObjectUtils.isNotEmpty(orgId)) {
+			LOGGER.info("Successfully Received  Branch Information BY OrgId : {}", orgId);
+			branchVO = branchRepo.getBranchByOrgId(orgId);
+		} else {
+			LOGGER.info("Successfully Received  Branch Information For All OrgId.");
+			branchVO = branchRepo.findAll();
+		}
+		return branchVO;
 	}
 
 }

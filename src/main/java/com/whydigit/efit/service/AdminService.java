@@ -1,5 +1,7 @@
 package com.whydigit.efit.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.whydigit.efit.controller.BranchDTO;
@@ -24,6 +26,10 @@ public interface AdminService {
 	public BranchVO craetebranch(BranchDTO branchDTO) throws ApplicationException;
 
 	public BranchVO getBranchById(Long branchId) throws ApplicationException;
+
+	public List<OrganizationVO> getAllOrganization();
+
+	public List<BranchVO> getBranchByOrgId(Long orgId) ;
 	
 }
  

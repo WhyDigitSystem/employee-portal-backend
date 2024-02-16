@@ -19,6 +19,7 @@ public class BranchDTO {
 	private String address;
 	private String PAN;
 	private String GST;
+	private String branchName;
 	private boolean isActive;
 
 }
