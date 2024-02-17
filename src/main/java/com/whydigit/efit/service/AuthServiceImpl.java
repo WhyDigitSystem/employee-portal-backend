@@ -73,6 +73,8 @@ public class AuthServiceImpl implements AuthService {
 		TokenVO tokenVO = tokenProvider.createToken(userVO.getUserId(), loginRequest.getEmail());
 		userResponseDTO.setToken(tokenVO.getToken());
 		userResponseDTO.setTokenId(tokenVO.getId());
+		userResponseDTO.setOrgId(userVO.getOrganizationVO().getId());
+		userResponseDTO.setBranchId(userVO.getBranchId());
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return userResponseDTO;
 	}

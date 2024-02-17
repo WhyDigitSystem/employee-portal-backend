@@ -40,6 +40,7 @@ public class UserVO {
 	private String profileImage;
 	private boolean loginStatus;
 	private boolean isActive;
+	private Long branchId;
 	@Enumerated(EnumType.STRING)
 	private Role role;
 	@ManyToOne

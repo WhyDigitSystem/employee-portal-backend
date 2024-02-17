@@ -21,6 +21,8 @@ public class UserResponseDTO {
 	private long empId;
 	private boolean loginStatus;
 	private boolean isActive;
+	private Long branchId;
+	private Long orgId;
 	@Enumerated(EnumType.STRING)
 	private Role role;
 	@Embedded
