@@ -35,9 +35,9 @@ public class PermissionRequestVO {
 	private LocalDate permissiondate;
 	private String companycode;
 	private String branch;
-	private Date fromhour;
-	private Date tohour;
-	private Date totalhours;
+	private String fromhour;
+	private String tohour;
+	private String totalhours;
 	private String notes;
 	private String empcode;
 	private String empname;
