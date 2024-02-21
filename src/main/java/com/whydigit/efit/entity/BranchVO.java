@@ -1,17 +1,15 @@
 package com.whydigit.efit.entity;
 
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.whydigit.efit.dto.CreatedUpdatedDate;
 
 import lombok.AllArgsConstructor;
@@ -19,29 +17,27 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "organization")
+@Table(name = "branch")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrganizationVO {
-
+public class BranchVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private String name;
-	private String orgCode;
-	private String founder;
-	private String CEO;
+	private long id;
+	private String branchCode;
+	private String branchManager;
 	private String phoneNumber;
 	private String address;
 	private String PAN;
 	private String GST;
-	private String orgLogo;
+	private String branchName;
 	private boolean isActive;
-	private long noOfLicence;
-	@OneToMany(cascade = CascadeType.ALL,mappedBy = "organizationVO")
-	@JsonManagedReference
-	private List<BranchVO> branchVO;
+	@ManyToOne
+	@JsonBackReference
+	@JoinColumn(name = "org_id")
+	private OrganizationVO organizationVO;
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
+
 }

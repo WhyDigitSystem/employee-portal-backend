@@ -18,6 +18,7 @@ import com.whydigit.efit.entity.LeaveCreditVO;
 import com.whydigit.efit.entity.LeaveRequestVO;
 import com.whydigit.efit.entity.LeaveTypeVO;
 import com.whydigit.efit.entity.PermissionRequestVO;
+import com.whydigit.efit.exception.ApplicationException;
 
 
 
@@ -29,7 +30,7 @@ public interface BasicMasterService {
 
 	Optional<EmployeeDetailsVO> getEmployeeById(long id);
 
-	EmployeeDetailsVO createEmployee(EmployeeDetailsVO employeeVO);
+	EmployeeDetailsVO createEmployee(EmployeeDetailsVO employeeVO) throws ApplicationException;
 
 	Optional<EmployeeDetailsVO> updateEmployee(EmployeeDetailsVO employeeVO);
 

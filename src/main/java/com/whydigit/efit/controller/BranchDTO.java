@@ -1,4 +1,6 @@
-package com.whydigit.efit.dto;
+package com.whydigit.efit.controller;
+
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,17 +9,17 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrganizationDTO {
-
+public class BranchDTO {
+	@NotNull(message = "Organization id is required")
+	private Long orgId;
 	private Long id;
-	private String name;
-	private String orgCode;
-	private String founder;
-	private String CEO;
+	private String branchCode;
+	private String branchManager;
 	private String phoneNumber;
 	private String address;
 	private String PAN;
 	private String GST;
-	private String orgLogo;
+	private String branchName;
 	private boolean isActive;
+
 }

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +18,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.whydigit.efit.common.CommonConstant;
 import com.whydigit.efit.common.EmployeePortalConstants;
 import com.whydigit.efit.common.UserConstants;
@@ -38,8 +35,6 @@ import com.whydigit.efit.entity.LeaveCreditVO;
 import com.whydigit.efit.entity.LeaveRequestVO;
 import com.whydigit.efit.entity.LeaveTypeVO;
 import com.whydigit.efit.entity.PermissionRequestVO;
-import com.whydigit.efit.entity.UserVO;
-import com.whydigit.efit.repo.CheckinStatusRepo;
 import com.whydigit.efit.service.BasicMasterService;
 
 @RestController

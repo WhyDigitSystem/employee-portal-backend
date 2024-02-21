@@ -58,4 +58,21 @@ public class EmployeePortalConstants {
 	public static final String CHECK_IN = "check-in";
     public static final String CHECK_OUT = "check-out";
 	public static final String EMPLOYEE_DAILY_STATUS_VO = "employeeDailyStatusVO";
+	public static final String ERROR_MSG_METHOD_NAME_WITH_ORG_NAME = "MethodName : {} OrgName : {} Error : {}";
+	public static final String ORGANIZATION_UPDATE_SUCCESS_MESSAGE = "Organization has been update successfully.";
+	public static final String ORGANIZATION_UPDATE_FAILED_MESSAGE = "Organization failed to update.";
+	public static final String ERROR_MSG_METHOD_NAME_WITH_ORG_ID= "MethodName : {} OrgID : {} Error : {}";
+	public static final String ORGANIZATION_FETCH_SUCCESS_MESSAGE = "Organization information get successfully.";
+	public static final String ORGANIZATION_FETCH_FAILED_MESSAGE = "Organization failed to update.";
+	public static final String ERROR_MSG_METHOD_NAME_WITH_BRANCH_NAME = "MethodName : {} BranchName : {} Error : {}";
+	public static final String BRANCH_UPDATE_SUCCESS_MESSAGE = "Branch has been update successfully.";
+	public static final String BRANCH_UPDATE_FAILED_MESSAGE = "Branch failed to update.";
+	public static final String BRANCH_CREATE_SUCCESS_MESSAGE = "Branch has been created successfully.";
+	public static final String BRANCH_CREATE_FAILED_MESSAGE = "Branch failed to create.";
+	public static final String GET_BRANCH_SUCCESS_MESSAGE = "get branch details  success.";
+	public static final String GET_BRANCH_FAILED_MESSAGE= "get branch details failed.";
+	public static final String GET_ORGANIZATION_SUCCESS_MESSAGE = "get all organization details  success.";
+	public static final String GET_ORGANIZATION_FAILED_MESSAGE= "get all organization details failed.";
+	public static final String GET_BRANCH_BY_ORGID_SUCCESS_MESSAGE = "get branch by orgid details  success.";
+	public static final String GET_BRANCH_BY_ORGID_FAILED_MESSAGE= "get branch by orgid details failed.";
 }

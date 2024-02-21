@@ -4,11 +4,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.whydigit.efit.dto.AdminAccessRole;
+import com.whydigit.efit.dto.CreateUserFormDTO;
 import com.whydigit.efit.dto.LeaveApprovalDTO;
 import com.whydigit.efit.dto.UserName;
 import com.whydigit.efit.entity.CheckinStatusVO;
@@ -22,6 +25,7 @@ import com.whydigit.efit.entity.LeaveCreditVO;
 import com.whydigit.efit.entity.LeaveRequestVO;
 import com.whydigit.efit.entity.LeaveTypeVO;
 import com.whydigit.efit.entity.PermissionRequestVO;
+import com.whydigit.efit.exception.ApplicationException;
 import com.whydigit.efit.repo.CheckinRepo;
 import com.whydigit.efit.repo.CheckinStatusRepo;
 import com.whydigit.efit.repo.EmployeeCheckinDailyStatusRepo;
@@ -70,6 +74,9 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 	@Autowired
 	LeaveBalanceRepository leaveBalanceRepo;
 	
+	@Autowired
+	AdminService adminService;
+	
 //	employee
 
 	@Override
@@ -83,11 +90,26 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 	}
 
 	@Override
-	public EmployeeDetailsVO createEmployee(EmployeeDetailsVO employeeVO) {
+	@Transactional
+	public EmployeeDetailsVO createEmployee(EmployeeDetailsVO employeeVO) throws ApplicationException {
 		employeeVO.setBranch("BLR");
 		employeeVO.setCompanycode("WDS");
 		employeeVO.setCancel(false);
-		return employeeRepo.save(employeeVO);
+		employeeVO=employeeRepo.save(employeeVO);
+		adminService.createUser(setCreateUserFormDTO(employeeVO));
+		return employeeVO;
+	}
+
+	private CreateUserFormDTO setCreateUserFormDTO(EmployeeDetailsVO employeeVO) throws ApplicationException {
+		CreateUserFormDTO createUserFormDTO = new CreateUserFormDTO();
+		createUserFormDTO.setEmail(employeeVO.getEmail());
+		createUserFormDTO.setEmpCode(employeeVO.getEmpcode());
+		createUserFormDTO.setEmpId(employeeVO.getId());
+		createUserFormDTO.setEmpName(employeeVO.getEmpname());
+		createUserFormDTO.setOrgId(employeeVO.getOrgId());
+		createUserFormDTO.setPassword("3PNaIlEuc7yvkNG9ueZUlhZZBSZZalEYZV9neHql9lA=");
+		createUserFormDTO.setRole(AdminAccessRole.USER);
+		return createUserFormDTO;
 	}
 
 	@Override
