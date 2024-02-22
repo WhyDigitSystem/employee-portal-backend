@@ -58,6 +58,7 @@ public class EmployeeDetailsVO {
 	private boolean cancel;
 	private boolean active;
 	private String remarks;
+	private String reporting_person_role;
 	
 	
 	@Embedded

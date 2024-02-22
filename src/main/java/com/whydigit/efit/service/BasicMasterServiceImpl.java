@@ -3,6 +3,7 @@ package com.whydigit.efit.service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -87,6 +88,12 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 	@Override
 	public Optional<EmployeeDetailsVO> getEmployeeById(long id) {
 		return employeeRepo.findById(id);
+	}
+	
+	// Get Employee by Role
+	@Override
+	public Set<Object[]> getEmployeeByRole(long orgid,String role) {
+		return employeeRepo.findAllByRole(orgid,role);
 	}
 
 	@Override
@@ -207,6 +214,12 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 	public List<LeaveRequestVO> getAllLeaveRequest() {
 		// TODO Auto-generated method stub
 		return newLeaveRequestRepo.findAll();
+	}
+	
+	@Override
+	public List<LeaveRequestVO> getAllLeaveRequestBasedOnApproval(Long orgId,String empcode) {
+		// TODO Auto-generated method stub
+		return newLeaveRequestRepo.findAllRequestBasedOnApproval(orgId,empcode);
 	}
 
 	@Override
@@ -394,5 +407,7 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 	public List<LeaveBalanceVO> getLeaveBalanceByEmpcode(String empcode) {
 		return leaveBalanceRepo.findByEmpcode(empcode);
 	}
+
+	
 
 }

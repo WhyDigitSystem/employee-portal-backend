@@ -2,6 +2,7 @@ package com.whydigit.efit.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,8 @@ public interface BasicMasterService {
 	List<EmployeeDetailsVO> getAllgetAllEmployees();
 
 	Optional<EmployeeDetailsVO> getEmployeeById(long id);
+	
+	Set<Object[]> getEmployeeByRole(long orgId, String role);
 
 	EmployeeDetailsVO createEmployee(EmployeeDetailsVO employeeVO) throws ApplicationException;
 
@@ -118,6 +121,11 @@ public interface BasicMasterService {
 	
 	//get Leave Balance by Empcode
 	List<LeaveBalanceVO> getLeaveBalanceByEmpcode(String empcode);
+
+	// Get All Leave Request Based on Approval
+	List<LeaveRequestVO> getAllLeaveRequestBasedOnApproval(Long orgId, String Empcode);
+
+	
 	
 	
 	

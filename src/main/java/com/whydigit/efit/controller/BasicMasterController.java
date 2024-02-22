@@ -2,8 +2,11 @@ package com.whydigit.efit.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.whydigit.efit.common.CommonConstant;
 import com.whydigit.efit.common.EmployeePortalConstants;
@@ -101,6 +105,45 @@ public class BasicMasterController extends BaseController {
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	// Get Employee by Role
+	@GetMapping("/employee/role")
+	public ResponseEntity<ResponseDTO> getAllEmployeeByRoleAndOrg(@RequestParam Long orgId,@RequestParam String role) {
+		String methodName = "getAllEmployeeByRoleAndOrg()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		Set<Object[]>employeename = new HashSet<>();
+		try {
+			employeename = basicMasterService.getEmployeeByRole(orgId, role);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			List<Map<String, String>>formattedEmployee=formattEmployee(employeename);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Employee found by ID");
+			responseObjectsMap.put("Employee", formattedEmployee);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "Employee not found ";
+			responseDTO = createServiceResponseError(responseObjectsMap, "Employee not found", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	private List<Map<String, String>> formattEmployee(Set<Object[]> employeename) {
+		List<Map<String, String>>formattedEmployee=new ArrayList<>();
+		for(Object[] emp:employeename) {
+			Map<String, String>formatemp=new HashMap<>();
+			formatemp.put("Id", emp[0].toString());
+			formatemp.put("Empname", emp[1].toString());
+			formattedEmployee.add(formatemp);
+		}
+		return formattedEmployee;
 	}
 
 	@PostMapping("/employee")
@@ -419,6 +462,32 @@ public class BasicMasterController extends BaseController {
 		List<LeaveRequestVO> leaveRequestVO = new ArrayList<>();
 		try {
 			leaveRequestVO = basicMasterService.getAllLeaveRequest();
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "LeaveRequest information get successfully");
+			responseObjectsMap.put("leaveRequestVO", leaveRequestVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "LeaveRequest information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	// Get Leave Request Report Based on Who is the Approval
+	@GetMapping("/leaverequest/approval")
+	public ResponseEntity<ResponseDTO> getAllLeaveRequestBasedOnApproval(@RequestParam Long orgId,@RequestParam String empcode) {
+		String methodName = "getAllLeaveRequestBasedOnApproval()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<LeaveRequestVO> leaveRequestVO = new ArrayList<>();
+		try {
+			leaveRequestVO = basicMasterService.getAllLeaveRequestBasedOnApproval(orgId, empcode);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
