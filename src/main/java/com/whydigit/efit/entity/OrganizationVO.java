@@ -39,6 +39,8 @@ public class OrganizationVO {
 	private String orgLogo;
 	private boolean isActive;
 	private long noOfLicence;
+	private long orgId;
+	private long branchId;
 	@OneToMany(cascade = CascadeType.ALL,mappedBy = "organizationVO")
 	@JsonManagedReference
 	private List<BranchVO> branchVO;

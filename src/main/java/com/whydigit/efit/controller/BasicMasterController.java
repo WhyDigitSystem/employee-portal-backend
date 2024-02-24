@@ -240,6 +240,44 @@ public class BasicMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 	
+	//Get ALl Leave Type for Leave Request
+	@GetMapping("/leavetype/leaveRequest")
+	public ResponseEntity<ResponseDTO> getAllLeaveTypeforRequest() {
+		String methodName = "getAllLeaveTypeforRequest()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		Set<Object[]> leaveTypeVO = new HashSet<>();
+		try {
+			leaveTypeVO = basicMasterService.getAllLeaveTypeForLeaveRequest();
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			List<Map<String, String>> formattedLeaveType=formatt(leaveTypeVO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Leave Type get successfully");
+			responseObjectsMap.put("leaveType", formattedLeaveType);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Leave Type receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	private List<Map<String, String>> formatt(Set<Object[]> leaveTypeVO) {
+		List<Map<String, String>>formattedLeaveType= new ArrayList<>();
+		for(Object[] k:leaveTypeVO) {
+			Map<String, String>format=new HashMap<>();
+			format.put("LeaveType", k[0].toString());
+			format.put("LeaveTypeCode", k[1].toString());
+			formattedLeaveType.add(format);			
+		}
+		return formattedLeaveType;
+	}
+
 	@GetMapping("/leavetype/{id}")
 	public ResponseEntity<ResponseDTO> getLeavetypeById(@PathVariable int id) {
 		String methodName = "getLeavetypeById()";
@@ -703,6 +741,35 @@ public class BasicMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	
+	// Get Leave Request Report Based on Who is the Approval
+		@GetMapping("/permissionRequest/approval")
+		public ResponseEntity<ResponseDTO> getAllPermissionRequestBasedOnApproval(@RequestParam Long orgId,@RequestParam String empcode) {
+			String methodName = "getAllPermissionRequestBasedOnApproval()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			List<PermissionRequestVO> permissionRequestVO = new ArrayList<>();
+			try {
+				permissionRequestVO = basicMasterService.getAllPermissionRequestBasedonApproval(orgId, empcode);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			}
+			if (StringUtils.isBlank(errorMsg)) {
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Permission Request information get successfully");
+				responseObjectsMap.put("permissionRequestVO", permissionRequestVO);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap, "LeaveRequest information receive failed",
+						errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return ResponseEntity.ok().body(responseDTO);
+		}
+
+		
 	@GetMapping("/permissionRequests/{empcode}")
 	public ResponseEntity<ResponseDTO> getPermissionRequestByEmpcode(@PathVariable String empcode) {
 		String methodName = "getPermissionRequestByEmpcode()";

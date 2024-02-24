@@ -99,8 +99,6 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 	@Override
 	@Transactional
 	public EmployeeDetailsVO createEmployee(EmployeeDetailsVO employeeVO) throws ApplicationException {
-		employeeVO.setBranch("BLR");
-		employeeVO.setCompanycode("WDS");
 		employeeVO.setCancel(false);
 		employeeVO=employeeRepo.save(employeeVO);
 		adminService.createUser(setCreateUserFormDTO(employeeVO));
@@ -149,8 +147,6 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 
 	@Override
 	public LeaveTypeVO createLeaveType(LeaveTypeVO leaveTypeVO) {
-		leaveTypeVO.setBranch("BLR");
-		leaveTypeVO.setCompanycode("WDS");
 		leaveTypeVO.setCancel(false);
 		return leaveTypeRepo.save(leaveTypeVO);
 	}
@@ -186,9 +182,6 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 
 	@Override
 	public HolidayVO createholidayType(HolidayVO holidayVO) {
-
-		holidayVO.setBranch("BLR");
-		holidayVO.setCompanycode("WDS");
 		holidayVO.setCancel(false);
 		return holidayRepo.save(holidayVO);
 	}
@@ -235,8 +228,6 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 
 	@Override
 	public LeaveRequestVO createLeaveRequest(LeaveRequestVO newLeaveRequestVO) {
-		newLeaveRequestVO.setBranch("BLR");
-		newLeaveRequestVO.setCompanycode("WDS");
 		newLeaveRequestVO.setCancel(false);
 		// TODO Auto-generated method stub
 		return newLeaveRequestRepo.save(newLeaveRequestVO);
@@ -296,6 +287,12 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 	@Override
 	public List<PermissionRequestVO> getPermissionRequestByEmpcode(@PathVariable String empcode){
 		return newPermissionRequestRepo.findByEmpcode(empcode);
+	}
+	
+	@Override
+	public List<PermissionRequestVO> getAllPermissionRequestBasedonApproval(Long orgId, String Empcode) {
+		
+		return newPermissionRequestRepo.finAllByapproval(orgId,Empcode);
 	}
 
 	@Override
@@ -407,6 +404,13 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 	public List<LeaveBalanceVO> getLeaveBalanceByEmpcode(String empcode) {
 		return leaveBalanceRepo.findByEmpcode(empcode);
 	}
+
+	@Override
+	public Set<Object[]> getAllLeaveTypeForLeaveRequest() {
+		return leaveTypeRepo.findAllType();
+	}
+
+	
 
 	
 

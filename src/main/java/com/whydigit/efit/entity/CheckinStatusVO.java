@@ -18,4 +18,6 @@ public class CheckinStatusVO {
 	@Id
 	private String empcode;
 	private String status;
+	private long orgId;
+	private long branchId;
 }

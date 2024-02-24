@@ -29,7 +29,7 @@ public class PermissionRequestVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
+	private long orgId;
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate permissiondate;
 	private String companycode;
@@ -49,6 +49,8 @@ public class PermissionRequestVO {
 	private boolean cancel;
 	private boolean active;
 	private String remarks;
+	private String branchId;
+	
 	
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

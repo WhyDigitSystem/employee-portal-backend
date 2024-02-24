@@ -24,5 +24,4 @@ public class EmployeeCheckinDailyStatusVO {
 	private String entrytime;
 	private String status;
 	
-
 }

@@ -33,6 +33,8 @@ public class CheckinVO {
 	private Date checkin_date=new Date();
     private Date entry_time;
     private String status;
+    private long orgId;
+	private long branchId;
 	
 
 }

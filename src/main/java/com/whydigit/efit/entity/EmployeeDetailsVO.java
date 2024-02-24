@@ -38,7 +38,7 @@ public class EmployeeDetailsVO {
 	private String designation;
 	private String role;
 	private String companycode;
-	private String branch;
+	private String branchId;
 	private String email;
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate joining_date;

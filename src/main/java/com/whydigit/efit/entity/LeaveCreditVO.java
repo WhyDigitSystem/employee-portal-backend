@@ -33,6 +33,8 @@ public class LeaveCreditVO {
 	private boolean cancel;
 	private boolean active;
 	private String remarks;
+	private long orgId;
+	private long branchId;
 	
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

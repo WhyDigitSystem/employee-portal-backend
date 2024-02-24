@@ -89,7 +89,12 @@ public interface BasicMasterService {
 	
 	List<PermissionRequestVO> getPermissionRequestByEmpcode(String empcode);
 	
+	// Get All Permission Request Based on Approval
+	
+	List<PermissionRequestVO>getAllPermissionRequestBasedonApproval(Long orgId, String Empcode);
+	
 	PermissionRequestVO createPermissionRequest(PermissionRequestVO permissionRequestVO);
+	
 
 	Optional<PermissionRequestVO> updatePermissionRequest(PermissionRequestVO permissionRequestVO);
 
@@ -124,6 +129,14 @@ public interface BasicMasterService {
 
 	// Get All Leave Request Based on Approval
 	List<LeaveRequestVO> getAllLeaveRequestBasedOnApproval(Long orgId, String Empcode);
+	
+	
+	// Get All Leave Type 
+	
+	Set<Object[]>getAllLeaveTypeForLeaveRequest();
+	
+	
+	
 
 	
 	

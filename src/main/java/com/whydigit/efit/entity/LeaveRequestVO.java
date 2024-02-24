@@ -33,7 +33,7 @@ public class LeaveRequestVO {
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate todate;
 	private String companycode;
-	private String branch;
+	private String branchId;
 	private String totaldays;
 	private String leavetype;
 	private String notes;

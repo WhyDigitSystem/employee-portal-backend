@@ -39,7 +39,7 @@ public class SwaggerConfig {
 	}
 
 	private ApiInfo getApiInfo() {
-		return new ApiInfo("Spring Boot Efit- Returnable package REST API", "Spring Boot REST API for Efit- Returnable package service", "1.0.0",
+		return new ApiInfo("Spring Boot Efit- HRMS API", "Spring Boot REST API for Efit- HRMS package service", "1.0.0",
 				"Terms of Service", new Contact(webContactName, webSiteLink, ""), "", "", Collections.emptyList());
 	}
 

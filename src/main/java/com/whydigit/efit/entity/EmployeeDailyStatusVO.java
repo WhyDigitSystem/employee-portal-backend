@@ -30,6 +30,7 @@ public class EmployeeDailyStatusVO {
 	private LocalDateTime logoutDate;
 	private LocalDateTime actionAt;
 	private boolean isCheckIn;
+	private long branchId;
 	
 
 }

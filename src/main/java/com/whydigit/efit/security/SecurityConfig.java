@@ -45,7 +45,8 @@ public class SecurityConfig {
 						"/api/basicMaster/checkout","/api/basicMaster/holiday","/api/basicMaster/employee1","/api/basicMaster/chkStatus/{empcode}","/api/basicMaster/permissionRequests/{empcode}","/api/basicMaster/leaverequests/{empcode}","/api/admin/**",
 						"/api/auth/login","/api/basicMaster/leavetype","/api/basicMaster/leavetype/{id}","/api/basicMaster/employee/daily/status",
 						"/api/basicMaster/attendance/{empcode}","/api/employee/getEmployeeAttendanceActivity","/api/employee/employeeInOutAction",
-						"/api/employee/getEmployeeStatus","/api/basicMaster/employee/role","/api/basicMaster/leaverequest/approval")
+						"/api/employee/getEmployeeStatus","/api/basicMaster/employee/role","/api/basicMaster/leaverequest/approval","/api/images/upload","/api/images/{id}",
+						"/api/basicMaster/permissionRequest/approval","/api/basicMaster/leavetype/leaveRequest")
 				.permitAll().antMatchers("/api/**").hasAnyRole("USER", "GUEST_USER").anyRequest().authenticated();
 		http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 		return http.build();

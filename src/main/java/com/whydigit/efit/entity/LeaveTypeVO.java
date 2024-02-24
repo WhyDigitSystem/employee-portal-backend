@@ -28,15 +28,16 @@ public class LeaveTypeVO {
 	private int id;
 	
 	private String companycode;
-	private String branch;
+	private String branchId;
 	private String leave_type;
-	private String Leave_code;
+	private String leave_code;
 	private int total_leave;
 	private String createdby;
 	private String updatedby;
 	private boolean cancel;
 	private boolean active;
 	private String remarks;
+	private long orgId;
 	
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();

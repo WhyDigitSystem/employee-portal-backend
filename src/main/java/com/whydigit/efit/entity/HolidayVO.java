@@ -29,7 +29,7 @@ public class HolidayVO {
 	private int id;
 	private long orgId;
 	private String companycode;
-	private String branch;
+	private String branchId;
 	private String department;
 	private LocalDate holiday_date;
 	private String day;

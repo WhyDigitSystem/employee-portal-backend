@@ -20,9 +20,11 @@ import org.springframework.stereotype.Service;
 import com.whydigit.efit.dto.EmployeeAttendanceActivityDTO;
 import com.whydigit.efit.dto.EmployeeDailyStatusDTO;
 import com.whydigit.efit.dto.EmployeeInOutActionDTO;
+import com.whydigit.efit.entity.EmployeeCheckInTimeVO;
 import com.whydigit.efit.entity.EmployeeDailyStatusVO;
 import com.whydigit.efit.entity.EmployeeDetailsVO;
 import com.whydigit.efit.exception.ApplicationException;
+import com.whydigit.efit.repo.EmployeeCheckinTimeRepo;
 import com.whydigit.efit.repo.EmployeeDailyStatusRepo;
 import com.whydigit.efit.repo.EmployeeDetailsRepo;
 import com.whydigit.efit.repo.HolidayRepo;
@@ -44,6 +46,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Autowired
 	EmployeeDailyStatusRepo employeeDailyStatusRepo;
+	
+	@Autowired
+	EmployeeCheckinTimeRepo employeeCheckinTimeRepo;
 
 	@Override
 	public List<EmployeeAttendanceActivityDTO> getEmployeeAttendanceActivity(LocalDate startDate, LocalDate endDate,
@@ -165,4 +170,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 		}
 		return employeeDailyStatusDTO;
 	}
+
+	
 }
