@@ -242,7 +242,7 @@ public class BasicMasterController extends BaseController {
 	
 	//Get ALl Leave Type for Leave Request
 	@GetMapping("/leavetype/leaveRequest")
-	public ResponseEntity<ResponseDTO> getAllLeaveTypeforRequest() {
+	public ResponseEntity<ResponseDTO> getAllLeaveTypeforRequest(@RequestParam Long orgId,@RequestParam Long id) {
 		String methodName = "getAllLeaveTypeforRequest()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -250,7 +250,7 @@ public class BasicMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		Set<Object[]> leaveTypeVO = new HashSet<>();
 		try {
-			leaveTypeVO = basicMasterService.getAllLeaveTypeForLeaveRequest();
+			leaveTypeVO = basicMasterService.getAllLeaveTypeForLeaveRequest(orgId,id);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);

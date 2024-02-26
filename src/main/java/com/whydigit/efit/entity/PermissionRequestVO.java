@@ -50,6 +50,7 @@ public class PermissionRequestVO {
 	private boolean active;
 	private String remarks;
 	private String branchId;
+	private String empmail;
 	
 	
 	@Embedded

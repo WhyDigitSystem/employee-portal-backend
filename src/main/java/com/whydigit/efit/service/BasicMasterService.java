@@ -46,6 +46,9 @@ public interface BasicMasterService {
 	Optional<LeaveTypeVO> getLeavetypeById(int id);
 
 	LeaveTypeVO createLeaveType(LeaveTypeVO leaveTypeVO);
+	
+	// Get All Leave Type 
+	Set<Object[]>getAllLeaveTypeForLeaveRequest(Long orgId,Long id);
 
 	Optional<LeaveTypeVO> updateLeaveType(LeaveTypeVO leaveTypeVO);
 
@@ -131,9 +134,7 @@ public interface BasicMasterService {
 	List<LeaveRequestVO> getAllLeaveRequestBasedOnApproval(Long orgId, String Empcode);
 	
 	
-	// Get All Leave Type 
 	
-	Set<Object[]>getAllLeaveTypeForLeaveRequest();
 	
 	
 	

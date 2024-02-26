@@ -31,6 +31,7 @@ public class LeaveTypeVO {
 	private String branchId;
 	private String leave_type;
 	private String leave_code;
+	private String applicable;
 	private int total_leave;
 	private String createdby;
 	private String updatedby;

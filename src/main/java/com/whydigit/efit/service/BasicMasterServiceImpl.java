@@ -406,8 +406,8 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 	}
 
 	@Override
-	public Set<Object[]> getAllLeaveTypeForLeaveRequest() {
-		return leaveTypeRepo.findAllType();
+	public Set<Object[]> getAllLeaveTypeForLeaveRequest(Long orgId,Long id) {
+		return leaveTypeRepo.findAllType(orgId,id);
 	}
 
 	
