@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.whydigit.efit.common.CommonConstant;
 import com.whydigit.efit.common.EmployeePortalConstants;
+import com.whydigit.efit.common.UserConstants;
+import com.whydigit.efit.dto.ChangePasswordFormDTO;
 import com.whydigit.efit.dto.LoginFormDTO;
 import com.whydigit.efit.dto.RefreshTokenDTO;
 import com.whydigit.efit.dto.ResponseDTO;
@@ -136,6 +138,31 @@ public class UserController extends BaseController {
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap, EmployeePortalConstants.REFRESH_TOKEN_FAILED_MESSAGE,
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@PostMapping("/changepassword")
+	public ResponseEntity<ResponseDTO> changepassword(@Valid @RequestBody ChangePasswordFormDTO changePasswordRequest) {
+		String methodName = "changepassword()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			userService.changePassword(changePasswordRequest);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME_WITH_USER_NAME, methodName, changePasswordRequest.getUserName(),
+					errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, UserConstants.CHANGE_PASSWORD_SUCCESS_MESSAGE);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, UserConstants.CHANGE_PASSWORD_FAILED_MESSAGE,
 					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
