@@ -1,8 +1,11 @@
 package com.whydigit.efit.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
 import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -279,5 +282,47 @@ public ResponseEntity<ResponseDTO> getAllOrganization(){
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	// get branch and Branch Code by Org Id
+	@GetMapping("/getAllBranchbyOrgId")
+	public ResponseEntity<ResponseDTO> getAllBranchByOrgId(@RequestParam Long orgId){
+			String methodName = "getAllOrganization()";
+			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+			String errorMsg = null;
+			Map<String, Object> responseObjectsMap = new HashMap<>();
+			ResponseDTO responseDTO = null;
+			Set<Object[]> branch =new HashSet<>();
+			try {
+				branch = adminService.getBranchCodeBranchNameByOrgId(orgId);
+			} catch (Exception e) {
+				errorMsg = e.getMessage();
+				LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME_WITH_ORG_ID, methodName,
+						 errorMsg);
+			}
+			if (StringUtils.isBlank(errorMsg)) {
+				List<Map<String,String>>formattedBranch=formatbranch(branch);
+				responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+						EmployeePortalConstants.GET_BRANCH_BY_ORGID_SUCCESS_MESSAGE);
+				responseObjectsMap.put("Branch", formattedBranch);
+				responseDTO = createServiceResponse(responseObjectsMap);
+			} else {
+				responseDTO = createServiceResponseError(responseObjectsMap,
+						EmployeePortalConstants.GET_BRANCH_BY_ORGID_FAILED_MESSAGE, errorMsg);
+			}
+			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+			return  ResponseEntity.ok().body(responseDTO);
+		
+		}
+	private List<Map<String, String>> formatbranch(Set<Object[]> branch) {
+		List<Map<String, String>>formattedBranch=new ArrayList<>();
+		for(Object[] branch1:branch) {
+			Map<String, String>formattBranch=new HashMap<>();
+			formattBranch.put("BranchId", branch1[0].toString());
+			formattBranch.put("BranchCode", branch1[1].toString());
+			formattBranch.put("BranchName", branch1[2].toString());
+			formattedBranch.add(formattBranch);
+		}
+		return formattedBranch;
 	}
 }

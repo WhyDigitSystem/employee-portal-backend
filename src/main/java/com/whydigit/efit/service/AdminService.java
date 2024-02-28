@@ -1,6 +1,7 @@
 package com.whydigit.efit.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,8 @@ public interface AdminService {
 	public List<OrganizationVO> getAllOrganization();
 
 	public List<BranchVO> getBranchByOrgId(Long orgId) ;
+	
+	Set<Object[]>getBranchCodeBranchNameByOrgId(Long orgId);
 	
 }
  

@@ -49,7 +49,7 @@ public class PermissionRequestVO {
 	private boolean cancel;
 	private boolean active;
 	private String remarks;
-	private String branchId;
+	private long branchId;
 	private String empmail;
 	
 	

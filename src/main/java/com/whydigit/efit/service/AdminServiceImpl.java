@@ -1,6 +1,7 @@
 package com.whydigit.efit.service;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -207,6 +208,12 @@ public class AdminServiceImpl implements AdminService {
 			branchVO = branchRepo.findAll();
 		}
 		return branchVO;
+	}
+
+	@Override
+	public Set<Object[]> getBranchCodeBranchNameByOrgId(Long orgId) {
+		
+		return branchRepo.findBranchCodeAndBranchByOrgId(orgId);
 	}
 
 }

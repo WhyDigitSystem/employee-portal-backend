@@ -298,8 +298,6 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 	@Override
 	public PermissionRequestVO createPermissionRequest(PermissionRequestVO newPermissionRequestVO) {
 		// TODO Auto-generated method stub
-		newPermissionRequestVO.setBranch("BLR");
-		newPermissionRequestVO.setCompanycode("WDS");
 		newPermissionRequestVO.setCancel(false);
 		return newPermissionRequestRepo.save(newPermissionRequestVO);
 	}
