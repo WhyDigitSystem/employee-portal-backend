@@ -46,7 +46,7 @@ public class SecurityConfig {
 						"/api/auth/login","/api/basicMaster/leavetype","/api/basicMaster/leavetype/{id}","/api/basicMaster/employee/daily/status",
 						"/api/basicMaster/attendance/{empcode}","/api/employee/getEmployeeAttendanceActivity","/api/employee/employeeInOutAction",
 						"/api/employee/getEmployeeStatus","/api/basicMaster/employee/role","/api/basicMaster/leaverequest/approval","/api/images/upload","/api/images/{id}",
-						"/api/basicMaster/permissionRequest/approval","/api/basicMaster/leavetype/leaveRequest","/api/admin/getAllBranchbyOrgId")
+						"/api/basicMaster/permissionRequest/approval","/api/basicMaster/leavetype/leaveRequest","/api/admin/getAllBranchbyOrgId","/api/employee/monthlyReport")
 				.permitAll().antMatchers("/api/**").hasAnyRole("USER", "GUEST_USER").anyRequest().authenticated();
 		http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 		return http.build();

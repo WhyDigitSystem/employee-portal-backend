@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.ObjectUtils;
@@ -169,6 +170,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 			throw new ApplicationException("Invalid input. Please try again");
 		}
 		return employeeDailyStatusDTO;
+	}
+
+	@Override
+	public Set<Object[]> getAllEmployeeMonthlyAttendanceDetails(String fromdt, String todt,String branch) {
+		
+		return employeeDetailsRepo.findAllAttendanceByFromAndToDate(fromdt,todt,branch);
 	}
 
 	

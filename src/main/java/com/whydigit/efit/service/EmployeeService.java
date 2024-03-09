@@ -2,6 +2,7 @@ package com.whydigit.efit.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -22,5 +23,6 @@ public interface EmployeeService {
 
 	List<EmployeeDailyStatusDTO> getEmployeeStatus(Long orgId, Long empId, LocalDate date) throws ApplicationException;
 	
+	Set<Object[]>getAllEmployeeMonthlyAttendanceDetails(String fromdt,String todt,String branch);
 	
 }

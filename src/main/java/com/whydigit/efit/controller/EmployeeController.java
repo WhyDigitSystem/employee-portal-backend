@@ -3,8 +3,10 @@ package com.whydigit.efit.controller;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -28,6 +30,8 @@ import com.whydigit.efit.dto.EmployeeInOutActionDTO;
 import com.whydigit.efit.dto.ResponseDTO;
 import com.whydigit.efit.entity.EmployeeDailyStatusVO;
 import com.whydigit.efit.service.EmployeeService;
+
+import net.bytebuddy.asm.Advice.Local;
 
 @CrossOrigin
 @RestController
@@ -120,4 +124,48 @@ public class EmployeeController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	
+	@GetMapping("/monthlyReport")
+	public ResponseEntity<ResponseDTO> getMonthlyReport(@RequestParam String fromdt,@RequestParam String todt,@RequestParam String branch) {
+		String methodName = "getMonthlyReport()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		Set<Object[]> monthlyReport = new HashSet<>();
+		try {
+			monthlyReport = employeeService.getAllEmployeeMonthlyAttendanceDetails(fromdt, todt,branch);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			List<Map<String, String>>MonthlyReports=getReport(monthlyReport);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Monthly Report get successfully");
+			responseObjectsMap.put("MonthlyReports", MonthlyReports);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Monthly Report receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	private List<Map<String, String>> getReport(Set<Object[]> monthlyReport) {
+		List<Map<String, String>>MonthlyReports=new ArrayList<>();
+		for(Object[]report:monthlyReport) {
+			Map<String, String>formateReport=new HashMap<>();
+			formateReport.put("EmployeeCode", report[0].toString());
+			formateReport.put("EmployeeName", report[1].toString());
+			formateReport.put("PresentDays", report[2].toString());
+			formateReport.put("LeaveCount", report[3].toString());
+			formateReport.put("Sundays", report[4].toString());
+			formateReport.put("Holidays", report[5].toString());
+			formateReport.put("TotalDays", report[6].toString());
+			formateReport.put("OfficeWorkingDays", report[7].toString());
+			MonthlyReports.add(formateReport);
+		}
+		return MonthlyReports;
+	}
+	
 }
