@@ -22,12 +22,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.whydigit.efit.common.CommonConstant;
 import com.whydigit.efit.common.EmployeePortalConstants;
 import com.whydigit.efit.common.UserConstants;
 import com.whydigit.efit.dto.LeaveApprovalDTO;
 import com.whydigit.efit.dto.ResponseDTO;
-import com.whydigit.efit.dto.UserName;
+import com.whydigit.efit.dto.UserNameDTO;
 import com.whydigit.efit.entity.CheckinStatusVO;
 import com.whydigit.efit.entity.CheckinVO;
 import com.whydigit.efit.entity.EmployeeCheckInTimeVO;
@@ -895,7 +896,7 @@ public class BasicMasterController extends BaseController {
 	
 	
 	@PostMapping("/checkin")
-	public ResponseEntity<ResponseDTO> createCheckin(@RequestBody UserName user1) {
+	public ResponseEntity<ResponseDTO> createCheckin(@RequestBody UserNameDTO user1) {
 		String methodName = "createCheckin()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -917,7 +918,7 @@ public class BasicMasterController extends BaseController {
 	}
 	
 	@PostMapping("/checkout")
-	public ResponseEntity<ResponseDTO> createCheckout(@RequestBody UserName user1) {
+	public ResponseEntity<ResponseDTO> createCheckout(@RequestBody UserNameDTO user1) {
 		String methodName = "createCheckout()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;

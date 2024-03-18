@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.whydigit.efit.dto.AdminAccessRole;
 import com.whydigit.efit.dto.CreateUserFormDTO;
 import com.whydigit.efit.dto.LeaveApprovalDTO;
-import com.whydigit.efit.dto.UserName;
+import com.whydigit.efit.dto.UserNameDTO;
 import com.whydigit.efit.entity.CheckinStatusVO;
 import com.whydigit.efit.entity.CheckinVO;
 import com.whydigit.efit.entity.EmployeeCheckInTimeVO;
@@ -329,37 +329,42 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 		newPermissionRequestRepo.deleteById(id);
 	}
 	
-	public CheckinVO checkIn(UserName user) {
+	public CheckinVO checkIn(UserNameDTO user1) {
     	Date current= new Date();
     	CheckinVO checkinVO = new CheckinVO();
     	checkinVO.setCompanycode("WDS");
     	checkinVO.setBranch("BLR");
-    	checkinVO.setEmpcode(user.getUserid());
+    	checkinVO.setEmpcode(user1.getEmpcode());
     	checkinVO.setCheckin_date(current);
     	checkinVO.setStatus("In");
     	checkinVO.setEntry_time(current);
+    	checkinRepo.save(checkinVO);
     	
     	CheckinStatusVO chk=new CheckinStatusVO();
-    	chk.setEmpcode(user.getUserid());
-    	chk.setStatus("In");
+    	chk.setEmpcode(user1.getEmpcode());
+    	chk.setBranchId(user1.getBranchId());
+    	chk.setOrgId(user1.getOrgId());
+    	chk.setStatus(checkinVO.getStatus());
     	chkstatusrepo.save(chk);
     	
         return checkinRepo.save(checkinVO);
     }
 
-	public CheckinVO checkOut(UserName user) {
+	public CheckinVO checkOut(UserNameDTO user1) {
     	Date current= new Date();
     	CheckinVO checkinVO = new CheckinVO();
     	checkinVO.setCompanycode("WDS");
     	checkinVO.setBranch("BLR");
-    	checkinVO.setEmpcode(user.getUserid());
+    	checkinVO.setEmpcode(user1.getEmpcode());
     	checkinVO.setCheckin_date(current);
     	checkinVO.setEntry_time(current);
     	checkinVO.setStatus("Out");
     	
     	CheckinStatusVO chk=new CheckinStatusVO();
-    	chk.setEmpcode(user.getUserid());
-    	chk.setStatus("Out");
+    	chk.setEmpcode(user1.getEmpcode());
+    	chk.setBranchId(user1.getBranchId());
+    	chk.setOrgId(user1.getOrgId());
+    	chk.setStatus(checkinVO.getStatus());
     	chkstatusrepo.save(chk);
     	
         return checkinRepo.save(checkinVO);
@@ -407,6 +412,7 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 	public Set<Object[]> getAllLeaveTypeForLeaveRequest(Long orgId,Long id) {
 		return leaveTypeRepo.findAllType(orgId,id);
 	}
+
 
 	
 

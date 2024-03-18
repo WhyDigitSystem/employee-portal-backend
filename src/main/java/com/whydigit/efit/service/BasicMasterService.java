@@ -7,7 +7,7 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 
 import com.whydigit.efit.dto.LeaveApprovalDTO;
-import com.whydigit.efit.dto.UserName;
+import com.whydigit.efit.dto.UserNameDTO;
 import com.whydigit.efit.entity.CheckinStatusVO;
 import com.whydigit.efit.entity.CheckinVO;
 import com.whydigit.efit.entity.EmployeeCheckInTimeVO;
@@ -106,9 +106,9 @@ public interface BasicMasterService {
 	Optional<PermissionRequestVO> updatePermissionRequestApproval(LeaveApprovalDTO leaveApprovalDTO,int id);
 	
 	
-	CheckinVO checkIn(UserName user1);
+	CheckinVO checkIn(UserNameDTO user1);
 
-	CheckinVO checkOut(UserName user1);
+	CheckinVO checkOut(UserNameDTO user1);
 
 	Optional<CheckinStatusVO> getStatusByEmpcode(String empcode);
 	

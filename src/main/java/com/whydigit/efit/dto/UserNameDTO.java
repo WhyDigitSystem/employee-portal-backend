@@ -1,17 +1,19 @@
 package com.whydigit.efit.dto;
 
-public class UserName {
+public class UserNameDTO {
 	
-	private String userid;
+	private String empcode;
 	private long orgId;
 	private long branchId;
 
-	public String getUserid() {
-		return userid;
+	
+
+	public String getEmpcode() {
+		return empcode;
 	}
 
-	public void setUserid(String userid) {
-
+	public void setEmpcode(String empcode) {
+		this.empcode = empcode;
 	}
 
 	public long getOrgId() {
