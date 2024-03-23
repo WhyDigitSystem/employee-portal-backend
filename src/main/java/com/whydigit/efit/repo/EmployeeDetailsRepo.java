@@ -21,11 +21,16 @@ public interface EmployeeDetailsRepo extends JpaRepository<EmployeeDetailsVO, Lo
 	Set<Object[]> findAllByRole(long orgId, String role);
 	
 	
-	@Query(nativeQuery = true,value = "select a.Empcode,b.Empname,a.PresentDays,a.LeaveCount,a.Sundays,a.Holidays,a.TotalDays,a.OfficeWorkingDays from(\r\n"
+	@Query(nativeQuery = true,value = "select a.Empcode,b.Empname,a.Sundays,a.Holidays,a.TotalDays,a.OfficeWorkingDays,a.TotalLeaveCount,CLLeavecount,PLLeavecount,PTLLeavecount,MLLeavecount,a.PresentDays,\r\n"
+			+ "1 CLCredit, PresentDays+1 EmpWorkingDays,OfficeWorkingDays-TotalLeaveCount SalaryDays from(\r\n"
 			+ "SELECT \r\n"
 			+ "    C.Empcode, \r\n"
 			+ "    C.Presentdays, \r\n"
-			+ "    case when LV.leavecount is null then '-' else  LV.leavecount end Leavecount,\r\n"
+			+ "    case when LV.leavecount is null then '-' else  LV.leavecount end TotalLeavecount,\r\n"
+			+ "    case when LV.CLleave is null then '-' else  LV.CLleave end CLLeavecount,\r\n"
+			+ "    case when LV.PLleave is null then '-' else  LV.PLleave end PLLeavecount,\r\n"
+			+ "    case when LV.PTLleave is null then '-' else  LV.PTLleave end PTLLeavecount,\r\n"
+			+ "    case when LV.MLleave is null then '-' else  LV.MLleave end MLLeavecount,\r\n"
 			+ "    S.Sundays,\r\n"
 			+ "    H.Holidays,\r\n"
 			+ "    T.TotalDays,\r\n"
@@ -33,7 +38,12 @@ public interface EmployeeDetailsRepo extends JpaRepository<EmployeeDetailsVO, Lo
 			+ "FROM \r\n"
 			+ "    (SELECT empcode, SUM(noofdays) AS presentdays FROM checkincount WHERE chkdate BETWEEN ?1 AND ?2 GROUP BY empcode) AS C\r\n"
 			+ "LEFT JOIN \r\n"
-			+ "    (SELECT empcode, SUM(leavecount) AS leavecount FROM LeaveView WHERE leavedate BETWEEN ?1 AND ?2 GROUP BY empcode) AS LV\r\n"
+			+ "    (SELECT empcode, SUM(leavecount) AS leavecount,\r\n"
+			+ "    case when leavetype='CL' then Sum(leavecount) else 0 end CLleave,\r\n"
+			+ "    case when leavetype='PL' then Sum(leavecount) else 0 end PLleave,\r\n"
+			+ "    case when leavetype='PTL' then Sum(leavecount) else 0 end PTLleave,\r\n"
+			+ "    case when leavetype='ML' then Sum(leavecount) else 0 end MLleave\r\n"
+			+ "    FROM LeaveView WHERE leavedate BETWEEN ?1 AND ?2 GROUP BY empcode,leavetype) AS LV\r\n"
 			+ "ON \r\n"
 			+ "    C.empcode = LV.empcode\r\n"
 			+ "CROSS JOIN\r\n"
@@ -41,7 +51,7 @@ public interface EmployeeDetailsRepo extends JpaRepository<EmployeeDetailsVO, Lo
 			+ "CROSS JOIN\r\n"
 			+ "    (SELECT COUNT(*) AS Holidays FROM employeeportal.holidays WHERE holiday_date BETWEEN ?1 AND ?2) AS H\r\n"
 			+ "CROSS JOIN\r\n"
-			+ "    (SELECT COUNT(*) AS totalDays FROM employeeportal.calendar WHERE cdate BETWEEN ?1 AND ?2) AS T)a,users b,branch c where c.id=b.branch_id and c.branch_name=?3 and a.empcode=b.empcode and b.is_active='1'")
+			+ "    (SELECT COUNT(*) AS totalDays FROM employeeportal.calendar WHERE cdate BETWEEN ?1 AND ?2) AS T)a,users b ,branch c where c.id=b.branch_id and c.branch_name=?3 and a.empcode=b.empcode and b.is_active='1' ")
 	Set<Object[]> findAllAttendanceByFromAndToDate(String fromdt, String todt,String branch);
 
 	

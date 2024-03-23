@@ -157,12 +157,19 @@ public class EmployeeController extends BaseController {
 			Map<String, String>formateReport=new HashMap<>();
 			formateReport.put("EmployeeCode", report[0].toString());
 			formateReport.put("EmployeeName", report[1].toString());
-			formateReport.put("PresentDays", report[2].toString());
-			formateReport.put("LeaveCount", report[3].toString());
-			formateReport.put("Sundays", report[4].toString());
-			formateReport.put("Holidays", report[5].toString());
-			formateReport.put("TotalDays", report[6].toString());
-			formateReport.put("OfficeWorkingDays", report[7].toString());
+			formateReport.put("Sundays", report[2].toString());
+			formateReport.put("Holidays", report[3].toString());
+			formateReport.put("TotalDays", report[4].toString());
+			formateReport.put("OfficeWorkingDays", report[5].toString());
+			formateReport.put("TotalLeaveCount", report[6].toString());
+			formateReport.put("CLLeave", report[7].toString());
+			formateReport.put("PLLeave", report[8].toString());
+			formateReport.put("PTLLeave", report[9].toString());
+			formateReport.put("MLLeave", report[10].toString());
+			formateReport.put("PresentDays", report[11].toString());
+			formateReport.put("CLCreadit", report[12].toString());
+			formateReport.put("EmpWorkingDays", report[13].toString());
+			formateReport.put("SalaryDays", report[14].toString());
 			MonthlyReports.add(formateReport);
 		}
 		return MonthlyReports;
