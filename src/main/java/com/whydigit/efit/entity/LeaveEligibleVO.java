@@ -31,12 +31,6 @@ public class LeaveEligibleVO {
 	@Column(name = "empname", length = 30)
 	private String empname;
 
-	@Column(name = "leavecode", length = 15)
-	private String leavecode;
-
-	@Column(name = "leavecount", length = 15)
-	private String leavecount;
-
 	@Column(name = "orgid", length = 15)
 	private Long orgId;
 

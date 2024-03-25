@@ -431,4 +431,15 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 		return leaveEligibleRepo.save(leaveEligibleVO);
 	}
 
+	@Override
+	public Set<Object[]> getAllLeaveEligibleByOrgId(long orgId) {
+		return leaveEligibleRepo.findAllLeaveEligibleByOrgId(orgId);
+	}
+
+	@Override
+	public Set<Object[]> getAllLeaveEligibleByOrgIdAndEmpcodeAndBranchId(long orgId, String empCode,
+			long branchId) {
+		return leaveEligibleRepo.findAllLeaveEligibleByOrgIdAndEmpcodeAndBranchId(orgId,empCode,branchId);
+	}
+
 }

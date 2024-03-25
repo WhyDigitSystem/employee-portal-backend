@@ -140,6 +140,10 @@ public interface BasicMasterService {
 	
 	LeaveEligibleVO createLeaveEligible(LeaveEligibleVO leaveEligibleVO);
 	
+	Set<Object[]> getAllLeaveEligibleByOrgId(long orgId);
+	
+	Set<Object[]> getAllLeaveEligibleByOrgIdAndEmpcodeAndBranchId(long orgId,String empCode,long branchId);
+	
 	
 	
 	

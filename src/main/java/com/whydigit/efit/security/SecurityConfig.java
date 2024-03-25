@@ -59,7 +59,8 @@ public class SecurityConfig {
 						"/api/basicMaster/leaverequest/approval", "/api/images/upload", "/api/images/{id}",
 						"/api/basicMaster/permissionRequest/approval", "/api/basicMaster/leavetype/leaveRequest",
 						"/api/admin/getAllBranchbyOrgId", "/api/employee/monthlyReport",
-						"/api/basicMaster/getLeaveTypeNameByOrgId", "/api/basicMaster/leaveEligible")
+						"/api/basicMaster/getLeaveTypeNameByOrgId", "/api/basicMaster/leaveEligible",
+						"/api/basicMaster/getAllLeaveEligibleByOrgId","/api/master/getAllLeaveEligibleByOrgIdAndEmpcodeAndBranchId")
 				.permitAll().antMatchers("/api/**").hasAnyRole("USER", "GUEST_USER").anyRequest().authenticated();
 		http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 		return http.build();

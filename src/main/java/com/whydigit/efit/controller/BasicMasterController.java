@@ -213,7 +213,7 @@ public class BasicMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-//	Leave Type
+	// Leave Type
 
 	@GetMapping("/leavetype")
 	public ResponseEntity<ResponseDTO> getAllLeaveType() {
@@ -407,7 +407,7 @@ public class BasicMasterController extends BaseController {
 		return ResponseEntity.ok().body(responseDTO);
 	}
 
-//	Holidays Screen
+	// Holidays Screen
 
 	@GetMapping("/holiday")
 	public ResponseEntity<ResponseDTO> getAllHolidayType() {
@@ -730,7 +730,7 @@ public class BasicMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-//	NEW PERMISSION REQUEST
+	// NEW PERMISSION REQUEST
 
 	@GetMapping("/permissionRequest")
 	public ResponseEntity<ResponseDTO> getAllPermissionRequest() {
@@ -1156,6 +1156,80 @@ public class BasicMasterController extends BaseController {
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getAllLeaveEligibleByOrgId")
+	public ResponseEntity<ResponseDTO> getAllLeaveEligibleByOrgId(@RequestParam Long orgId) {
+		String methodName = "getAllLeaveTypeforRequest()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		Set<Object[]> leaveEligibleVO = new HashSet<>();
+		try {
+			leaveEligibleVO = basicMasterService.getAllLeaveEligibleByOrgId(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			List<Map<String, String>> formattLeaveType = format(leaveEligibleVO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "LeaveEligible get successfully");
+			responseObjectsMap.put("leaveEligible", formattLeaveType);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "LeaveEligible receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	private List<Map<String, String>> format(Set<Object[]> leaveEligible) {
+		List<Map<String, String>> formattLeaveType = new ArrayList<>();
+		for (Object[] k : leaveEligible) {
+			Map<String, String> formatt = new HashMap<>();
+			formatt.put("LeaveEligible", k[0].toString());
+			formattLeaveType.add(formatt);
+		}
+		return formattLeaveType;
+	}
+
+	@GetMapping("/getAllLeaveEligibleByOrgIdAndEmpcodeAndBranchId")
+	public ResponseEntity<ResponseDTO> getAllLeaveEligibleByOrgIdAndEmpcodeAndBranchId(@RequestParam long orgId,
+			@RequestParam String empCode, @RequestParam long branchId) {
+		String methodName = "getAllLeaveEligibleByOrgIdAndEmpcodeAndBranchId()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		Set<Object[]> leaveEligibleVO = new HashSet<>();
+		try {
+			leaveEligibleVO = basicMasterService.getAllLeaveEligibleByOrgIdAndEmpcodeAndBranchId(orgId, empCode,
+					branchId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			List<Map<String, String>> formattLeaveType = formatte(leaveEligibleVO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "LeaveEligible get successfully");
+			responseObjectsMap.put("leaveEligible", formattLeaveType);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "LeaveEligible receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	private List<Map<String, String>> formatte(Set<Object[]> leaveEligible) {
+		List<Map<String, String>> formattLeaveType = new ArrayList<>();
+		for (Object[] k : leaveEligible) {
+			Map<String, String> formatt = new HashMap<>();
+			formatt.put("LeaveEligible", k[0].toString());
+			formattLeaveType.add(formatt);
+		}
+		return formattLeaveType;
 	}
 
 }
