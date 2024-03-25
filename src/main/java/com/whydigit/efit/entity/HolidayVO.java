@@ -1,7 +1,6 @@
 package com.whydigit.efit.entity;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -10,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.whydigit.efit.dto.CreatedUpdatedDate;
 
 import lombok.AllArgsConstructor;

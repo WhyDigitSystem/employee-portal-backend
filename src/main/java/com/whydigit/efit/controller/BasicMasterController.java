@@ -37,6 +37,7 @@ import com.whydigit.efit.entity.EmployeeDetailsVO;
 import com.whydigit.efit.entity.HolidayVO;
 import com.whydigit.efit.entity.LeaveBalanceVO;
 import com.whydigit.efit.entity.LeaveCreditVO;
+import com.whydigit.efit.entity.LeaveEligibleVO;
 import com.whydigit.efit.entity.LeaveRequestVO;
 import com.whydigit.efit.entity.LeaveTypeVO;
 import com.whydigit.efit.entity.PermissionRequestVO;
@@ -51,8 +52,6 @@ public class BasicMasterController extends BaseController {
 
 	@Autowired
 	private BasicMasterService basicMasterService;
-	
-	
 
 	// employee
 
@@ -107,16 +106,16 @@ public class BasicMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	// Get Employee by Role
 	@GetMapping("/employee/role")
-	public ResponseEntity<ResponseDTO> getAllEmployeeByRoleAndOrg(@RequestParam Long orgId,@RequestParam String role) {
+	public ResponseEntity<ResponseDTO> getAllEmployeeByRoleAndOrg(@RequestParam Long orgId, @RequestParam String role) {
 		String methodName = "getAllEmployeeByRoleAndOrg()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		Set<Object[]>employeename = new HashSet<>();
+		Set<Object[]> employeename = new HashSet<>();
 		try {
 			employeename = basicMasterService.getEmployeeByRole(orgId, role);
 		} catch (Exception e) {
@@ -124,7 +123,7 @@ public class BasicMasterController extends BaseController {
 			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isEmpty(errorMsg)) {
-			List<Map<String, String>>formattedEmployee=formattEmployee(employeename);
+			List<Map<String, String>> formattedEmployee = formattEmployee(employeename);
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Employee found by ID");
 			responseObjectsMap.put("Employee", formattedEmployee);
 			responseDTO = createServiceResponse(responseObjectsMap);
@@ -137,9 +136,9 @@ public class BasicMasterController extends BaseController {
 	}
 
 	private List<Map<String, String>> formattEmployee(Set<Object[]> employeename) {
-		List<Map<String, String>>formattedEmployee=new ArrayList<>();
-		for(Object[] emp:employeename) {
-			Map<String, String>formatemp=new HashMap<>();
+		List<Map<String, String>> formattedEmployee = new ArrayList<>();
+		for (Object[] emp : employeename) {
+			Map<String, String> formatemp = new HashMap<>();
 			formatemp.put("Id", emp[0].toString());
 			formatemp.put("Empname", emp[1].toString());
 			formattedEmployee.add(formatemp);
@@ -240,10 +239,10 @@ public class BasicMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
-	//Get ALl Leave Type for Leave Request
+
+	// Get ALl Leave Type for Leave Request
 	@GetMapping("/leavetype/leaveRequest")
-	public ResponseEntity<ResponseDTO> getAllLeaveTypeforRequest(@RequestParam Long orgId,@RequestParam Long id) {
+	public ResponseEntity<ResponseDTO> getAllLeaveTypeforRequest(@RequestParam Long orgId, @RequestParam Long id) {
 		String methodName = "getAllLeaveTypeforRequest()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -251,13 +250,13 @@ public class BasicMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		Set<Object[]> leaveTypeVO = new HashSet<>();
 		try {
-			leaveTypeVO = basicMasterService.getAllLeaveTypeForLeaveRequest(orgId,id);
+			leaveTypeVO = basicMasterService.getAllLeaveTypeForLeaveRequest(orgId, id);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			List<Map<String, String>> formattedLeaveType=formatt(leaveTypeVO);
+			List<Map<String, String>> formattedLeaveType = formatt(leaveTypeVO);
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Leave Type get successfully");
 			responseObjectsMap.put("leaveType", formattedLeaveType);
 			responseDTO = createServiceResponse(responseObjectsMap);
@@ -267,16 +266,52 @@ public class BasicMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	private List<Map<String, String>> formatt(Set<Object[]> leaveTypeVO) {
-		List<Map<String, String>>formattedLeaveType= new ArrayList<>();
-		for(Object[] k:leaveTypeVO) {
-			Map<String, String>format=new HashMap<>();
+		List<Map<String, String>> formattedLeaveType = new ArrayList<>();
+		for (Object[] k : leaveTypeVO) {
+			Map<String, String> format = new HashMap<>();
 			format.put("LeaveType", k[0].toString());
 			format.put("LeaveTypeCode", k[1].toString());
-			formattedLeaveType.add(format);			
+			formattedLeaveType.add(format);
 		}
 		return formattedLeaveType;
+	}
+
+	@GetMapping("/getLeaveTypeNameByOrgId")
+	public ResponseEntity<ResponseDTO> getLeaveTypeNameByOrgId(@RequestParam Long orgId) {
+		String methodName = "getAllLeaveTypeforRequest()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		Set<Object[]> leaveTypeVO = new HashSet<>();
+		try {
+			leaveTypeVO = basicMasterService.getLeaveTypeNameByOrgId(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			List<Map<String, String>> formattLeaveType = formatted(leaveTypeVO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "LeaveTypeName get successfully");
+			responseObjectsMap.put("leaveType", formattLeaveType);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "LeaveTypeName receive failed", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	private List<Map<String, String>> formatted(Set<Object[]> leaveTypeVO) {
+		List<Map<String, String>> formattLeaveType = new ArrayList<>();
+		for (Object[] k : leaveTypeVO) {
+			Map<String, String> formatt = new HashMap<>();
+			formatt.put("LeaveType", k[0].toString());
+			formattLeaveType.add(formatt);
+		}
+		return formattLeaveType;
 	}
 
 	@GetMapping("/leavetype/{id}")
@@ -304,6 +339,7 @@ public class BasicMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+
 	@PostMapping("/leavetype")
 	public ResponseEntity<ResponseDTO> createLeaveType(@RequestBody LeaveTypeVO leaveTypeVO) {
 		String methodName = "createLeaveType()";
@@ -397,6 +433,7 @@ public class BasicMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+
 	@GetMapping("/holiday/{id}")
 	public ResponseEntity<ResponseDTO> getholidayById(@PathVariable int id) {
 		String methodName = "getholidayById()";
@@ -422,6 +459,7 @@ public class BasicMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+
 	@PostMapping("/holiday")
 	public ResponseEntity<ResponseDTO> createHolidayType(@RequestBody HolidayVO holidayVO) {
 		String methodName = "createLeaveType()";
@@ -516,9 +554,11 @@ public class BasicMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+
 	// Get Leave Request Report Based on Who is the Approval
 	@GetMapping("/leaverequest/approval")
-	public ResponseEntity<ResponseDTO> getAllLeaveRequestBasedOnApproval(@RequestParam Long orgId,@RequestParam String empcode) {
+	public ResponseEntity<ResponseDTO> getAllLeaveRequestBasedOnApproval(@RequestParam Long orgId,
+			@RequestParam String empcode) {
 		String methodName = "getAllLeaveRequestBasedOnApproval()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -568,7 +608,7 @@ public class BasicMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/leaverequests/{empcode}")
 	public ResponseEntity<ResponseDTO> getLeaveRequestByEmpcode(@PathVariable String empcode) {
 		String methodName = "getLeaveRequestByEmpcode()";
@@ -594,6 +634,7 @@ public class BasicMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+
 	@PostMapping("/leaverequest")
 	public ResponseEntity<ResponseDTO> createLeaveRequest(@RequestBody LeaveRequestVO leaveRequestVO) {
 		String methodName = "createLeaveRequest()";
@@ -614,7 +655,7 @@ public class BasicMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@PutMapping("/leaverequest")
 	public ResponseEntity<ResponseDTO> updateLeaveRequest(@RequestBody LeaveRequestVO leaveRequestVO) {
 		String methodName = "updateLeaveRequest()";
@@ -623,8 +664,7 @@ public class BasicMasterController extends BaseController {
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			LeaveRequestVO updateLeaveRequestVO = basicMasterService.updateLeaveRequest(leaveRequestVO)
-					.orElse(null);
+			LeaveRequestVO updateLeaveRequestVO = basicMasterService.updateLeaveRequest(leaveRequestVO).orElse(null);
 			if (updateLeaveRequestVO != null) {
 				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Leave Request updated successfully");
 				responseObjectsMap.put("LeaveRequestVO", updateLeaveRequestVO);
@@ -641,16 +681,17 @@ public class BasicMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@PutMapping("/leaverequestapp/{id}")
-	public ResponseEntity<ResponseDTO> updateLeaveRequestApproval(@RequestBody LeaveApprovalDTO leaveApprovalDTO,int id) {
+	public ResponseEntity<ResponseDTO> updateLeaveRequestApproval(@RequestBody LeaveApprovalDTO leaveApprovalDTO,
+			int id) {
 		String methodName = "updateLeaveRequestApproval()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			LeaveRequestVO updateLeaveRequestVO = basicMasterService.updateLeaveRequestApproval(leaveApprovalDTO,id)
+			LeaveRequestVO updateLeaveRequestVO = basicMasterService.updateLeaveRequestApproval(leaveApprovalDTO, id)
 					.orElse(null);
 			if (updateLeaveRequestVO != null) {
 				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Leave Request updated successfully");
@@ -671,7 +712,7 @@ public class BasicMasterController extends BaseController {
 
 	@DeleteMapping("/leaverequest/{id}")
 	public ResponseEntity<ResponseDTO> deleteLeaveRequest(@PathVariable int id) { // NewLeaveRequestVO
-																						// newLeaveRequestVO
+																					// newLeaveRequestVO
 		String methodName = "deleteLeaveRequest()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
@@ -742,35 +783,35 @@ public class BasicMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
-	// Get Leave Request Report Based on Who is the Approval
-		@GetMapping("/permissionRequest/approval")
-		public ResponseEntity<ResponseDTO> getAllPermissionRequestBasedOnApproval(@RequestParam Long orgId,@RequestParam String empcode) {
-			String methodName = "getAllPermissionRequestBasedOnApproval()";
-			LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
-			String errorMsg = null;
-			Map<String, Object> responseObjectsMap = new HashMap<>();
-			ResponseDTO responseDTO = null;
-			List<PermissionRequestVO> permissionRequestVO = new ArrayList<>();
-			try {
-				permissionRequestVO = basicMasterService.getAllPermissionRequestBasedonApproval(orgId, empcode);
-			} catch (Exception e) {
-				errorMsg = e.getMessage();
-				LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			}
-			if (StringUtils.isBlank(errorMsg)) {
-				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Permission Request information get successfully");
-				responseObjectsMap.put("permissionRequestVO", permissionRequestVO);
-				responseDTO = createServiceResponse(responseObjectsMap);
-			} else {
-				responseDTO = createServiceResponseError(responseObjectsMap, "LeaveRequest information receive failed",
-						errorMsg);
-			}
-			LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
-			return ResponseEntity.ok().body(responseDTO);
-		}
 
-		
+	// Get Leave Request Report Based on Who is the Approval
+	@GetMapping("/permissionRequest/approval")
+	public ResponseEntity<ResponseDTO> getAllPermissionRequestBasedOnApproval(@RequestParam Long orgId,
+			@RequestParam String empcode) {
+		String methodName = "getAllPermissionRequestBasedOnApproval()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<PermissionRequestVO> permissionRequestVO = new ArrayList<>();
+		try {
+			permissionRequestVO = basicMasterService.getAllPermissionRequestBasedonApproval(orgId, empcode);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Permission Request information get successfully");
+			responseObjectsMap.put("permissionRequestVO", permissionRequestVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "LeaveRequest information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
 	@GetMapping("/permissionRequests/{empcode}")
 	public ResponseEntity<ResponseDTO> getPermissionRequestByEmpcode(@PathVariable String empcode) {
 		String methodName = "getPermissionRequestByEmpcode()";
@@ -796,7 +837,7 @@ public class BasicMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@PostMapping("/permissionRequest")
 	public ResponseEntity<ResponseDTO> createPermissionRequest(@RequestBody PermissionRequestVO permissionRequestVO) {
 		String methodName = "createPermissionRequest()";
@@ -805,7 +846,8 @@ public class BasicMasterController extends BaseController {
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			PermissionRequestVO createdPermissionRequestVO = basicMasterService.createPermissionRequest(permissionRequestVO);
+			PermissionRequestVO createdPermissionRequestVO = basicMasterService
+					.createPermissionRequest(permissionRequestVO);
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Permission Request created successfully");
 			responseObjectsMap.put("PermissionRequestVO", createdPermissionRequestVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
@@ -827,7 +869,8 @@ public class BasicMasterController extends BaseController {
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			PermissionRequestVO updatedPermissionRequestVO = basicMasterService.updatePermissionRequest(permissionRequestVO).orElse(null);
+			PermissionRequestVO updatedPermissionRequestVO = basicMasterService
+					.updatePermissionRequest(permissionRequestVO).orElse(null);
 			if (updatedPermissionRequestVO != null) {
 				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Permission Request updated successfully");
 				responseObjectsMap.put("Update Permission Request", updatedPermissionRequestVO);
@@ -847,21 +890,24 @@ public class BasicMasterController extends BaseController {
 	}
 
 	@PutMapping("/permissionRequestapp/{id}")
-	public ResponseEntity<ResponseDTO> updatePermissionRequestApproval(@RequestBody LeaveApprovalDTO leaveApprovalDTO,int id) {
+	public ResponseEntity<ResponseDTO> updatePermissionRequestApproval(@RequestBody LeaveApprovalDTO leaveApprovalDTO,
+			int id) {
 		String methodName = "updatePermissionRequestApproval()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			PermissionRequestVO updatePermissionRequestVO = basicMasterService.updatePermissionRequestApproval(leaveApprovalDTO,id).orElse(null);
+			PermissionRequestVO updatePermissionRequestVO = basicMasterService
+					.updatePermissionRequestApproval(leaveApprovalDTO, id).orElse(null);
 			if (updatePermissionRequestVO != null) {
 				responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Permission Request updated successfully");
 				responseObjectsMap.put("PermissionRequestVO", updatePermissionRequestVO);
 				responseDTO = createServiceResponse(responseObjectsMap);
 			} else {
 				errorMsg = "Permission Request Type not found for ID: " + leaveApprovalDTO.getRequestid();
-				responseDTO = createServiceResponseError(responseObjectsMap, "Permission Request update failed", errorMsg);
+				responseDTO = createServiceResponseError(responseObjectsMap, "Permission Request update failed",
+						errorMsg);
 			}
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
@@ -871,7 +917,6 @@ public class BasicMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
 
 	@DeleteMapping("/permissionRequest/{id}")
 	public ResponseEntity<ResponseDTO> deletePermissionRequest(@PathVariable int id) {
@@ -893,8 +938,7 @@ public class BasicMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
-	
+
 	@PostMapping("/checkin")
 	public ResponseEntity<ResponseDTO> createCheckin(@RequestBody UserNameDTO user1) {
 		String methodName = "createCheckin()";
@@ -904,19 +948,18 @@ public class BasicMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		try {
 			CheckinVO createdCheckin = basicMasterService.checkIn(user1);
-					responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "CheckIn created successfully");
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "CheckIn created successfully");
 			responseObjectsMap.put("CheckinVO", createdCheckin);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, "CheckIn creation failed",
-					errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "CheckIn creation failed", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@PostMapping("/checkout")
 	public ResponseEntity<ResponseDTO> createCheckout(@RequestBody UserNameDTO user1) {
 		String methodName = "createCheckout()";
@@ -926,19 +969,18 @@ public class BasicMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		try {
 			CheckinVO createdCheckout = basicMasterService.checkOut(user1);
-					responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "CheckOut created successfully");
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "CheckOut created successfully");
 			responseObjectsMap.put("CheckinVO", createdCheckout);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
-			responseDTO = createServiceResponseError(responseObjectsMap, "CheckOut creation failed",
-					errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "CheckOut creation failed", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/chkStatus/{empcode}")
 	public ResponseEntity<ResponseDTO> getStatusByEmpcode(@PathVariable String empcode) {
 		String methodName = "getStatusByEmpcode()";
@@ -964,7 +1006,7 @@ public class BasicMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/attendance/{empcode}")
 	public ResponseEntity<ResponseDTO> getAttendanceByEmpcode(@PathVariable String empcode) {
 		String methodName = "getAttendanceByEmpcode()";
@@ -990,7 +1032,7 @@ public class BasicMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	// Employeee Daily Checkin Status
 	@GetMapping("/employee/daily/status")
 	public ResponseEntity<ResponseDTO> getAllEmployeesDailyCheckinStatus() {
@@ -1007,12 +1049,13 @@ public class BasicMasterController extends BaseController {
 			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Employee Daily Checkin Status information get successfully");
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"Employee Daily Checkin Status information get successfully");
 			responseObjectsMap.put("EmployeeStatusVO", employeeStatusVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "Employee Daily Checkin Status information receive failed",
-					errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"Employee Daily Checkin Status information receive failed", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
@@ -1038,7 +1081,7 @@ public class BasicMasterController extends BaseController {
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	// Get All Employee Leave Balance
 	@GetMapping("/leave/balance")
 	public ResponseEntity<ResponseDTO> getAllEmployeeLeaveBalance() {
@@ -1055,17 +1098,18 @@ public class BasicMasterController extends BaseController {
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "All Employee Leave Balance information get successfully");
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE,
+					"All Employee Leave Balance information get successfully");
 			responseObjectsMap.put("leaveBalanceVO", leaveBalanceVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "All Employee Leave Balance information receive failed",
-					errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap,
+					"All Employee Leave Balance information receive failed", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
-	
+
 	@GetMapping("/leave/balance/{empcode}")
 	public ResponseEntity<ResponseDTO> getLeaveBalanceByEmpcode(@PathVariable String empcode) {
 		String methodName = "getAttendanceByEmpcode()";
@@ -1087,6 +1131,28 @@ public class BasicMasterController extends BaseController {
 		} else {
 			errorMsg = "Leave Balance not found for ID: " + empcode;
 			responseDTO = createServiceResponseError(responseObjectsMap, "Leave Balance not found", errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	// LeaveEligible
+	@PostMapping("/leaveEligible")
+	public ResponseEntity<ResponseDTO> createLeaveEligible(@RequestBody LeaveEligibleVO leaveEligibleVO) {
+		String methodName = "createLeaveEligible()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			LeaveEligibleVO createLeaveEligibleVO = basicMasterService.createLeaveEligible(leaveEligibleVO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "LeaveEligible created successfully");
+			responseObjectsMap.put("leaveEligibleVO", createLeaveEligibleVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, "LeaveEligible creation failed", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);

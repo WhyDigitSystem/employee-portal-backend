@@ -23,6 +23,7 @@ import com.whydigit.efit.entity.EmployeeDetailsVO;
 import com.whydigit.efit.entity.HolidayVO;
 import com.whydigit.efit.entity.LeaveBalanceVO;
 import com.whydigit.efit.entity.LeaveCreditVO;
+import com.whydigit.efit.entity.LeaveEligibleVO;
 import com.whydigit.efit.entity.LeaveRequestVO;
 import com.whydigit.efit.entity.LeaveTypeVO;
 import com.whydigit.efit.entity.PermissionRequestVO;
@@ -35,6 +36,7 @@ import com.whydigit.efit.repo.EmployeeDetailsRepo;
 import com.whydigit.efit.repo.HolidayRepo;
 import com.whydigit.efit.repo.LeaveBalanceRepository;
 import com.whydigit.efit.repo.LeaveCreditRepository;
+import com.whydigit.efit.repo.LeaveEligibleRepo;
 import com.whydigit.efit.repo.LeaveRequestRepo;
 import com.whydigit.efit.repo.LeaveTypeRepo;
 import com.whydigit.efit.repo.PermissionRequestRepo;
@@ -56,28 +58,31 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 
 	@Autowired
 	private PermissionRequestRepo newPermissionRequestRepo;
-	
+
 	@Autowired
 	CheckinRepo checkinRepo;
-	
+
 	@Autowired
 	CheckinStatusRepo chkstatusrepo;
-	
+
 	@Autowired
 	EmployeeCheckinTimeRepo checkinTimeRepo;
-	
+
 	@Autowired
 	EmployeeCheckinDailyStatusRepo dailyStatus;
 
 	@Autowired
 	LeaveCreditRepository leaveCreditRepo;
-	
+
 	@Autowired
 	LeaveBalanceRepository leaveBalanceRepo;
-	
+
 	@Autowired
 	AdminService adminService;
-	
+
+	@Autowired
+	LeaveEligibleRepo leaveEligibleRepo;
+
 //	employee
 
 	@Override
@@ -89,18 +94,18 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 	public Optional<EmployeeDetailsVO> getEmployeeById(long id) {
 		return employeeRepo.findById(id);
 	}
-	
+
 	// Get Employee by Role
 	@Override
-	public Set<Object[]> getEmployeeByRole(long orgid,String role) {
-		return employeeRepo.findAllByRole(orgid,role);
+	public Set<Object[]> getEmployeeByRole(long orgid, String role) {
+		return employeeRepo.findAllByRole(orgid, role);
 	}
 
 	@Override
 	@Transactional
 	public EmployeeDetailsVO createEmployee(EmployeeDetailsVO employeeVO) throws ApplicationException {
 		employeeVO.setCancel(false);
-		employeeVO=employeeRepo.save(employeeVO);
+		employeeVO = employeeRepo.save(employeeVO);
 		adminService.createUser(setCreateUserFormDTO(employeeVO));
 		return employeeVO;
 	}
@@ -140,6 +145,12 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 	}
 
 	@Override
+	public Set<Object[]> getLeaveTypeNameByOrgId(long orgId) {
+
+		return leaveTypeRepo.findLeaveTypeNameByOrgId(orgId);
+	}
+
+	@Override
 	public Optional<LeaveTypeVO> getLeavetypeById(int id) {
 		// TODO Auto-generated method stub
 		return leaveTypeRepo.findById(id);
@@ -159,7 +170,7 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 			return Optional.empty();
 		}
 	}
-	
+
 	@Override
 	public void deleteLeaveType(int id) {
 		leaveTypeRepo.deleteById(id);
@@ -208,11 +219,11 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 		// TODO Auto-generated method stub
 		return newLeaveRequestRepo.findAll();
 	}
-	
+
 	@Override
-	public List<LeaveRequestVO> getAllLeaveRequestBasedOnApproval(Long orgId,String empcode) {
+	public List<LeaveRequestVO> getAllLeaveRequestBasedOnApproval(Long orgId, String empcode) {
 		// TODO Auto-generated method stub
-		return newLeaveRequestRepo.findAllRequestBasedOnApproval(orgId,empcode);
+		return newLeaveRequestRepo.findAllRequestBasedOnApproval(orgId, empcode);
 	}
 
 	@Override
@@ -220,9 +231,9 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 		// TODO Auto-generated method stub
 		return newLeaveRequestRepo.findById(id);
 	}
-	
+
 	@Override
-	public List<LeaveRequestVO> getLeaveRequestByEmpcode(@PathVariable String empcode){
+	public List<LeaveRequestVO> getLeaveRequestByEmpcode(@PathVariable String empcode) {
 		return newLeaveRequestRepo.findByEmpcode(empcode);
 	}
 
@@ -241,18 +252,18 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 			return Optional.empty();
 		}
 	}
-	
+
 	@Override
-	public Optional<LeaveRequestVO> updateLeaveRequestApproval(LeaveApprovalDTO leaveApprovalDTO,int id) {
-		Date currentdate=new Date();
-		LeaveRequestVO leaveRequestvo=newLeaveRequestRepo.findById(id).get();
+	public Optional<LeaveRequestVO> updateLeaveRequestApproval(LeaveApprovalDTO leaveApprovalDTO, int id) {
+		Date currentdate = new Date();
+		LeaveRequestVO leaveRequestvo = newLeaveRequestRepo.findById(id).get();
 		leaveRequestvo.setStatus(leaveApprovalDTO.getStatus());
 		leaveRequestvo.setApprovedby(leaveApprovalDTO.getApprovedby());
 		leaveRequestvo.setRemarks(leaveApprovalDTO.getRemarks());
 		leaveRequestvo.setApprovedat(currentdate);
 		return Optional.of(newLeaveRequestRepo.save(leaveRequestvo));
 	}
-	
+
 //	@Override
 //	public Optional<LeaveRequestVO> updateLeaveRequestApproval(LeaveRequestVO leaveRequestVO) {
 //		Date currentdate=new Date();
@@ -283,16 +294,16 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 		// TODO Auto-generated method stub
 		return newPermissionRequestRepo.findById(id);
 	}
-	
+
 	@Override
-	public List<PermissionRequestVO> getPermissionRequestByEmpcode(@PathVariable String empcode){
+	public List<PermissionRequestVO> getPermissionRequestByEmpcode(@PathVariable String empcode) {
 		return newPermissionRequestRepo.findByEmpcode(empcode);
 	}
-	
+
 	@Override
 	public List<PermissionRequestVO> getAllPermissionRequestBasedonApproval(Long orgId, String Empcode) {
-		
-		return newPermissionRequestRepo.finAllByapproval(orgId,Empcode);
+
+		return newPermissionRequestRepo.finAllByapproval(orgId, Empcode);
 	}
 
 	@Override
@@ -310,12 +321,12 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 			return Optional.empty();
 		}
 	}
-	
+
 	@Override
-	public Optional<PermissionRequestVO> updatePermissionRequestApproval(LeaveApprovalDTO leaveApprovalDTO,int id) {
-		
-		Date currentdate=new Date();
-		PermissionRequestVO permission=newPermissionRequestRepo.findById(id).get();
+	public Optional<PermissionRequestVO> updatePermissionRequestApproval(LeaveApprovalDTO leaveApprovalDTO, int id) {
+
+		Date currentdate = new Date();
+		PermissionRequestVO permission = newPermissionRequestRepo.findById(id).get();
 		permission.setStatus(leaveApprovalDTO.getStatus());
 		permission.setApprovedby(leaveApprovalDTO.getApprovedby());
 		permission.setRemarks(leaveApprovalDTO.getRemarks());
@@ -328,52 +339,52 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 
 		newPermissionRequestRepo.deleteById(id);
 	}
-	
+
 	public CheckinVO checkIn(UserNameDTO user1) {
-    	Date current= new Date();
-    	CheckinVO checkinVO = new CheckinVO();
-    	checkinVO.setCompanycode("WDS");
-    	checkinVO.setBranch("BLR");
-    	checkinVO.setEmpcode(user1.getEmpcode());
-    	checkinVO.setCheckin_date(current);
-    	checkinVO.setStatus("In");
-    	checkinVO.setEntry_time(current);
-    	checkinRepo.save(checkinVO);
-    	
-    	CheckinStatusVO chk=new CheckinStatusVO();
-    	chk.setEmpcode(user1.getEmpcode());
-    	chk.setBranchId(user1.getBranchId());
-    	chk.setOrgId(user1.getOrgId());
-    	chk.setStatus(checkinVO.getStatus());
-    	chkstatusrepo.save(chk);
-    	
-        return checkinRepo.save(checkinVO);
-    }
+		Date current = new Date();
+		CheckinVO checkinVO = new CheckinVO();
+		checkinVO.setCompanycode("WDS");
+		checkinVO.setBranch("BLR");
+		checkinVO.setEmpcode(user1.getEmpcode());
+		checkinVO.setCheckin_date(current);
+		checkinVO.setStatus("In");
+		checkinVO.setEntry_time(current);
+		checkinRepo.save(checkinVO);
+
+		CheckinStatusVO chk = new CheckinStatusVO();
+		chk.setEmpcode(user1.getEmpcode());
+		chk.setBranchId(user1.getBranchId());
+		chk.setOrgId(user1.getOrgId());
+		chk.setStatus(checkinVO.getStatus());
+		chkstatusrepo.save(chk);
+
+		return checkinRepo.save(checkinVO);
+	}
 
 	public CheckinVO checkOut(UserNameDTO user1) {
-    	Date current= new Date();
-    	CheckinVO checkinVO = new CheckinVO();
-    	checkinVO.setCompanycode("WDS");
-    	checkinVO.setBranch("BLR");
-    	checkinVO.setEmpcode(user1.getEmpcode());
-    	checkinVO.setCheckin_date(current);
-    	checkinVO.setEntry_time(current);
-    	checkinVO.setStatus("Out");
-    	
-    	CheckinStatusVO chk=new CheckinStatusVO();
-    	chk.setEmpcode(user1.getEmpcode());
-    	chk.setBranchId(user1.getBranchId());
-    	chk.setOrgId(user1.getOrgId());
-    	chk.setStatus(checkinVO.getStatus());
-    	chkstatusrepo.save(chk);
-    	
-        return checkinRepo.save(checkinVO);
-    }
+		Date current = new Date();
+		CheckinVO checkinVO = new CheckinVO();
+		checkinVO.setCompanycode("WDS");
+		checkinVO.setBranch("BLR");
+		checkinVO.setEmpcode(user1.getEmpcode());
+		checkinVO.setCheckin_date(current);
+		checkinVO.setEntry_time(current);
+		checkinVO.setStatus("Out");
+
+		CheckinStatusVO chk = new CheckinStatusVO();
+		chk.setEmpcode(user1.getEmpcode());
+		chk.setBranchId(user1.getBranchId());
+		chk.setOrgId(user1.getOrgId());
+		chk.setStatus(checkinVO.getStatus());
+		chkstatusrepo.save(chk);
+
+		return checkinRepo.save(checkinVO);
+	}
 
 	@Override
 	public Optional<CheckinStatusVO> getStatusByEmpcode(String empcode) {
-		
-		 return chkstatusrepo.findById(empcode);
+
+		return chkstatusrepo.findById(empcode);
 	}
 
 	@Override
@@ -383,11 +394,11 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 
 	@Override
 	public List<EmployeeCheckinDailyStatusVO> getAllEmployeesCheckinStatusDaily() {
-		
+
 		return dailyStatus.findAll();
 	}
 
-	//Create Leave credit to employees
+	// Create Leave credit to employees
 	@Override
 	public LeaveCreditVO createLeaveCredit(LeaveCreditVO leaveCreditVO) {
 		// TODO Auto-generated method stub
@@ -399,23 +410,25 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 
 	@Override
 	public List<LeaveBalanceVO> getAllLeaveBalance() {
-		
+
 		return leaveBalanceRepo.findAll();
 	}
-	
+
 	@Override
 	public List<LeaveBalanceVO> getLeaveBalanceByEmpcode(String empcode) {
 		return leaveBalanceRepo.findByEmpcode(empcode);
 	}
 
 	@Override
-	public Set<Object[]> getAllLeaveTypeForLeaveRequest(Long orgId,Long id) {
-		return leaveTypeRepo.findAllType(orgId,id);
+	public Set<Object[]> getAllLeaveTypeForLeaveRequest(Long orgId, Long id) {
+		return leaveTypeRepo.findAllType(orgId, id);
 	}
 
+	// Leave Eligible
 
-	
-
-	
+	@Override
+	public LeaveEligibleVO createLeaveEligible(LeaveEligibleVO leaveEligibleVO) {
+		return leaveEligibleRepo.save(leaveEligibleVO);
+	}
 
 }

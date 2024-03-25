@@ -1,14 +1,12 @@
 package com.whydigit.efit.entity;
 
-import java.util.Date;
-
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 
 import com.whydigit.efit.dto.CreatedUpdatedDate;
 
@@ -22,11 +20,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LeaveTypeVO {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
 	private String companycode;
 	private String branchId;
 	private String leave_type;
@@ -35,13 +32,14 @@ public class LeaveTypeVO {
 	private int total_leave;
 	private String createdby;
 	private String updatedby;
+	@Column(name = "effective", length = 15)
+	private String effective;
 	private boolean cancel;
 	private boolean active;
 	private String remarks;
 	private long orgId;
-	
+
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
-	
 
 }

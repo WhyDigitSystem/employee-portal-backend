@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.whydigit.efit.dto.EmployeeAttendanceActivityDTO;
 import com.whydigit.efit.dto.EmployeeDailyStatusDTO;
 import com.whydigit.efit.dto.EmployeeInOutActionDTO;
-import com.whydigit.efit.entity.EmployeeCheckInTimeVO;
 import com.whydigit.efit.entity.EmployeeDailyStatusVO;
 import com.whydigit.efit.exception.ApplicationException;
 

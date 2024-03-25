@@ -1,7 +1,6 @@
 package com.whydigit.efit.service;
 
 import java.util.Date;
-import java.util.Optional;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;

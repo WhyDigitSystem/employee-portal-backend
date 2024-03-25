@@ -31,8 +31,6 @@ import com.whydigit.efit.dto.ResponseDTO;
 import com.whydigit.efit.entity.EmployeeDailyStatusVO;
 import com.whydigit.efit.service.EmployeeService;
 
-import net.bytebuddy.asm.Advice.Local;
-
 @CrossOrigin
 @RestController
 @RequestMapping("/api/employee")

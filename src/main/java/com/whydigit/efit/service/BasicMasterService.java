@@ -16,6 +16,7 @@ import com.whydigit.efit.entity.EmployeeDetailsVO;
 import com.whydigit.efit.entity.HolidayVO;
 import com.whydigit.efit.entity.LeaveBalanceVO;
 import com.whydigit.efit.entity.LeaveCreditVO;
+import com.whydigit.efit.entity.LeaveEligibleVO;
 import com.whydigit.efit.entity.LeaveRequestVO;
 import com.whydigit.efit.entity.LeaveTypeVO;
 import com.whydigit.efit.entity.PermissionRequestVO;
@@ -44,7 +45,9 @@ public interface BasicMasterService {
 	List<LeaveTypeVO> getAllgetAllLeaveType();
 	
 	Optional<LeaveTypeVO> getLeavetypeById(int id);
-
+	
+	Set<Object[]> getLeaveTypeNameByOrgId(long orgId);
+	
 	LeaveTypeVO createLeaveType(LeaveTypeVO leaveTypeVO);
 	
 	// Get All Leave Type 
@@ -133,7 +136,9 @@ public interface BasicMasterService {
 	// Get All Leave Request Based on Approval
 	List<LeaveRequestVO> getAllLeaveRequestBasedOnApproval(Long orgId, String Empcode);
 	
+	//Leave Eligible
 	
+	LeaveEligibleVO createLeaveEligible(LeaveEligibleVO leaveEligibleVO);
 	
 	
 	
