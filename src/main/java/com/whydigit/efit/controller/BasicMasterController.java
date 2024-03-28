@@ -1203,7 +1203,7 @@ public class BasicMasterController extends BaseController {
 		ResponseDTO responseDTO = null;
 		Set<Object[]> leaveEligibleVO = new HashSet<>();
 		try {
-			leaveEligibleVO = basicMasterService.getAllLeaveEligibleByOrgIdAndEmpcodeAndBranchId(orgId, empCode,
+			leaveEligibleVO = basicMasterService.getAllLeaveEligibleByOrgIdAndEmpcodeAndBranchid(orgId, empCode,
 					branchId);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();

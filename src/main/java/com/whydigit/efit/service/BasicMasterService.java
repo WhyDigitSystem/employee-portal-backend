@@ -142,7 +142,7 @@ public interface BasicMasterService {
 	
 	Set<Object[]> getAllLeaveEligibleByOrgId(long orgId);
 	
-	Set<Object[]> getAllLeaveEligibleByOrgIdAndEmpcodeAndBranchId(long orgId,String empCode,long branchId);
+	Set<Object[]> getAllLeaveEligibleByOrgIdAndEmpcodeAndBranchid(long orgId,String empcode,long branchid);
 	
 	
 	

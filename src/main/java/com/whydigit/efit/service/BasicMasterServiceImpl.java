@@ -437,9 +437,9 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 	}
 
 	@Override
-	public Set<Object[]> getAllLeaveEligibleByOrgIdAndEmpcodeAndBranchId(long orgId, String empCode,
-			long branchId) {
-		return leaveEligibleRepo.findAllLeaveEligibleByOrgIdAndEmpcodeAndBranchId(orgId,empCode,branchId);
+	public Set<Object[]> getAllLeaveEligibleByOrgIdAndEmpcodeAndBranchid(long orgId, String empcode,
+			long branchid) {
+		return leaveEligibleRepo.findAllLeaveEligibleByOrgIdAndEmpcodeAndBranchid(orgId,empcode,branchid);
 	}
 
 }
