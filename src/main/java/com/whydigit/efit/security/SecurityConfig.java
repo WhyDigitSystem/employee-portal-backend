@@ -60,7 +60,8 @@ public class SecurityConfig {
 						"/api/basicMaster/permissionRequest/approval", "/api/basicMaster/leavetype/leaveRequest",
 						"/api/admin/getAllBranchbyOrgId", "/api/employee/monthlyReport",
 						"/api/basicMaster/getLeaveTypeNameByOrgId", "/api/basicMaster/leaveEligible",
-						"/api/basicMaster/getAllLeaveEligibleByOrgId","/api/master/getAllLeaveEligibleByOrgIdAndEmpcodeAndBranchId")
+						"/api/basicMaster/getAllLeaveEligibleByOrgId",
+						"/api/master/getAllLeaveEligibleByOrgIdAndEmpcodeAndBranchId", "/api/edController/**")
 				.permitAll().antMatchers("/api/**").hasAnyRole("USER", "GUEST_USER").anyRequest().authenticated();
 		http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 		return http.build();
