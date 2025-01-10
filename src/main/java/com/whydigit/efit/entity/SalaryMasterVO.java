@@ -4,33 +4,27 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "deduction")
+@Table(name = "salarymaster")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DeductionsVO {
+public class SalaryMasterVO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	private Double professionalTax;
-	private Double pf;
-	private Double vpf;
-	private Double medicalclaim;
+	private Double headings;
+	private Double code;
+	private Double category;
+	private Double type;
+	private Double amount;
+	private boolean active;
 
-	@OneToOne
-	@JsonBackReference
-	@JoinColumn(name = "earningsid", referencedColumnName = "id")
-	private EarningsVO earningsVO;
 }
