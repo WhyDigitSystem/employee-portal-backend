@@ -12,6 +12,7 @@ import com.whydigit.efit.entity.EmployeeDetailsVO;
 @Repository
 public interface EmployeeDetailsRepo extends JpaRepository<EmployeeDetailsVO, Long> {
 
+	
 	List<EmployeeDetailsVO> findAllByOrgId(long orgId);
 
 	@Query("select e.id,e.empname from EmployeeDetailsVO e where e.orgId=?1 and e.role=?2")
@@ -50,6 +51,12 @@ public interface EmployeeDetailsRepo extends JpaRepository<EmployeeDetailsVO, Lo
 			+ "CROSS JOIN\r\n"
 			+ "    (SELECT COUNT(*) AS totalDays FROM employeeportal.calendar WHERE cdate BETWEEN ?1 AND ?2) AS T)a,users b ,branch c where c.id=b.branch_id and c.branch_name=?3 and a.empcode=b.empcode and b.is_active='1' ")
 	Set<Object[]> findAllAttendanceByFromAndToDate(String fromdt, String todt,String branch);
+
+	@Query(value = "select a.empname from EmployeeDetailsVO a where a.orgId=?1 group by a.empname")
+	Set<Object[]> getEmployeeName(Long orgId);
+
+	@Query(nativeQuery = true, value = "select a.* from employee_details a where a.org_id=?1 and a.active=1")
+	List<EmployeeDetailsVO> getByOrgIdAndActiveEmployees(Long orgId);
 
 	
 
