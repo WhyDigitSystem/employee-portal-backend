@@ -34,6 +34,9 @@ public class SalaryStructureVO {
 	@Column(name = "salarystructureid")
 	private Long id;
 	
+	@Column(name = "orgid")
+	private Long orgId;
+	
 	@Column(name = "employeecode", length = 25)
     private String employeeCode;
 

@@ -111,6 +111,7 @@ public class SalaryStructureServiceImpl implements SalaryStructureService {
 		salaryStructureVO.setGrade(salaryStructureDTO.getGrade());
 		salaryStructureVO.setDepartment(salaryStructureDTO.getDepartment());
 		salaryStructureVO.setPan(salaryStructureDTO.getPan());
+		salaryStructureVO.setOrgId(salaryStructureDTO.getOrgId());
 		salaryStructureVO.setBankAccountNo(salaryStructureDTO.getBankAccountNo());
 		salaryStructureVO.setPosition(salaryStructureDTO.getPosition());
 		salaryStructureVO.setDateOfJoining(salaryStructureDTO.getDateOfJoining());
@@ -157,5 +158,19 @@ public class SalaryStructureServiceImpl implements SalaryStructureService {
 		List<SalaryMasterVO> master= salaryMasterRepo.findAllByActive(orgId);
 		
 		return master.stream().filter(mp -> mp.isActive()).toList();
+	}
+
+	@Override
+	public List<SalaryStructureVO> getAllSalaryStructures(Long orgId) {
+		
+		
+		return salaryStructureRepo.findByOrgId(orgId);
+	}
+
+	@Override
+	public SalaryStructureVO getSalaryStructureById(Long id) {
+		
+		SalaryStructureVO salaryStructureVO= salaryStructureRepo.findById(id).get();
+		 return salaryStructureVO;
 	}
 }

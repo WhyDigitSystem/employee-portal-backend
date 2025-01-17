@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.whydigit.efit.dto.SalaryStructureDTO;
 import com.whydigit.efit.entity.EmployeeDetailsVO;
 import com.whydigit.efit.entity.SalaryMasterVO;
+import com.whydigit.efit.entity.SalaryStructureVO;
 import com.whydigit.efit.exception.ApplicationException;
 
 @Service
@@ -18,5 +19,9 @@ public interface SalaryStructureService {
 	Map<String, Object> createUpdateSalaryStructure(SalaryStructureDTO salaryStructureDTO) throws ApplicationException;
 	
 	List<SalaryMasterVO>getAllSalaryMasterForSalaryStructure(Long orgId);
+	
+	List<SalaryStructureVO>getAllSalaryStructures(Long orgId);
+	
+	SalaryStructureVO getSalaryStructureById(Long orgId);
 
 }

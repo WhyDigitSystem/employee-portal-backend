@@ -3,17 +3,6 @@ package com.whydigit.efit.dto;
 import java.time.LocalDate;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.whydigit.efit.entity.SalaryStructureEarningsVO;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,6 +24,7 @@ public class SalaryStructureDTO {
     private String position;
     private LocalDate dateOfJoining;
     private String createdBy;
+    private Long orgId;
     
     private List<SalaryStructureEarningsDTO> salaryStructureEarningsDTO;
 	private List<SalaryStructureDeductionDTO> salaryStructureDeductionDTO;

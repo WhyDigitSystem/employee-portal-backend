@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,11 +19,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.whydigit.efit.common.CommonConstant;
+import com.whydigit.efit.common.EmployeePortalConstants;
 import com.whydigit.efit.common.UserConstants;
 import com.whydigit.efit.dto.ResponseDTO;
 import com.whydigit.efit.dto.SalaryStructureDTO;
 import com.whydigit.efit.entity.EmployeeDetailsVO;
 import com.whydigit.efit.entity.SalaryMasterVO;
+import com.whydigit.efit.entity.SalaryStructureVO;
 import com.whydigit.efit.service.SalaryStructureService;
 
 @RestController
@@ -103,6 +106,58 @@ public class SalaryStructureController  extends BaseController{
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap, "salary Master Details  information get Failed ",
 					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getAllSalaryStructure")
+	public ResponseEntity<ResponseDTO> getAllSalaryStructure(@RequestParam Long orgId) {
+		String methodName = "getAllSalaryStructure()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<SalaryStructureVO> salaryStructureVO = new ArrayList<>();
+		try {
+			salaryStructureVO = salaryStructureService.getAllSalaryStructures(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Salary Structure information get successfully");
+			responseObjectsMap.put("salaryStructureVO", salaryStructureVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Salary Structure information receive failed",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+
+	@GetMapping("/getSalaryStructureById")
+	public ResponseEntity<ResponseDTO> getSalaryStructureById(@RequestParam Long id) {
+		String methodName = "getSalaryStructureById()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		SalaryStructureVO salaryStructureVO = null;
+		try {
+			salaryStructureVO = salaryStructureService.getSalaryStructureById(id);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(EmployeePortalConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isEmpty(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Salary Structure found by ID");
+			responseObjectsMap.put("salaryStructureVO", salaryStructureVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			errorMsg = "Salary Structure not found for ID: " + id;
+			responseDTO = createServiceResponseError(responseObjectsMap, "Salary Structure not found", errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
