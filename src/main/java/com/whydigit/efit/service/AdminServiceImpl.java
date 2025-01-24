@@ -62,8 +62,11 @@ public class AdminServiceImpl implements AdminService {
 					EmployeePortalConstants.ERRROR_MSG_USER_INFORMATION_ALREADY_REGISTERED);
 		}
 		UserVO userVO = getUserVOFromCreateUserFormDTO(createUserFormDTO);
-		userVO.setOrganizationVO(organizationRepo.findById(createUserFormDTO.getOrgId())
-				.orElseThrow(() -> new ApplicationException("No orginaization found.")));
+		if(!userVO.getRole().equals("OWNER"))
+		{
+			userVO.setOrgId(createUserFormDTO.getOrgId());
+		}
+		
 		userRepo.save(userVO);
 		userService.createUserAction(userVO.getEmail(), userVO.getUserId(),
 				EmployeePortalConstants.USER_ACTION_ADD_ACCOUNT);
@@ -104,8 +107,9 @@ public class AdminServiceImpl implements AdminService {
 					EmployeePortalConstants.ERRROR_MSG_ORGANIZATION_INFORMATION_ALREADY_REGISTERED);
 		}
 		UserVO userVO = getUserVOFromCreateOrganizationFormDTO(createOrganizationFormDTO);
-		userVO.setOrganizationVO(
-				organizationRepo.save(getOrganizationVOFromCreateOrganizationFormDTO(createOrganizationFormDTO)));
+		
+		OrganizationVO organizationVO=organizationRepo.save(getOrganizationVOFromCreateOrganizationFormDTO(createOrganizationFormDTO));
+		userVO.setOrgId(organizationVO.getId());
 		userRepo.save(userVO);
 		userService.createUserAction(userVO.getEmail(), userVO.getUserId(),
 				EmployeePortalConstants.USER_ACTION_ADD_ACCOUNT);
