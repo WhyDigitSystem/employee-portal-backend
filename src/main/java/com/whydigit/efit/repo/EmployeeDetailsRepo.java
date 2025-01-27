@@ -15,7 +15,7 @@ public interface EmployeeDetailsRepo extends JpaRepository<EmployeeDetailsVO, Lo
 	
 	List<EmployeeDetailsVO> findAllByOrgId(long orgId);
 
-	@Query("select e.id,e.empname from EmployeeDetailsVO e where e.orgId=?1 and e.role=?2")
+	@Query(value="select e.employeeid,e.empname from  employee e where e.orgid=?1 and e.reportingpersonrole=?2",nativeQuery =true)
 	Set<Object[]> findAllByRole(long orgId, String role);
 	
 	

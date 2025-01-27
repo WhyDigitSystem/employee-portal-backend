@@ -8,8 +8,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.whydigit.efit.dto.CreatedUpdatedDate;
 
@@ -24,13 +27,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 
 public class LeaveRequestVO {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@JsonFormat(pattern="yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate fromdate;
-	@JsonFormat(pattern="yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate todate;
 	private String companycode;
 	private String branchId;
@@ -43,7 +46,7 @@ public class LeaveRequestVO {
 	private String updatedby;
 	private String approvedby;
 	private String status;
-	@JsonFormat(pattern="yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date approvedat;
 	private boolean cancel;
 	private boolean active;
@@ -51,6 +54,14 @@ public class LeaveRequestVO {
 	private String notifyto;
 	private float noOfDays;
 	private String empmail;
+
+	
+
+	@ManyToOne
+	@JsonBackReference
+	@JoinColumn(name = "employee_id")
+	private EmployeeDetailsVO employeeDetailsVO;
+
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
 

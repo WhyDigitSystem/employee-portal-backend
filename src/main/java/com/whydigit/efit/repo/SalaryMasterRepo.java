@@ -9,7 +9,7 @@ import com.whydigit.efit.entity.SalaryMasterVO;
 
 public interface SalaryMasterRepo extends JpaRepository<SalaryMasterVO, Long> {
 
-	@Query(value = "select a from SalaryMasterVO a where a.orgid=?1")
+	@Query(value = "select * from salarymaster where orgid=?1",nativeQuery = true)
 	List<SalaryMasterVO> findAllByActive(Long orgId);
 
 }

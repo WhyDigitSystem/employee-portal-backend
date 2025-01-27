@@ -146,7 +146,7 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 
 	@Override
 	public Set<Object[]> getLeaveTypeNameByOrgId(long orgId) {
-
+ 
 		return leaveTypeRepo.findLeaveTypeNameByOrgId(orgId);
 	}
 

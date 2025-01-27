@@ -1,4 +1,4 @@
-package com.whydigit.efit.entity;
+ package com.whydigit.efit.entity;
 
 import java.time.LocalDate;
 
@@ -58,6 +58,8 @@ public class EmployeeDetailsVO {
 	private boolean active;
 	private String remarks;
 	private String reporting_person_role;
+	
+	
 	
 	
 	@Embedded

@@ -38,6 +38,10 @@ public class LeaveTypeVO {
 	private boolean active;
 	private String remarks;
 	private long orgId;
+	@Column(name ="defaultincremental")
+	private int defaultIncremental;
+	@Column(name ="limitperiod")
+	private int limitPeriod;
 
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
