@@ -42,8 +42,8 @@ public class MonthlyAttendanceVO {
 	private float totalDays;
 	@Column(name="totalleaves")
 	private float totalLeaves;
-	@Column(name="precentdays")
-	private float precentDays;
+	@Column(name="presentdays")
+	private float presentDays;
 	@Column(name="lop")
 	private float lop;
 	@Column(name="year")

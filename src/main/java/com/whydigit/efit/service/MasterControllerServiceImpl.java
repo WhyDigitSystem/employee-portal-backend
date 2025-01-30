@@ -755,9 +755,9 @@ public class MasterControllerServiceImpl implements MasterControllerService {
 	}
 
 	@Override
-	public List<Map<String, Object>> getAttendanceDetailsOfEmpForMonth(Long orgId, LocalDate fromDate,
-			LocalDate toDate) {
-		Set<Object[]> getAttendanceDetails = leaveDetailsRepo.findAttendanceDetails(orgId);
+	public List<Map<String, Object>> getAttendanceDetailsOfEmpForMonth(Long orgId, String fromDate,
+			String toDate) {
+		Set<Object[]> getAttendanceDetails = leaveDetailsRepo.findAttendanceDetails(orgId,fromDate,toDate);
 		return getAttendance(getAttendanceDetails);
 	}
 
@@ -768,8 +768,8 @@ public class MasterControllerServiceImpl implements MasterControllerService {
 			getCount.put("empCode", sup[0] != null ? sup[0].toString() : "");
 			getCount.put("empName", sup[1] != null ? sup[1].toString() : "");
 			getCount.put("totalDays",  Integer.parseInt(sup[2].toString()));
-			getCount.put("consumedLeave",  Integer.parseInt(sup[3].toString()));
-			getCount.put("precentDays",  Integer.parseInt(sup[4].toString()));
+			getCount.put("consumedLeave",  sup[3] != null ? sup[3].toString() : "");
+			getCount.put("precentDays",  sup[4] != null ? sup[4].toString() : "");
 
 			employeeLeaveDetails.add(getCount);
 		}

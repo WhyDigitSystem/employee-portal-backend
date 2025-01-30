@@ -61,6 +61,7 @@ public interface MasterControllerService {
 
 	int getTotalRows1();
 
-	List<Map<String, Object>> getAttendanceDetailsOfEmpForMonth(Long orgId, LocalDate fromDate, LocalDate toDate);
+
+	List<Map<String, Object>> getAttendanceDetailsOfEmpForMonth(Long orgId, String fromDate, String toDate);
 	
 }

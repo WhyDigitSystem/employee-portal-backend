@@ -353,8 +353,8 @@ public class MasterController extends BaseController{
 	}
 
 	@GetMapping("/getAttendanceDetailsOfEmpForMonth")
-	public ResponseEntity<ResponseDTO> getAttendanceDetailsOfEmpForMonth(@RequestParam(required = true) Long orgId,@RequestParam(required = true) LocalDate fromDate,
-			@RequestParam(required = true) LocalDate toDate	) {
+	public ResponseEntity<ResponseDTO> getAttendanceDetailsOfEmpForMonth(@RequestParam(required = true) Long orgId,@RequestParam(required = true) String fromDate,
+			@RequestParam(required = true) String toDate	) {
 		String methodName = "getAttendanceDetailsOfEmpForMonth()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;

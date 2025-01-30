@@ -9,26 +9,26 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MonthlyAttendanceDTO {
 
-private Long orgId;
-	
+	private Long orgId;
+
 	private String branch;
-	
+
 	private String branchCode;
-	
+
 	private String empCode;
-	
+
 	private String empName;
-	
+
 	private String salaryMonth;
-	
+
 	private float totalDays;
-	
+
 	private float totalLeaves;
-	
-	private float precentDays;
-	
+
+	private float presentDays;
+
 	private float lop;
-	
+
 	private String year;
-	
+
 }
