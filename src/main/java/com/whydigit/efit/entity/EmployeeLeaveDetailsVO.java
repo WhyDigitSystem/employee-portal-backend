@@ -47,6 +47,9 @@ public class EmployeeLeaveDetailsVO {
 	private int sl;
 	@Column(name ="orgid")
 	private Long orgId;
+	private String effective;
+	@Column(name="carryforward")
+	private String carryForward;
 	
 	private String gender;
 	

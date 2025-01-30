@@ -16,4 +16,6 @@ public interface UserRepo extends JpaRepository<UserVO, Long> {
 
 	UserVO findByEmailAndUserId(String email, Long userId);
 
+	UserVO findByEmpId(Long id);
+
 }
