@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.whydigit.efit.entity.EmployeeDetailsVO;
+import com.whydigit.efit.entity.EmployeeVO;
 
 @Repository
 public interface EmployeeDetailsRepo extends JpaRepository<EmployeeDetailsVO, Long> {
@@ -55,8 +56,8 @@ public interface EmployeeDetailsRepo extends JpaRepository<EmployeeDetailsVO, Lo
 	@Query(value = "select a.empname from EmployeeDetailsVO a where a.orgId=?1 group by a.empname")
 	Set<Object[]> getEmployeeName(Long orgId);
 
-	@Query(nativeQuery = true, value = "select a.* from employee_details a where a.org_id=?1 and a.active=1")
-	List<EmployeeDetailsVO> getByOrgIdAndActiveEmployees(Long orgId);
+	@Query(nativeQuery = true, value = "select * from employee  where orgid=?1 and active=1")
+	List<EmployeeVO> getByOrgIdAndActiveEmployees(Long orgId);
 
 	
 

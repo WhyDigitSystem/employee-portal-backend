@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +22,7 @@ import com.whydigit.efit.common.EmployeePortalConstants;
 import com.whydigit.efit.common.UserConstants;
 import com.whydigit.efit.dto.ResponseDTO;
 import com.whydigit.efit.dto.SalaryStructureDTO;
-import com.whydigit.efit.entity.EmployeeDetailsVO;
+import com.whydigit.efit.entity.EmployeeVO;
 import com.whydigit.efit.entity.SalaryMasterVO;
 import com.whydigit.efit.entity.SalaryStructureVO;
 import com.whydigit.efit.service.SalaryStructureService;
@@ -45,16 +44,16 @@ public class SalaryStructureController  extends BaseController{
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		List<EmployeeDetailsVO> empNameDetails = new ArrayList<>();
+		List<EmployeeVO> employeeVO = new ArrayList<>();
 		try {
-			empNameDetails = salaryStructureService.getEmployeeNameDetails(orgId);
+			employeeVO = salaryStructureService.getEmployeeNameDetails(orgId);
 		} catch (Exception e) {
 			errorMsg = e.getMessage();
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Employee Details information get successfully Id");
-			responseObjectsMap.put("empNameDetails", empNameDetails);
+			responseObjectsMap.put("employeeVO", employeeVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
 			responseDTO = createServiceResponseError(responseObjectsMap, "Employee Details  information get Failed ",

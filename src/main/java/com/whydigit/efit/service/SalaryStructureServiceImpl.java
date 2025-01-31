@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.whydigit.efit.dto.SalaryStructureDTO;
 import com.whydigit.efit.entity.EmployeeDetailsVO;
+import com.whydigit.efit.entity.EmployeeVO;
 import com.whydigit.efit.entity.SalaryMasterVO;
 import com.whydigit.efit.entity.SalaryStructureDeductionVO;
 import com.whydigit.efit.entity.SalaryStructureEarningsVO;
@@ -73,7 +74,7 @@ public class SalaryStructureServiceImpl implements SalaryStructureService {
 //	}
 
 	@Override
-	public List<EmployeeDetailsVO> getEmployeeNameDetails(Long orgId) {
+	public List<EmployeeVO> getEmployeeNameDetails(Long orgId) {
 		return employeeDetailsRepo.getByOrgIdAndActiveEmployees(orgId);
 	}
 

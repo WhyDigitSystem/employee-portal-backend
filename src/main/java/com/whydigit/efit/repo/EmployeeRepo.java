@@ -24,7 +24,7 @@ public interface EmployeeRepo extends JpaRepository<EmployeeVO, Long> {
 
 	boolean existsByAccountNoAndOrgId(long accountNo, long orgId);
 
-	@Query(nativeQuery = true, value = "select * from employee where orgid=?1")
+	@Query(nativeQuery = true, value = "select * from employee where orgid=?1 and active=1")
 	List<EmployeeVO> getAllEmployees(Long orgId);
 
 	@Query(value ="select l.alcount,l.clcount,l.cocount,l.mlcount,l.plcount,l.slcount,l.ulcount from employeeleavedetails l\r\n"

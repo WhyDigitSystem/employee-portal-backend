@@ -34,16 +34,19 @@ public class EmployeeVO {
 	@Column(name = "employeeid")
 	private Long id;
 
-	@Column(name = "orgid")
+	@Column(name = "orgid",length = 20)
 	private long orgId;
-	@Column(name = "empcode")
+	@Column(name = "empcode",length = 15)
 	private String empCode;
-	@Column(name = "empname")
+	@Column(name = "empname",length = 25)
 	private String empName;
+	@Column(name = "gender",length = 15)
 	private String gender;
 	@Column(name = "dateofbirth")
-	private LocalDate dateOfBirth;
+	private LocalDate dateOfBirth;  
+	@Column(name = "bloodgroup",length = 15)
 	private String blood;
+	
 	private String department;
 	private String designation;
 	private String role;
@@ -64,6 +67,8 @@ public class EmployeeVO {
 	private String aadhar;
 	@Column(name = "bankname")
 	private String bankName;
+	@Column(name = "accountholdername")
+	private String accountHolderName;
 	@Column(name = "accountno")
 	private long accountNo;
 	@Column(name = "ifsccode")
@@ -79,7 +84,8 @@ public class EmployeeVO {
 	private String remarks;
 	@Column(name = "reportingpersonrole")
 	private String reportingPersonRole;
-	
+	@Column(name = "emptype")
+	private String empType;
 	@Column(name="alternatemobileno")
 	private String alternateMobileNo;
 	
