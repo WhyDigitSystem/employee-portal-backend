@@ -6,6 +6,8 @@ import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
+import com.whydigit.efit.dto.EmployeeDTO;
+import com.whydigit.efit.dto.EmployeeDetailsDTO;
 import com.whydigit.efit.dto.LeaveApprovalDTO;
 import com.whydigit.efit.dto.UserNameDTO;
 import com.whydigit.efit.entity.CheckinStatusVO;
@@ -34,7 +36,7 @@ public interface BasicMasterService {
 	
 	Set<Object[]> getEmployeeByRole(long orgId, String role);
 
-	EmployeeDetailsVO createEmployee(EmployeeDetailsVO employeeVO) throws ApplicationException;
+	EmployeeDetailsVO createEmployee(EmployeeDetailsDTO employeeDetailsDTO) throws ApplicationException;
 
 	Optional<EmployeeDetailsVO> updateEmployee(EmployeeDetailsVO employeeVO);
 
@@ -143,6 +145,8 @@ public interface BasicMasterService {
 	Set<Object[]> getAllLeaveEligibleByOrgId(long orgId);
 	
 	Set<Object[]> getAllLeaveEligibleByOrgIdAndEmpcodeAndBranchid(long orgId,String empcode,long branchid);
+
+	
 	
 	
 	

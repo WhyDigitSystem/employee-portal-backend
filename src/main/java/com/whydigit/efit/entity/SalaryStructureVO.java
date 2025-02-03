@@ -1,5 +1,6 @@
 package com.whydigit.efit.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -66,6 +67,24 @@ public class SalaryStructureVO {
     
     @Column(name = "createdby", length = 50)
     private String createdBy;
+    
+    @Column(name = "month", length = 50)
+    private String month;
+    
+    @Column(name = "year", length = 50)
+    private String year;
+    
+    @Column(name = "totalearnings")
+    private BigDecimal totalEarnings;
+    
+    @Column(name = "totaldeduction")
+    private BigDecimal totalDeduction;
+    
+    @Column(name = "netpay")
+    private BigDecimal netPay;
+    
+    @Column(name = "amountinwords")
+    private String amountInWords;
     
     @Column(name = "modifiedby", length = 50)
     private String modifiedBy;

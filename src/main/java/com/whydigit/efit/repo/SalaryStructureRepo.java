@@ -10,4 +10,6 @@ public interface SalaryStructureRepo extends JpaRepository<SalaryStructureVO, Lo
 
 	List<SalaryStructureVO> findByOrgId(Long orgId);
 
+	SalaryStructureVO findByOrgIdAndEmployeeCodeAndMonthAndYear(Long orgId, String empCode, String month, String year);
+
 }

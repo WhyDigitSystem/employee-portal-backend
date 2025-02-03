@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.whydigit.efit.dto.AdminAccessRole;
 import com.whydigit.efit.dto.CreateUserFormDTO;
+import com.whydigit.efit.dto.EmployeeDTO;
+import com.whydigit.efit.dto.EmployeeDetailsDTO;
 import com.whydigit.efit.dto.LeaveApprovalDTO;
 import com.whydigit.efit.dto.UserNameDTO;
 import com.whydigit.efit.entity.CheckinStatusVO;
@@ -103,19 +105,49 @@ public class BasicMasterServiceImpl implements BasicMasterService {
 
 	@Override
 	@Transactional
-	public EmployeeDetailsVO createEmployee(EmployeeDetailsVO employeeVO) throws ApplicationException {
+	public EmployeeDetailsVO createEmployee(EmployeeDetailsDTO employeeDetailsDTO) throws ApplicationException {
+		
+		EmployeeDetailsVO employeeVO= new EmployeeDetailsVO();
 		employeeVO.setCancel(false);
 		employeeVO = employeeRepo.save(employeeVO);
-		adminService.createUser(setCreateUserFormDTO(employeeVO));
+		adminService.createUser(setCreateUserFormDTO(employeeVO,employeeDetailsDTO));
 		return employeeVO;
 	}
 
-	private CreateUserFormDTO setCreateUserFormDTO(EmployeeDetailsVO employeeVO) throws ApplicationException {
+	private CreateUserFormDTO setCreateUserFormDTO(EmployeeDetailsVO employeeVO, EmployeeDetailsDTO employeeDTO) throws ApplicationException {
+		
+		employeeVO.setOrgId(employeeDTO.getOrgId());
+		employeeVO.setEmpcode(employeeDTO.getEmpCode());
+		employeeVO.setEmpname(employeeDTO.getEmpName());
+		employeeVO.setGender(employeeDTO.getGender());
+		employeeVO.setDate_of_birth(employeeDTO.getDateOfBirth());
+		employeeVO.setBlood(employeeDTO.getBlood());
+		employeeVO.setDepartment(employeeDTO.getDepartment());
+		employeeVO.setDesignation(employeeDTO.getDesignation());
+		employeeVO.setRole(employeeDTO.getRole());
+		employeeVO.setAlternate_mobile_no(employeeDTO.getAlternateMobileNo());
+		employeeVO.setCompanycode(employeeDTO.getCompanyCode());
+		employeeVO.setBranchId(employeeDTO.getBranch());
+		employeeVO.setEmail(employeeDTO.getEmail());
+		employeeVO.setJoining_date(employeeDTO.getJoiningDate());
+		employeeVO.setResigning_date(employeeDTO.getResigningDate());
+		employeeVO.setUser_type(employeeDTO.getUserType());
+		employeeVO.setMobile_no(employeeDTO.getMobileNo());
+		employeeVO.setPan(employeeDTO.getPan());
+		employeeVO.setGrade(employeeDTO.getGrade());
+		employeeVO.setAadhar(employeeDTO.getAadhar());
+		employeeVO.setBank_name(employeeDTO.getBankName());
+		employeeVO.setAccount_no(employeeDTO.getAccountNo());
+		employeeVO.setIfsc_code(employeeDTO.getIfscCode());
+		employeeVO.setReporting_person(employeeDTO.getReportingPerson());
+		employeeVO.setActive(employeeDTO.isActive());
+		employeeVO.setRemarks(employeeDTO.getRemarks());
+		employeeVO.setReporting_person_role(employeeDTO.getReportingPersonRole());
 		CreateUserFormDTO createUserFormDTO = new CreateUserFormDTO();
-		createUserFormDTO.setEmail(employeeVO.getEmail());
-		createUserFormDTO.setEmpCode(employeeVO.getEmpcode());
-		createUserFormDTO.setEmpId(employeeVO.getId());
-		createUserFormDTO.setEmpName(employeeVO.getEmpname());
+		createUserFormDTO.setEmail(employeeDTO.getEmail());
+		createUserFormDTO.setEmpCode(employeeDTO.getEmpCode());
+		createUserFormDTO.setEmpId(employeeDTO.getId());
+		createUserFormDTO.setEmpName(employeeDTO.getEmpName());
 		createUserFormDTO.setOrgId(employeeVO.getOrgId());
 		createUserFormDTO.setPassword("3PNaIlEuc7yvkNG9ueZUlhZZBSZZalEYZV9neHql9lA=");
 		createUserFormDTO.setRole(AdminAccessRole.USER);

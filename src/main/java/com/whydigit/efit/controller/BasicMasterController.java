@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.whydigit.efit.common.CommonConstant;
 import com.whydigit.efit.common.EmployeePortalConstants;
 import com.whydigit.efit.common.UserConstants;
+import com.whydigit.efit.dto.EmployeeDTO;
+import com.whydigit.efit.dto.EmployeeDetailsDTO;
 import com.whydigit.efit.dto.LeaveApprovalDTO;
 import com.whydigit.efit.dto.ResponseDTO;
 import com.whydigit.efit.dto.UserNameDTO;
@@ -146,14 +148,14 @@ public class BasicMasterController extends BaseController {
 	}
 
 	@PostMapping("/employee")
-	public ResponseEntity<ResponseDTO> createEmployee(@RequestBody EmployeeDetailsVO employeeVO) {
+	public ResponseEntity<ResponseDTO> createEmployee(@RequestBody EmployeeDetailsDTO employeeDTO) {
 		String methodName = "createEmployee()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
 		try {
-			EmployeeDetailsVO createdEmployeeVO = basicMasterService.createEmployee(employeeVO);
+			EmployeeDetailsVO createdEmployeeVO = basicMasterService.createEmployee(employeeDTO);
 			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "employee created successfully");
 			responseObjectsMap.put("employeeVO", createdEmployeeVO);
 			responseDTO = createServiceResponse(responseObjectsMap);

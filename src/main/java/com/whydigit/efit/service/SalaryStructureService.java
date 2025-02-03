@@ -6,8 +6,6 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.whydigit.efit.dto.SalaryStructureDTO;
-import com.whydigit.efit.entity.EmployeeDetailsVO;
-import com.whydigit.efit.entity.EmployeeVO;
 import com.whydigit.efit.entity.SalaryMasterVO;
 import com.whydigit.efit.entity.SalaryStructureVO;
 import com.whydigit.efit.exception.ApplicationException;
@@ -15,7 +13,7 @@ import com.whydigit.efit.exception.ApplicationException;
 @Service
 public interface SalaryStructureService {
 	
-	List<EmployeeVO> getEmployeeNameDetails(Long orgId);
+	List<Map<String,Object>> getEmployeeNameDetails(Long orgId,String month,String year);
 
 	Map<String, Object> createUpdateSalaryStructure(SalaryStructureDTO salaryStructureDTO) throws ApplicationException;
 	
@@ -24,5 +22,7 @@ public interface SalaryStructureService {
 	List<SalaryStructureVO>getAllSalaryStructures(Long orgId);
 	
 	SalaryStructureVO getSalaryStructureById(Long orgId);
+
+	SalaryStructureVO getEmployeeSalaryPDF(Long orgId, String empCode, String month, String year);
 
 }
