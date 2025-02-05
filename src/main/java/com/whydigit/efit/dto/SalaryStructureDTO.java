@@ -27,9 +27,10 @@ public class SalaryStructureDTO {
     private LocalDate dateOfJoining;
     private String createdBy;
     private Long orgId;
-    private String month;
-    private String year;
-    
+    private String bankName;
+    private float lop;
+    private String uan;
+    private String location;
     private List<SalaryStructureEarningsDTO> salaryStructureEarningsDTO;
 	private List<SalaryStructureDeductionDTO> salaryStructureDeductionDTO;
 }

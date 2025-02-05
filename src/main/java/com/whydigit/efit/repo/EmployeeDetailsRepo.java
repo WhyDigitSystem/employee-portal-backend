@@ -59,12 +59,10 @@ public interface EmployeeDetailsRepo extends JpaRepository<EmployeeDetailsVO, Lo
 	@Query(nativeQuery = true, value = "select * from employee  where orgid=?1 and active=1")
 	List<EmployeeVO> getByOrgIdAndActiveEmployees(Long orgId);
 
-	@Query(nativeQuery = true,value = "select a.orgid,a.empcode,b.empname,a.totaldays,a.lop,b.designation,b.department,b.account_no,b.branch,b.pan,row_number() over() id,b.date_of_birth,b.joining_date,b.grade,b.uan from monthlyattendance a,employee_details b\r\n"
-			+ " where a.salarymonth=?2 and a.year=?3 and b.org_id=a.orgid and a.empcode=b.empcode\r\n"
-			+ " and a.empcode not in(select employeecode from salarystructure where month=?2 and year=?3 and orgid=?1 group by orgid,employeecode)\r\n"
-			+ " group by a.orgid,a.empcode,b.empname,a.totaldays,a.lop,b.designation,b.department,b.account_no,b.branch,b.pan,b.date_of_birth,b.joining_date,b.grade,b.uan\r\n"
-			+ "order by a.empcode ")
-	Set<Object> getemployeeDetailsForSalaryStructure(Long orgId, String month, String year);
+	@Query(nativeQuery = true,value = "select b.org_id,b.empcode,b.empname,0 totaldays, 0 lop,b.designation,b.department,b.account_no,b.branch,b.pan,row_number() over() id,b.date_of_birth,b.joining_date,b.grade,b.uan,b.bank_name from \r\n"
+			+ "employee_details b where b.org_id=?1 and b.active=1 group by b.org_id,b.empcode,b.empname,b.designation,b.department,b.account_no,b.branch,b.pan,b.date_of_birth,b.joining_date,b.grade,b.uan,b.bank_name\r\n"
+			+ "order by b.empcode ")
+	Set<Object> getemployeeDetailsForSalaryStructure(Long orgId);
 
 	boolean existsByEmpcodeAndOrgId(String empCode, long orgId);
 
