@@ -31,4 +31,7 @@ public interface SalaryStructureService {
 	
 	Map<String, Object> createSalaryProcess(List<SalaryProcessDTO> salaryProcessDTO) throws ApplicationException;
 
+	List<Map<String, Object>> getEmployeeSalaryStructureDetails(Long orgId);
+
+	SalaryStructureVO getLatestSalaryStructureByEmpCode(Long orgId,String empcode);
 }

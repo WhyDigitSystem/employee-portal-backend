@@ -364,4 +364,49 @@ public class SalaryStructureServiceImpl implements SalaryStructureService {
 			response.put("message", "Salary Process Successfully Completed");
 			return response;
 		}
+		
+		@Override
+		public List<Map<String, Object>> getEmployeeSalaryStructureDetails(Long orgId) {
+
+			Set<Object> empDetails = salaryStructureRepo.getSalaryStructureRegister(orgId);
+			return mapSalaryStructureDetails(empDetails);
+		}
+		
+		// Convert Set<Object> to List<Map<String, Object>>
+			private List<Map<String, Object>> mapSalaryStructureDetails(Set<Object> empDetails) {
+				List<Map<String, Object>> employeeSalaryList = new ArrayList<>();
+
+				for (Object obj : empDetails) {
+					Object[] row = (Object[]) obj; // Convert Object to Object[]
+
+					Map<String, Object> employeeMap = new HashMap<>();
+					employeeMap.put("orgId", row[0]);
+					employeeMap.put("empCode", row[1] != null ? row[1].toString() : "");
+					employeeMap.put("empName", row[2] != null ? row[2].toString() : "");
+					employeeMap.put("totalDays", row[3] != null ? row[3].toString() : "0");
+					employeeMap.put("lop", row[4] != null ? row[4].toString() : "0");
+					employeeMap.put("designation", row[5] != null ? row[5].toString() : "");
+					employeeMap.put("department", row[6] != null ? row[6].toString() : "");
+					employeeMap.put("accountNo", row[7] != null ? row[7].toString() : "0");
+					employeeMap.put("branch", row[8] != null ? row[8].toString() : "");
+					employeeMap.put("pan", row[9] != null ? row[9].toString() : "");
+					employeeMap.put("id", row[10]);
+					employeeMap.put("DOB", row[11] != null ? row[11].toString() : "");
+					employeeMap.put("joiningDate", row[12] != null ? row[12].toString() : "");
+					employeeMap.put("grade", row[13] != null ? row[13].toString() : "");
+					employeeMap.put("uan", row[14] != null ? row[14].toString() : "");
+					employeeMap.put("bankName", row[15] != null ? row[15].toString() : "");
+					employeeMap.put("netPay", row[16] != null ? new BigDecimal(row[16].toString()) : BigDecimal.ZERO);
+					employeeMap.put("salaryStructureStatus", row[17] != null ? row[17].toString() : "");
+					employeeMap.put("action", row[18] != null ? row[18].toString() : "");
+					employeeSalaryList.add(employeeMap);
+				}
+				return employeeSalaryList;
+			}
+
+			@Override
+			public SalaryStructureVO getLatestSalaryStructureByEmpCode(Long orgId, String empcode) {
+				SalaryStructureVO salaryStructureVO=salaryStructureRepo.getLatestSalaryStructureDetails(orgId, empcode);
+				return salaryStructureVO;
+			}
 }
