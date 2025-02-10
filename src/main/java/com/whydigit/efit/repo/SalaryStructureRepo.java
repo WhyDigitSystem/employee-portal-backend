@@ -1,6 +1,6 @@
 package com.whydigit.efit.repo;
 
-import java.util.List;import java.util.Map;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,7 +27,7 @@ public interface SalaryStructureRepo extends JpaRepository<SalaryStructureVO, Lo
 			+ "FROM monthlyattendance a,\r\n"
 			+ "(SELECT * FROM (\r\n"
 			+ "    SELECT *, \r\n"
-			+ "           ROW_NUMBER() OVER (PARTITION BY orgid, employeecode ORDER BY createdon DESC) AS rn\r\n"
+			+ "           ROW_NUMBER() OVER (PARTITION BY orgid, employeecode ORDER BY STR_TO_DATE(createdon, '%Y-%m-%d %h:%i:%s %p') DESC) AS rn\r\n"
 			+ "    FROM salarystructure \r\n"
 			+ ") AS ranked\r\n"
 			+ "WHERE rn = 1 AND orgid = ?1) b\r\n"
@@ -38,7 +38,7 @@ public interface SalaryStructureRepo extends JpaRepository<SalaryStructureVO, Lo
 
 	@Query(nativeQuery = true,value = "SELECT * FROM (\r\n"
 			+ "    SELECT *, \r\n"
-			+ "           ROW_NUMBER() OVER (PARTITION BY orgid, employeecode ORDER BY createdon DESC) AS rn\r\n"
+			+ "           ROW_NUMBER() OVER (PARTITION BY orgid, employeecode ORDER BY STR_TO_DATE(createdon, '%Y-%m-%d %h:%i:%s %p') DESC) AS rn\r\n"
 			+ "    FROM salarystructure \r\n"
 			+ ") AS ranked\r\n"
 			+ "WHERE rn = 1 AND orgid = ?1 and employeecode=?2")
@@ -50,7 +50,7 @@ public interface SalaryStructureRepo extends JpaRepository<SalaryStructureVO, Lo
 			+ "union\r\n"
 			+ "SELECT b.bankaccountno,b.bankname,b.dateofbirth,b.dateofjoining,b.department,b.employeecode,b.employeename,b.garde grade,b.location,b.pan,b.uan,b.position,b.orgid,b.netpay FROM (\r\n"
 			+ "    SELECT *, \r\n"
-			+ "           ROW_NUMBER() OVER (PARTITION BY v.orgid, v.employeecode ORDER BY v.createdon DESC) AS rn\r\n"
+			+ "           ROW_NUMBER() OVER (PARTITION BY v.orgid, v.employeecode ORDER BY STR_TO_DATE(v.createdon, '%Y-%m-%d %h:%i:%s %p') DESC) AS rn\r\n"
 			+ "    FROM salarystructure v \r\n"
 			+ ") AS b\r\n"
 			+ "WHERE rn = 1 AND b.orgid = ?1) n group by n.bankaccountno,n.bankname,n.dateofbirth,n.dateofjoining,n.department,n.employeecode,n.employeename,n.grade,n.location,n.pan,n.uan,n.position,n.orgid order by n.employeecode asc")
