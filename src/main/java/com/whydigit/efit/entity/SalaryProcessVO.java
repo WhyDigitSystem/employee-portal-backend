@@ -23,16 +23,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="salarystructure")
+@Table(name="salaryprocess")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SalaryStructureVO {
+public class SalaryProcessVO {
+	
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "salarystructuregen")
-	@SequenceGenerator(name = "salarystructuregen", sequenceName = "salarystructureseq", initialValue = 1000000001, allocationSize = 1)
-	@Column(name = "salarystructureid")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "salaryprocessgen")
+	@SequenceGenerator(name = "salaryprocessgen", sequenceName = "salaryprocessseq", initialValue = 1000000001, allocationSize = 1)
+	@Column(name = "salaryprocessid")
 	private Long id;
 	
 	@Column(name = "orgid")
@@ -61,6 +62,15 @@ public class SalaryStructureVO {
 
     @Column(name = "position", length = 50)
     private String position;
+    
+    @Column(name = "totaldays", length = 50)
+    private int totalDays;
+    
+    @Column(name = "totalleaves")
+    private float totalLeaves;
+    
+    @Column(name = "effectiveworkingdays")
+    private float effectiveWorkingDays;
 
     @Column(name = "dateofjoining") 
     private LocalDate dateOfJoining;
@@ -77,6 +87,15 @@ public class SalaryStructureVO {
     @Column(name = "netpay")
     private BigDecimal netPay;
     
+    @Column(name = "grosspay")
+    private BigDecimal grossPay;
+    
+    @Column(name = "perdaysalary")
+    private BigDecimal perDaySalary;
+    
+    @Column(name = "lopamount")
+	private BigDecimal lopAmount;
+    
     @Column(name = "amountinwords")
     private String amountInWords;
     
@@ -92,19 +111,23 @@ public class SalaryStructureVO {
     @Column(name = "location")
     private String location;
     
+    @Column(name = "salarymonth")
+    private String month;
+    
+    @Column(name = "year", length = 30)
+    private String year;
+    
 
     
-    @OneToMany(mappedBy = "salaryStructureVO",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "salaryProcessVO",cascade = CascadeType.ALL)
 	@JsonManagedReference
-	private List<SalaryStructureEarningsVO> salaryStructureEarningsVO;
+	private List<SalaryDetailsEarningsVO> salaryDetailsEarningsVO;
     
-    @OneToMany(mappedBy = "salaryStructureVO",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "salaryProcessVO",cascade = CascadeType.ALL)
 	@JsonManagedReference
-	private List<SalaryStructureDeductionVO> salaryStructureDeductionVO;
+	private List<SalaryDetailsDeductionVO> salaryDetailsDeductionVO;
 	
 	@Embedded
 	private CreatedUpdatedDate commonDate = new CreatedUpdatedDate();
-
-	
 
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.whydigit.efit.dto.EmployeeDTO;
+import com.whydigit.efit.dto.EmployeeDetailsDTO;
 import com.whydigit.efit.dto.LeaveDetailsDTO;
 import com.whydigit.efit.dto.RequestLeaveDTO;
 import com.whydigit.efit.entity.CheckinVO;
@@ -36,7 +37,7 @@ public interface MasterControllerService {
 	//NEW EMPLOYEE CREATION
 	
 	Map<String, Object> createUpdateEmployee(EmployeeDTO employeeDTO) throws ApplicationException;
-
+	
 	Optional<EmployeeVO> getEmployeeById(Long id);
 
 	List<EmployeeVO> getAllEmployee(Long orgId);
@@ -63,5 +64,9 @@ public interface MasterControllerService {
 
 
 	List<Map<String, Object>> getAttendanceDetailsOfEmpForMonth(Long orgId, String fromDate, String toDate);
+
+	
+
+	
 	
 }

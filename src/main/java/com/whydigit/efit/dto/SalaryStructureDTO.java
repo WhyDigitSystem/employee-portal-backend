@@ -3,6 +3,8 @@ package com.whydigit.efit.dto;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.Column;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,7 +27,10 @@ public class SalaryStructureDTO {
     private LocalDate dateOfJoining;
     private String createdBy;
     private Long orgId;
-    
+    private String bankName;
+    private float lop;
+    private String uan;
+    private String location;
     private List<SalaryStructureEarningsDTO> salaryStructureEarningsDTO;
 	private List<SalaryStructureDeductionDTO> salaryStructureDeductionDTO;
 }

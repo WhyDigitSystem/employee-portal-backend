@@ -64,6 +64,7 @@ public class EmployeeVO {
 	@Column(name = "mobileno")
 	private String mobileNo;
 	private String pan;
+	private String uan;
 	private String aadhar;
 	@Column(name = "bankname")
 	private String bankName;

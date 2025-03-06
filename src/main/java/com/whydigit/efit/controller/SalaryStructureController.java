@@ -21,9 +21,10 @@ import com.whydigit.efit.common.CommonConstant;
 import com.whydigit.efit.common.EmployeePortalConstants;
 import com.whydigit.efit.common.UserConstants;
 import com.whydigit.efit.dto.ResponseDTO;
+import com.whydigit.efit.dto.SalaryProcessDTO;
 import com.whydigit.efit.dto.SalaryStructureDTO;
-import com.whydigit.efit.entity.EmployeeVO;
 import com.whydigit.efit.entity.SalaryMasterVO;
+import com.whydigit.efit.entity.SalaryProcessVO;
 import com.whydigit.efit.entity.SalaryStructureVO;
 import com.whydigit.efit.service.SalaryStructureService;
 
@@ -38,13 +39,13 @@ public class SalaryStructureController  extends BaseController{
 	
 	
 	@GetMapping("/empNameDetails")
-	public ResponseEntity<ResponseDTO> empNameDetails(@RequestParam(required = true) Long orgId) {
-		String methodName = "empNameDetails()";
+	public ResponseEntity<ResponseDTO> getAttendanceDetailsOfEmpForMonth(@RequestParam(required = true) Long orgId) {
+		String methodName = "getAttendanceDetailsOfEmpForMonth()";
 		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
 		String errorMsg = null;
 		Map<String, Object> responseObjectsMap = new HashMap<>();
 		ResponseDTO responseDTO = null;
-		List<EmployeeVO> employeeVO = new ArrayList<>();
+		List<Map<String, Object>> employeeVO=new ArrayList<Map<String,Object>>();
 		try {
 			employeeVO = salaryStructureService.getEmployeeNameDetails(orgId);
 		} catch (Exception e) {
@@ -52,11 +53,11 @@ public class SalaryStructureController  extends BaseController{
 			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
 		}
 		if (StringUtils.isBlank(errorMsg)) {
-			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Employee Details information get successfully Id");
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Employee Attendance information get successfully");
 			responseObjectsMap.put("employeeVO", employeeVO);
 			responseDTO = createServiceResponse(responseObjectsMap);
 		} else {
-			responseDTO = createServiceResponseError(responseObjectsMap, "Employee Details  information get Failed ",
+			responseDTO = createServiceResponseError(responseObjectsMap, "Employee Attendance  information get Failed ",
 					errorMsg);
 		}
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
@@ -161,5 +162,130 @@ public class SalaryStructureController  extends BaseController{
 		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
 		return ResponseEntity.ok().body(responseDTO);
 	}
+	
+	@GetMapping("/employeeSalaryDetailsForPDF")
+	public ResponseEntity<ResponseDTO> employeeSalaryDetailsForPDF(@RequestParam(required = true) Long orgId,@RequestParam(required = true) String empCode,
+			@RequestParam(required = true) String month,@RequestParam(required = true) String year) {
+		String methodName = "employeeSalaryDetailsForPDF()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		SalaryProcessVO salaryStructureDetails = new SalaryProcessVO();
+		try {
+			salaryStructureDetails = salaryStructureService.getEmployeeSalaryPDF(orgId,empCode,month,year);
+			} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Salary Structure Details Information get successfully Id");
+			responseObjectsMap.put("salaryStructureDetails", salaryStructureDetails);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Salary Structure Details Information get Failed ",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getEmployeeSalaryProcessDetails")
+	public ResponseEntity<ResponseDTO> getEmployeeSalaryProcessDetails(@RequestParam(required = true) Long orgId,@RequestParam(required = true) String month,
+			@RequestParam(required = true) String year) {
+		String methodName = "getEmployeeSalaryProcessDetails()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> salaryProcessDetails=new ArrayList<Map<String,Object>>();
+		try {
+			salaryProcessDetails = salaryStructureService.getEmployeeSalaryProcessDetails(orgId, month, year);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Employee Salary Process information get successfully");
+			responseObjectsMap.put("salaryProcessDetails", salaryProcessDetails);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Employee Salary Process  information get Failed ",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 
+	@PutMapping("/createSalaryProcess")
+	public ResponseEntity<ResponseDTO> createSalaryProcess(@RequestBody List<SalaryProcessDTO> salaryStructureDTO) {
+		String methodName = "createSalaryProcess()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		try {
+			Map<String, Object> salaryProcessVO = salaryStructureService.createSalaryProcess(salaryStructureDTO);
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, salaryProcessVO.get("message"));
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+			responseDTO = createServiceResponseError(responseObjectsMap, errorMsg, errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/getSalaryStructureDetails")
+	public ResponseEntity<ResponseDTO> getSalaryStructureDetails(@RequestParam(required = true) Long orgId) {
+		String methodName = "getSalaryStructureDetails()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		List<Map<String, Object>> salaryStructureDetails=new ArrayList<Map<String,Object>>();
+		try {
+			salaryStructureDetails = salaryStructureService.getEmployeeSalaryStructureDetails(orgId);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Employee Salary Structure Details information get successfully");
+			responseObjectsMap.put("salaryStructureDetails", salaryStructureDetails);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Employee Salary Structure Details information get Failed ",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
+	
+	@GetMapping("/employeeLatestSalaryStructureDetails")
+	public ResponseEntity<ResponseDTO> employeeLatestSalaryStructureDetails(@RequestParam(required = true) Long orgId,@RequestParam(required = true) String empCode) {
+		String methodName = "employeeLatestSalaryStructureDetails()";
+		LOGGER.debug(CommonConstant.STARTING_METHOD, methodName);
+		String errorMsg = null;
+		Map<String, Object> responseObjectsMap = new HashMap<>();
+		ResponseDTO responseDTO = null;
+		SalaryStructureVO salaryStructureVO=new SalaryStructureVO();
+		try {
+			salaryStructureVO = salaryStructureService.getLatestSalaryStructureByEmpCode(orgId, empCode);
+		} catch (Exception e) {
+			errorMsg = e.getMessage();
+			LOGGER.error(UserConstants.ERROR_MSG_METHOD_NAME, methodName, errorMsg);
+		}
+		if (StringUtils.isBlank(errorMsg)) {
+			responseObjectsMap.put(CommonConstant.STRING_MESSAGE, "Employee Latest Salary Structure information get successfully");
+			responseObjectsMap.put("salaryStructureVO", salaryStructureVO);
+			responseDTO = createServiceResponse(responseObjectsMap);
+		} else {
+			responseDTO = createServiceResponseError(responseObjectsMap, "Employee Latest Salary Structure information get Failed ",
+					errorMsg);
+		}
+		LOGGER.debug(CommonConstant.ENDING_METHOD, methodName);
+		return ResponseEntity.ok().body(responseDTO);
+	}
 }

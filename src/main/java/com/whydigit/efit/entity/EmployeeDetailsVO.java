@@ -25,12 +25,11 @@ public class EmployeeDetailsVO {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
-	private long orgId;
+	private Long id;
+	private Long orgId;
 	private String empcode;
 	private String empname;
 	private String gender;
-	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate date_of_birth;
 	private String blood;
 	private String department;
@@ -39,9 +38,7 @@ public class EmployeeDetailsVO {
 	private String companycode;
 	private String branchId;
 	private String email;
-	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate joining_date;
-	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate resigning_date;
 	private String user_type;
 	private String mobile_no;
@@ -56,6 +53,8 @@ public class EmployeeDetailsVO {
 	private String updatedby;
 	private boolean cancel;
 	private boolean active;
+	private String grade;
+	private String uan;
 	private String remarks;
 	private String reporting_person_role;
 	

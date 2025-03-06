@@ -59,6 +59,15 @@ public interface EmployeeDetailsRepo extends JpaRepository<EmployeeDetailsVO, Lo
 	@Query(nativeQuery = true, value = "select * from employee  where orgid=?1 and active=1")
 	List<EmployeeVO> getByOrgIdAndActiveEmployees(Long orgId);
 
+	@Query(nativeQuery = true,value = "select b.org_id,b.empcode,b.empname,0 totaldays, 0 lop,b.designation,b.department,b.account_no,b.branch,b.pan,row_number() over() id,b.date_of_birth,b.joining_date,b.grade,b.uan,b.bank_name from \r\n"
+			+ "employee_details b where b.org_id=?1 and b.active=1 group by b.org_id,b.empcode,b.empname,b.designation,b.department,b.account_no,b.branch,b.pan,b.date_of_birth,b.joining_date,b.grade,b.uan,b.bank_name\r\n"
+			+ "order by b.empcode ")
+	Set<Object> getemployeeDetailsForSalaryStructure(Long orgId);
+
+	boolean existsByEmpcodeAndOrgId(String empCode, long orgId);
+
+	boolean existsByEmailAndOrgId(String email, long orgId);
+
 	
 
 	
